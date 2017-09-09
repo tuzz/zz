@@ -1,3 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 
-echo "Hello, world!"
+$LOAD_PATH << File.expand_path("../lib", __dir__)
+
+require "zz"
+
+ZZ.execute(ARGV)
