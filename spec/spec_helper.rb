@@ -1,4 +1,5 @@
 require "rspec"
+require "fileutils"
 require "zz"
 
 RSpec.configure do |config|
