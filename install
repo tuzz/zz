@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+sudo rm -rf zz.zip zz-master ~/.zz /usr/local/bin/zz &&
+curl -sL https://github.com/tuzz/zz/archive/master.zip -o zz.zip &&
+unzip -q zz.zip &&
+mv zz-master ~/.zz &&
+rm zz.zip &&
+sudo ln -s ~/.zz/bin/zz /usr/local/bin/zz &&
+echo "Success. The 'zz' command is now available."
