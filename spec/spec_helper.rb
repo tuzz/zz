@@ -1,4 +1,5 @@
 require "rspec"
+require "irb"
 require "pry"
 require "fileutils"
 require "zz"
