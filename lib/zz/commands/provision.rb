@@ -1,7 +1,7 @@
 module ZZ
   module Provision
     CHEF_INSTALLER = "https://www.opscode.com/chef/install.sh"
-    CHEF_CONFIG = "#{__dir__}/provision/chef_config.rb"
+    CHEF_CONFIG = ZZ::Path.chef_config
 
     class << self
       def execute(args)

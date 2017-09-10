@@ -1,2 +1,2 @@
-lib/zz/commands/provision/.cache
-lib/zz/commands/nodes
+tmp
+nodes
