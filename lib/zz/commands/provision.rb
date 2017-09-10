@@ -1,8 +1,5 @@
 module ZZ
   module Provision
-    CHEF_INSTALLER = "https://www.opscode.com/chef/install.sh"
-    CHEF_CONFIG = ZZ::Path.chef_config
-
     class << self
       def execute(args)
         install_chef unless chef_installed?
@@ -10,7 +7,7 @@ module ZZ
       end
 
       def install_chef
-        Exec.execute("curl -sL #{CHEF_INSTALLER} | sudo bash")
+        Exec.execute("curl -sL #{ZZ::Path.chef_installer} | sudo bash")
       end
 
       def chef_installed?
@@ -18,7 +15,7 @@ module ZZ
       end
 
       def run_chef
-        Exec.execute("chef-solo --config #{CHEF_CONFIG}")
+        Exec.execute("chef-solo --config #{ZZ::Path.chef_config}")
       end
 
       def name

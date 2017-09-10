@@ -10,7 +10,7 @@ RSpec.describe ZZ::Provision do
       .with("which chef-solo").and_return(false)
 
     expect(ZZ::Exec).to receive(:execute)
-      .with("curl -sL https://www.opscode.com/chef/install.sh | sudo bash")
+      .with("curl -sL #{ZZ::Path.chef_installer} | sudo bash")
 
     allow(ZZ::Exec).to receive(:execute)
 
@@ -22,7 +22,7 @@ RSpec.describe ZZ::Provision do
       .with("which chef-solo").and_return(true)
 
     expect(ZZ::Exec).not_to receive(:execute)
-      .with("curl -sL #{subject::CHEF_INSTALLER} | sudo bash")
+      .with("curl -sL #{ZZ::Path.chef_installer} } | sudo bash")
 
     subject.execute([])
   end
@@ -31,7 +31,7 @@ RSpec.describe ZZ::Provision do
     allow(ZZ::Exec).to receive(:execute)
 
     expect(ZZ::Exec).to receive(:execute)
-      .with("chef-solo --config #{subject::CHEF_CONFIG}")
+      .with("chef-solo --config #{ZZ::Path.chef_config}")
 
     subject.execute([])
   end

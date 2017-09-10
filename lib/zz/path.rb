@@ -28,6 +28,10 @@ module ZZ
       def chef_config
         to("chef/config.rb")
       end
+
+      def chef_installer
+        "https://www.opscode.com/chef/install.sh"
+      end
     end
   end
 end
