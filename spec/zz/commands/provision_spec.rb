@@ -6,33 +6,21 @@ RSpec.describe ZZ::Provision do
   end
 
   it "installs chef if it isn't already installed" do
-    allow(ZZ::Exec).to receive(:execute)
-      .with("which chef-solo").and_return(false)
-
-    expect(ZZ::Exec).to receive(:execute)
-      .with("curl -sL #{ZZ::Path.chef_installer} | sudo bash")
-
-    allow(ZZ::Exec).to receive(:execute)
+    allow(ZZ::Exec).to receive(:chef_installed?).and_return(false)
+    expect(ZZ::Exec).to receive(:install_chef)
 
     subject.execute([])
   end
 
   it "does not install chef if it's already installed" do
-    allow(ZZ::Exec).to receive(:execute)
-      .with("which chef-solo").and_return(true)
-
-    expect(ZZ::Exec).not_to receive(:execute)
-      .with("curl -sL #{ZZ::Path.chef_installer} } | sudo bash")
+    allow(ZZ::Exec).to receive(:chef_installed?).and_return(true)
+    expect(ZZ::Exec).not_to receive(:install_chef)
 
     subject.execute([])
   end
 
   it "runs chef" do
-    allow(ZZ::Exec).to receive(:execute)
-
-    expect(ZZ::Exec).to receive(:execute)
-      .with("chef-solo --config #{ZZ::Path.chef_config}")
-
+    expect(ZZ::Exec).to receive(:run_chef)
     subject.execute([])
   end
 

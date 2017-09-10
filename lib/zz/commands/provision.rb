@@ -2,20 +2,8 @@ module ZZ
   module Provision
     class << self
       def execute(args)
-        install_chef unless chef_installed?
-        run_chef
-      end
-
-      def install_chef
-        Exec.execute("curl -sL #{ZZ::Path.chef_installer} | sudo bash")
-      end
-
-      def chef_installed?
-        Exec.execute("which chef-solo")
-      end
-
-      def run_chef
-        Exec.execute("chef-solo --config #{ZZ::Path.chef_config}")
+        Exec.install_chef unless Exec.chef_installed?
+        Exec.run_chef
       end
 
       def name
