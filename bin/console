@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << File.expand_path("../lib", __dir__)
+
+require "zz"
+require "pry"
+
+binding.pry
