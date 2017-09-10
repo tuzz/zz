@@ -53,4 +53,36 @@ RSpec.describe ZZ::Exec do
       subject.run_chef
     end
   end
+
+  describe ".grant_permissions" do
+    it "grants the permission to run sudo without a password" do
+      expect(subject).to receive(:execute)
+        .with("echo 'foo ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/foo")
+
+      subject.grant_permissions("foo")
+    end
+
+    it "defaults to the current user" do
+      allow(ENV).to receive(:[]).and_return("bar")
+
+      expect(subject).to receive(:execute)
+        .with("echo 'bar ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/bar")
+
+      subject.grant_permissions
+    end
+  end
+
+  describe ".revoke_permissions" do
+    it "revokes the permission to run sudo without a password" do
+      expect(subject).to receive(:execute).with("sudo rm -f /etc/sudoers.d/foo")
+      subject.revoke_permissions("foo")
+    end
+
+    it "defaults to the current user" do
+      allow(ENV).to receive(:[]).and_return("bar")
+
+      expect(subject).to receive(:execute).with("sudo rm -f /etc/sudoers.d/bar")
+      subject.revoke_permissions
+    end
+  end
 end

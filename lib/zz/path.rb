@@ -32,6 +32,14 @@ module ZZ
       def chef_installer
         "https://www.opscode.com/chef/install.sh"
       end
+
+      def homebrew_remote_installer
+        "https://raw.githubusercontent.com/Homebrew/install/master/install"
+      end
+
+      def homebrew_local_installer
+        to("tmp/hombrew_installer")
+      end
     end
   end
 end

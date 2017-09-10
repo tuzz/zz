@@ -20,6 +20,20 @@ module ZZ
       def run_chef
         execute("chef-solo --config #{Path.chef_config}")
       end
+
+      def grant_permissions(u = ENV["USER"])
+        execute(
+          "echo '#{u} ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/#{u}"
+        )
+      end
+
+      def revoke_permissions(u = ENV["USER"])
+        execute("sudo rm -f /etc/sudoers.d/#{u}")
+      end
+
+      def homebrew_installed?
+        execute("which brew")
+      end
     end
   end
 end

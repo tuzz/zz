@@ -19,9 +19,19 @@ RSpec.describe ZZ::Provision do
     subject.execute([])
   end
 
-  it "runs chef" do
-    expect(ZZ::Exec).to receive(:run_chef)
+  it "grants permissions, then runs chef, then revokes permissions" do
+    expect(ZZ::Exec).to receive(:grant_permissions).ordered
+    expect(ZZ::Exec).to receive(:run_chef).ordered
+    expect(ZZ::Exec).to receive(:revoke_permissions).ordered
+
     subject.execute([])
+  end
+
+  it "ensures permissions are revoked if something goes wrong" do
+    allow(ZZ::Exec).to receive(:run_chef).and_raise("test")
+    expect(ZZ::Exec).to receive(:revoke_permissions)
+
+    expect { subject.execute([]) }.to raise_error("test")
   end
 
   pending "--list option the prints the run_list"

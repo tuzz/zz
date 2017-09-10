@@ -3,7 +3,11 @@ module ZZ
     class << self
       def execute(args)
         Exec.install_chef unless Exec.chef_installed?
+
+        Exec.grant_permissions
         Exec.run_chef
+      ensure
+        Exec.revoke_permissions
       end
 
       def name
