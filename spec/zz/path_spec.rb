@@ -17,13 +17,4 @@ RSpec.describe ZZ::Path do
       expect(result).to eq("#{root}/foo/bar")
     end
   end
-
-  specify { expect(subject.root).to eq(root) }
-  specify { expect(subject.tmp).to eq("#{root}/tmp") }
-  specify { expect(subject.chef_cookbooks).to eq("#{root}/chef") }
-  specify { expect(subject.chef_run_list).to eq("#{root}/chef/node.json") }
-  specify { expect(subject.chef_config).to eq("#{root}/chef/config.rb") }
-
-  let(:chef_installer) { "https://www.opscode.com/chef/install.sh" }
-  specify { expect(subject.chef_installer).to eq(chef_installer) }
 end
