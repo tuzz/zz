@@ -60,7 +60,7 @@ module ZZ
       end
 
       def dropbox_synced?
-        execute("test -s #{Path.ssh_key} && test -s #{Path.gpg_key}")
+        execute("test -s #{Path.ssh_backup} && test -s #{Path.gpg_backup}")
       end
     end
   end

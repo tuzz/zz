@@ -49,12 +49,32 @@ module ZZ
         "/Applications/Dropbox.app"
       end
 
-      def ssh_key
+      def ssh_backup
         File.expand_path("~/Dropbox/Reference/Keys/id_rsa")
       end
 
-      def gpg_key
+      def gpg_backup
         File.expand_path("~/Dropbox/Reference/Keys/private.key")
+      end
+
+      def ssh_directory
+        File.expand_path("~/.ssh")
+      end
+
+      def private_ssh_key
+        File.expand_path("~/.ssh/id_rsa")
+      end
+
+      def public_ssh_key
+        File.expand_path("~/.ssh/id_rsa.pub")
+      end
+
+      def authorized_keys
+        File.expand_path("~/.ssh/authorized_keys")
+      end
+
+      def sshd_config
+        "/etc/ssh/sshd_config"
       end
     end
   end
