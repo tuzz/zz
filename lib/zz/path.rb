@@ -80,6 +80,14 @@ module ZZ
       def public_gpg_key
         to("chef/gpg/files/public_gpg_key")
       end
+
+      def git_config
+        File.expand_path("~/.gitconfig")
+      end
+
+      def git_ignore
+        File.expand_path("~/.gitignore")
+      end
     end
   end
 end

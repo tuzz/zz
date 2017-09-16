@@ -3,6 +3,7 @@
     "homebrew",
     "dropbox",
     "ssh",
-    "gpg"
+    "gpg",
+    "git"
   ]
 }

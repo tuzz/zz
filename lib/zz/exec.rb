@@ -86,6 +86,21 @@ module ZZ
 
         system(%{expect -c "spawn #{edit_key}; send #{user_input}; expect eof"})
       end
+
+      def git_repo_initialized?
+        system("ls ~/.zz/.git")
+      end
+
+      def initialize_git_repo
+        system <<-SH
+          pushd ~/.zz
+          git init
+          git remote add origin git@github.com:tuzz/zz
+          git fetch
+          git reset --hard origin/master
+          popd
+        SH
+      end
     end
   end
 end

@@ -1,0 +1,7 @@
+[user]
+	name = Chris Patuzzo
+	email = chris@patuzzo.co.uk
+[push]
+	default = simple
+[core]
+	excludesfile = ~/.gitignore
