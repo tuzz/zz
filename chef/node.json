@@ -1,5 +1,6 @@
 {
   "run_list": [
-    "homebrew"
+    "homebrew",
+    "dropbox"
   ]
 }

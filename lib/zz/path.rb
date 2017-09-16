@@ -40,6 +40,22 @@ module ZZ
       def homebrew_local_installer
         to("tmp/hombrew_installer")
       end
+
+      def dropbox_config
+        File.expand_path("~/.dropbox/info.json")
+      end
+
+      def dropbox_app
+        "/Applications/Dropbox.app"
+      end
+
+      def ssh_key
+        File.expand_path("~/Dropbox/Reference/Keys/id_rsa")
+      end
+
+      def gpg_key
+        File.expand_path("~/Dropbox/Reference/Keys/private.key")
+      end
     end
   end
 end

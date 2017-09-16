@@ -42,6 +42,26 @@ module ZZ
       def tap_cask
         execute("brew tap caskroom/cask")
       end
+
+      def dropbox_installed?
+        execute("brew cask list | grep dropbox")
+      end
+
+      def install_dropbox
+        execute("brew cask install dropbox")
+      end
+
+      def logged_into_dropbox?
+        execute("ls #{Path.dropbox_config} 2> /dev/null")
+      end
+
+      def open_dropbox
+        execute("open #{Path.dropbox_app}")
+      end
+
+      def dropbox_synced?
+        execute("test -s #{Path.ssh_key} && test -s #{Path.gpg_key}")
+      end
     end
   end
 end
