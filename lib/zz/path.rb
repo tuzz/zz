@@ -76,6 +76,10 @@ module ZZ
       def sshd_config
         "/etc/ssh/sshd_config"
       end
+
+      def public_gpg_key
+        to("chef/gpg/files/public_gpg_key")
+      end
     end
   end
 end

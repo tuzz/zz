@@ -62,6 +62,30 @@ module ZZ
       def dropbox_synced?
         execute("test -s #{Path.ssh_backup} && test -s #{Path.gpg_backup}")
       end
+
+      def gpg_key_imported?
+        !capture("gpg --list-secret-keys").empty?
+      end
+
+      def import_private_gpg_key
+        execute("gpg --import #{Path.gpg_backup}")
+      end
+
+      def import_public_gpg_key
+        execute("gpg --import #{Path.public_gpg_key}")
+      end
+
+      def gpg_key_trusted?
+        capture("gpg --list-keys").include?("ultimate")
+      end
+
+      def trust_gpg_key
+        fingerprint = capture("gpg --list-keys | awk 'NR==4'").strip
+        edit_key = "gpg --edit-key #{fingerprint} trust quit"
+        user_input = '\"5\ry\r\"'
+
+        system(%{expect -c "spawn #{edit_key}; send #{user_input}; expect eof"})
+      end
     end
   end
 end
