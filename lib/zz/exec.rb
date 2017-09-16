@@ -34,6 +34,14 @@ module ZZ
       def homebrew_installed?
         execute("which brew")
       end
+
+      def tapped_cask?
+        execute("brew tap | grep caskroom/cask")
+      end
+
+      def tap_cask
+        execute("brew tap caskroom/cask")
+      end
     end
   end
 end

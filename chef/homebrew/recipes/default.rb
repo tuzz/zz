@@ -9,6 +9,10 @@ end
 
 bash "install homebrew" do
   not_if { ZZ::Exec.homebrew_installed? }
-
   code ZZ::Path.homebrew_local_installer
+end
+
+ruby_block "tap cask" do
+  not_if { ZZ::Exec.tapped_cask? }
+  block { ZZ::Exec.tap_cask }
 end
