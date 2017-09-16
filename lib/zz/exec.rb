@@ -101,6 +101,24 @@ module ZZ
           popd
         SH
       end
+
+      def iterm_installed?
+        execute("brew cask list | grep iterm2")
+      end
+
+      def install_iterm
+        execute("brew cask install iterm2")
+      end
+
+      def iterm_config_dir_set?
+        Pref.iterm_config_enabled &&
+          Pref.iterm_config_directory == Path.iterm_directory
+      end
+
+      def set_iterm_config_dir
+        Pref.iterm_config_enabled = true
+        Pref.iterm_config_directory = Path.iterm_directory
+      end
     end
   end
 end

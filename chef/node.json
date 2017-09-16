@@ -4,6 +4,7 @@
     "dropbox",
     "ssh",
     "gpg",
-    "git"
+    "git",
+    "iterm"
   ]
 }

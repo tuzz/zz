@@ -88,6 +88,14 @@ module ZZ
       def git_ignore
         File.expand_path("~/.gitignore")
       end
+
+      def iterm_directory
+        File.expand_path("~/.iterm")
+      end
+
+      def iterm_config
+        File.expand_path("~/.iterm/com.googlecode.iterm2.plist")
+      end
     end
   end
 end
