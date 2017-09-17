@@ -71,6 +71,14 @@ module ZZ
         execute("brew cask install google-chrome")
       end
 
+      def gitx_installed?
+        execute("brew cask list | grep rowanj-gitx")
+      end
+
+      def install_gitx
+        execute("brew cask install rowanj-gitx")
+      end
+
       def gpg_key_imported?
         !capture("gpg --list-secret-keys").empty?
       end
