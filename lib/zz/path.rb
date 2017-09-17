@@ -116,6 +116,14 @@ module ZZ
       def gem_config
         File.expand_path("~/.gemrc")
       end
+
+      def user_profile
+        File.expand_path("~/.profile")
+      end
+
+      def hushlogin
+        File.expand_path("~/.hushlogin")
+      end
     end
   end
 end
