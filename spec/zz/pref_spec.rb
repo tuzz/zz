@@ -2,7 +2,7 @@ RSpec.describe ZZ::Pref do
   describe ".read" do
     it "reads the value from the 'defaults' system preference command" do
       allow(ZZ::Exec).to receive(:capture)
-        .with("defaults read com.example SomeKey 2>&1")
+        .with("defaults read 'com.example' SomeKey 2>&1")
         .and_return("some value")
 
       result = subject.read("com.example", "SomeKey")
@@ -27,7 +27,7 @@ RSpec.describe ZZ::Pref do
   describe ".write" do
     it "writes the value using the 'defaults' system preference command" do
       expect(ZZ::Exec).to receive(:execute)
-        .with("defaults write com.example SomeKey -some_type 'some value'")
+        .with("defaults write 'com.example' SomeKey -some_type 'some value'")
 
       subject.write("com.example", "SomeKey", "some_type", "some value")
     end

@@ -127,6 +127,22 @@ module ZZ
       def install_vim_plugins
         execute("vim +PluginInstall +qall")
       end
+
+      def fast_key_repeat?
+        Pref.key_repeat == 2
+      end
+
+      def set_fast_key_repeat
+        Pref.key_repeat = 2
+      end
+
+      def short_key_delay?
+        Pref.key_delay == 15
+      end
+
+      def set_short_key_delay
+        Pref.key_delay = 15
+      end
     end
   end
 end
