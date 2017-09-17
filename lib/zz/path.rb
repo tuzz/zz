@@ -96,6 +96,22 @@ module ZZ
       def iterm_config
         File.expand_path("~/.iterm/com.googlecode.iterm2.plist")
       end
+
+      def vim_bundle_directory
+        File.expand_path("~/.vim/bundle")
+      end
+
+      def vim_config
+        File.expand_path("~/.vimrc")
+      end
+
+      def vundle_remote_repo
+        "https://github.com/VundleVim/Vundle.vim"
+      end
+
+      def vundle_local_repo
+        File.expand_path("~/.vim/bundle/Vundle.vim")
+      end
     end
   end
 end

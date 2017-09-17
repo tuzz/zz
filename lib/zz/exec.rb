@@ -119,6 +119,14 @@ module ZZ
         Pref.iterm_config_enabled = true
         Pref.iterm_config_directory = Path.iterm_directory
       end
+
+      def vim_plugins_installed?
+        capture("ls #{Path.vim_bundle_directory} | wc -l").to_i > 1
+      end
+
+      def install_vim_plugins
+        execute("vim +PluginInstall +qall")
+      end
     end
   end
 end

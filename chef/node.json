@@ -5,6 +5,7 @@
     "ssh",
     "gpg",
     "git",
-    "iterm"
+    "iterm",
+    "vim"
   ]
 }
