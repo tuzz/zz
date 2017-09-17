@@ -391,6 +391,20 @@
 					<key>Text</key>
 					<string>0x7f</string>
 				</dict>
+				<key>0x7f-0x100000</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x15</string>
+				</dict>
+				<key>0x7f-0x80000</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x1B 0x08</string>
+				</dict>
 				<key>0xf700-0x220000</key>
 				<dict>
 					<key>Action</key>
@@ -471,9 +485,16 @@
 				<key>0xf702-0x280000</key>
 				<dict>
 					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>b</string>
+				</dict>
+				<key>0xf702-0x300000</key>
+				<dict>
+					<key>Action</key>
 					<integer>11</integer>
 					<key>Text</key>
-					<string>0x1b 0x1b 0x5b 0x44</string>
+					<string>0x01</string>
 				</dict>
 				<key>0xf703-0x220000</key>
 				<dict>
@@ -499,9 +520,16 @@
 				<key>0xf703-0x280000</key>
 				<dict>
 					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>f</string>
+				</dict>
+				<key>0xf703-0x300000</key>
+				<dict>
+					<key>Action</key>
 					<integer>11</integer>
 					<key>Text</key>
-					<string>0x1b 0x1b 0x5b 0x43</string>
+					<string>0x05</string>
 				</dict>
 				<key>0xf704-0x20000</key>
 				<dict>
