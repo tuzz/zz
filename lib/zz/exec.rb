@@ -163,6 +163,26 @@ module ZZ
       def set_global_ruby
         execute("rbenv global #{latest_ruby}")
       end
+
+      def latest_node_installed?
+        capture("nodenv versions").include?(latest_node)
+      end
+
+      def install_latest_node
+        execute("nodenv install #{latest_node}")
+      end
+
+      def latest_node
+        capture("nodenv install -l | grep -v '[a-z]' | tail -1")
+      end
+
+      def global_node_set?
+        capture("nodenv global") == latest_node
+      end
+
+      def set_global_node
+        execute("nodenv global #{latest_node}")
+      end
     end
   end
 end
