@@ -2,6 +2,7 @@
   "run_list": [
     "homebrew",
     "dropbox",
+    "chrome",
     "ssh",
     "gpg",
     "git",

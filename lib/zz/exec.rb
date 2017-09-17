@@ -63,6 +63,14 @@ module ZZ
         execute("test -s #{Path.ssh_backup} && test -s #{Path.gpg_backup}")
       end
 
+      def chrome_installed?
+        execute("brew cask list | grep google-chrome")
+      end
+
+      def install_chrome
+        execute("brew cask install google-chrome")
+      end
+
       def gpg_key_imported?
         !capture("gpg --list-secret-keys").empty?
       end
