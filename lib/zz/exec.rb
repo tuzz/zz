@@ -6,7 +6,7 @@ module ZZ
       end
 
       def capture(command)
-        `#{command}`
+        `#{command}`.strip
       end
 
       def install_chef
@@ -80,7 +80,7 @@ module ZZ
       end
 
       def trust_gpg_key
-        fingerprint = capture("gpg --list-keys | awk 'NR==4'").strip
+        fingerprint = capture("gpg --list-keys | awk 'NR==4'")
         edit_key = "gpg --edit-key #{fingerprint} trust quit"
         user_input = '\"5\ry\r\"'
 
@@ -142,6 +142,26 @@ module ZZ
 
       def set_short_key_delay
         Pref.key_delay = 15
+      end
+
+      def latest_ruby_installed?
+        capture("rbenv versions").include?(latest_ruby)
+      end
+
+      def install_latest_ruby
+        execute("rbenv install #{latest_ruby}")
+      end
+
+      def latest_ruby
+        capture("rbenv install -l | grep -v '[a-z]' | tail -1")
+      end
+
+      def global_ruby_set?
+        capture("rbenv global") == latest_ruby
+      end
+
+      def set_global_ruby
+        execute("rbenv global #{latest_ruby}")
       end
     end
   end

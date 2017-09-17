@@ -112,6 +112,10 @@ module ZZ
       def vundle_local_repo
         File.expand_path("~/.vim/bundle/Vundle.vim")
       end
+
+      def gem_config
+        File.expand_path("~/.gemrc")
+      end
     end
   end
 end

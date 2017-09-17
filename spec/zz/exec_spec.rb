@@ -21,7 +21,7 @@ RSpec.describe ZZ::Exec do
 
     it "executes the command and returns its output" do
       result = subject.capture("echo foo")
-      expect(result).to eq("foo\n")
+      expect(result).to eq("foo")
     end
   end
 end
