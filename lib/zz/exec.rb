@@ -71,6 +71,14 @@ module ZZ
         execute("brew cask install google-chrome")
       end
 
+      def slack_installed?
+        execute("brew cask list | grep slack")
+      end
+
+      def install_slack
+        execute("brew cask install slack")
+      end
+
       def gitx_installed?
         execute("brew cask list | grep rowanj-gitx")
       end
