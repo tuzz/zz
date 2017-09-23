@@ -137,7 +137,10 @@ module ZZ
       end
 
       def vim_plugins_installed?
-        capture("ls #{Path.vim_bundle_directory} | wc -l").to_i > 1
+        expected = capture("cat #{Path.vim_config} | grep Plugin | wc -l").to_i
+        actual = capture("ls #{Path.vim_bundle_directory} | wc -l").to_i
+
+        actual == expected
       end
 
       def install_vim_plugins
