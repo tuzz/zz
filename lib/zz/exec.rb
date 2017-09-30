@@ -9,6 +9,10 @@ module ZZ
         `#{command}`.strip
       end
 
+      def edit(path)
+        execute("${EDITOR:-vi} #{path}")
+      end
+
       def install_chef
         execute("curl -sL #{Path.chef_installer} | sudo bash")
       end
@@ -17,8 +21,9 @@ module ZZ
         execute("which chef-solo")
       end
 
-      def run_chef
-        execute("chef-solo --config #{Path.chef_config}")
+      def run_chef(scripts)
+        run_list = " --override-runlist #{scripts}" if scripts
+        execute("chef-solo --config #{Path.chef_config}#{run_list}")
       end
 
       def grant_permissions(u = ENV["USER"])

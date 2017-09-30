@@ -34,5 +34,47 @@ RSpec.describe ZZ::Provision do
     expect { subject.execute([]) }.to raise_error("test")
   end
 
-  pending "--list option the prints the run_list"
+  describe "options" do
+    before do
+      allow(ZZ::Exec).to receive(:chef_installed?).and_return(true)
+      allow(ZZ::Exec).to receive(:grant_permissions)
+      allow(ZZ::Exec).to receive(:revoke_permissions)
+    end
+
+    it "can list available provisioning scripts" do
+      expect(ZZ::Exec).not_to receive(:run_chef)
+
+      expect { subject.execute(%w(--list)) }
+        .to output(/slack\nssh\ntools/).to_stdout
+    end
+
+    it "can run a subset of provisioning scripts" do
+      expect(ZZ::Exec).to receive(:run_chef).with("foo,bar")
+      subject.execute(%w(--only foo,bar))
+    end
+
+    it "can print a script to stdout" do
+      expect(ZZ::Exec).not_to receive(:run_chef)
+
+      expect { subject.execute(%w(--print vim)) }
+        .to output(/package "vim"/).to_stdout
+    end
+
+    it "can open a provisioning script for editing" do
+      expect(ZZ::Exec).not_to receive(:run_chef)
+
+      expect(ZZ::Exec).to receive(:edit) do |file|
+        expect(file).to end_with("/.zz/chef/vim/recipes/default.rb")
+      end
+
+      subject.execute(%w(--edit vim))
+    end
+
+    context "when the script to edit doesn't exist" do
+      it "raises an error" do
+        expect { subject.execute(%w(--edit missing)) }
+          .to raise_error(/No such file or directory/)
+      end
+    end
+  end
 end

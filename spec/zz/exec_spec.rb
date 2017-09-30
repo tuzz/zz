@@ -24,4 +24,12 @@ RSpec.describe ZZ::Exec do
       expect(result).to eq("foo")
     end
   end
+
+  describe ".edit" do
+    it "opens the path in the default editor, falling back to vi" do
+      expect(subject).to receive(:execute).with("${EDITOR:-vi} foo")
+
+      subject.edit("foo")
+    end
+  end
 end
