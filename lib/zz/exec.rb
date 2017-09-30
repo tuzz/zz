@@ -127,6 +127,14 @@ module ZZ
         execute("brew cask install vlc")
       end
 
+      def sequel_pro_installed?
+        execute("brew cask list | grep sequel-pro")
+      end
+
+      def install_sequel_pro
+        execute("brew cask install sequel-pro")
+      end
+
       def gpg_key_imported?
         !capture("gpg --list-secret-keys").empty?
       end
