@@ -103,6 +103,14 @@ module ZZ
         execute("brew cask install vagrant")
       end
 
+      def grand_perspective_installed?
+        execute("brew cask list | grep grandperspective")
+      end
+
+      def install_grand_perspective
+        execute("brew cask install grandperspective")
+      end
+
       def gpg_key_imported?
         !capture("gpg --list-secret-keys").empty?
       end
