@@ -31,5 +31,12 @@ RSpec.describe ZZ::Pref do
 
       subject.write("com.example", "SomeKey", "some_type", "some value")
     end
+
+    it "can write an empty value which is useful for empty arrays" do
+      expect(ZZ::Exec).to receive(:execute)
+        .with("defaults write 'com.example' SomeKey -array")
+
+      subject.write("com.example", "SomeKey", "array")
+    end
   end
 end

@@ -171,6 +171,43 @@ module ZZ
         Pref.key_delay = 15
       end
 
+      def empty_dock?
+        Pref.dock_apps == "()" && Pref.dock_others == "()"
+      end
+
+      def empty_dock!
+        Pref.dock_apps = "()"
+        Pref.dock_others = "()"
+      end
+
+      def smallest_dock?
+        Pref.dock_size == 16
+      end
+
+      def set_smallest_dock
+        Pref.dock_size = 16
+      end
+
+      def dock_right_of_screen?
+        Pref.dock_orientation == "right"
+      end
+
+      def move_dock_right_of_screen
+        Pref.dock_orientation = "right"
+      end
+
+      def dock_autohide?
+        Pref.dock_autohide
+      end
+
+      def autohide_dock
+        Pref.dock_autohide = true
+      end
+
+      def restart_dock
+        execute("killall Dock")
+      end
+
       def latest_ruby_installed?
         capture("rbenv versions").include?(latest_ruby)
       end

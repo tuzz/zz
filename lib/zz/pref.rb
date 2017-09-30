@@ -6,8 +6,9 @@ module ZZ
         value.match(/does not exist/) ? nil : value
       end
 
-      def write(domain, key, type, value)
-        Exec.execute("defaults write '#{domain}' #{key} -#{type} '#{value}'")
+      def write(domain, key, type, value = nil)
+        value = " '#{value}'" if value
+        Exec.execute("defaults write '#{domain}' #{key} -#{type}#{value}")
       end
 
       def iterm_config_enabled
@@ -42,6 +43,48 @@ module ZZ
         Pref.write(global_domain, "InitialKeyRepeat", "int", value)
       end
 
+      def dock_apps
+        Pref.read(dock_domain, "persistent-apps").gsub(/\s/, "")
+      end
+
+      def dock_apps=(value)
+        raise NotImplementedError unless value == "()"
+        Pref.write(dock_domain, "persistent-apps", "array")
+      end
+
+      def dock_others
+        Pref.read(dock_domain, "persistent-others").gsub(/\s/, "")
+      end
+
+      def dock_others=(value)
+        raise NotImplementedError unless value == "()"
+        Pref.write(dock_domain, "persistent-others", "array")
+      end
+
+      def dock_size
+        int(Pref.read(dock_domain, "tilesize"))
+      end
+
+      def dock_size=(value)
+        Pref.write(dock_domain, "tilesize", "int", value)
+      end
+
+      def dock_orientation
+        Pref.read(dock_domain, "orientation")
+      end
+
+      def dock_orientation=(value)
+        Pref.write(dock_domain, "orientation", "string", value)
+      end
+
+      def dock_autohide
+        bool(Pref.read(dock_domain, "autohide"))
+      end
+
+      def dock_autohide=(value)
+        Pref.write(dock_domain, "autohide", "bool", value)
+      end
+
       private
 
       def global_domain
@@ -50,6 +93,10 @@ module ZZ
 
       def iterm_domain
         "com.googlecode.iterm2"
+      end
+
+      def dock_domain
+        "com.apple.dock"
       end
 
       def bool(value)
