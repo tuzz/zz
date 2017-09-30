@@ -87,6 +87,14 @@ module ZZ
         execute("brew cask install rowanj-gitx")
       end
 
+      def virtualbox_installed?
+        execute("brew cask list | grep virtualbox")
+      end
+
+      def install_virtualbox
+        execute("brew cask install virtualbox")
+      end
+
       def gpg_key_imported?
         !capture("gpg --list-secret-keys").empty?
       end
