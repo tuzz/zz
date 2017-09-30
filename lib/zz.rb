@@ -2,6 +2,7 @@ require "stringio"
 
 require "zz/exec"
 require "zz/help"
+require "zz/option"
 require "zz/path"
 require "zz/pref"
 
