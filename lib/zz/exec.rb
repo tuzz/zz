@@ -119,6 +119,14 @@ module ZZ
         execute("brew cask install transmission")
       end
 
+      def vlc_installed?
+        execute("brew cask list | grep vlc")
+      end
+
+      def install_vlc
+        execute("brew cask install vlc")
+      end
+
       def gpg_key_imported?
         !capture("gpg --list-secret-keys").empty?
       end
