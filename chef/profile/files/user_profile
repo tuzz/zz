@@ -6,3 +6,7 @@ git_branch() {
 }
 
 export PS1="\w\[\033[33m\]\$(git_branch)\[\033[00m\] $ "
+
+alias start="cd ~/code/govuk-puppet/development-vm && vagrant up"
+alias dev="ssh dev -t tmux -CC"
+alias vpn="sudo openconnect -v --pfs --no-dtls https://vpn.digital.cabinet-office.gov.uk/ah"

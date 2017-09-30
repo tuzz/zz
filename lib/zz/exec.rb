@@ -287,6 +287,42 @@ module ZZ
       def set_global_node
         execute("nodenv global #{latest_node}")
       end
+
+      def dev_vm_provisioned?
+        execute("ls #{Path.dev_vm_cache} 2> /dev/null")
+      end
+
+      def vagrant_dns_installed?
+        capture("vagrant plugin list").include?("vagrant-dns")
+      end
+
+      def install_vagrant_dns
+        execute("vagrant plugin install vagrant-dns")
+      end
+
+      def add_ssh_key
+        execute("ssh-add")
+      end
+
+      def provision_dev_vm
+        system <<-SH
+          pushd #{ZZ::Path.dev_vm}
+          vagrant up
+          popd
+        SH
+      end
+
+      def ssh_config_exists?
+        execute("ls #{Path.ssh_config} 2> /dev/null")
+      end
+
+      def write_ssh_config
+        system <<-SH
+          pushd #{ZZ::Path.dev_vm}
+          vagrant ssh-config --host dev > #{ZZ::Path.ssh_config}
+          popd
+        SH
+      end
     end
   end
 end

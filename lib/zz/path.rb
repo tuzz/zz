@@ -61,6 +61,10 @@ module ZZ
         File.expand_path("~/.ssh")
       end
 
+      def ssh_config
+        File.expand_path("~/.ssh/config")
+      end
+
       def private_ssh_key
         File.expand_path("~/.ssh/id_rsa")
       end
@@ -123,6 +127,22 @@ module ZZ
 
       def hushlogin
         File.expand_path("~/.hushlogin")
+      end
+
+      def code
+        File.expand_path("~/code")
+      end
+
+      def govuk_puppet
+        File.expand_path("~/code/govuk-puppet")
+      end
+
+      def dev_vm
+        File.expand_path("~/code/govuk-puppet/development-vm")
+      end
+
+      def dev_vm_cache
+        File.expand_path("~/code/govuk-puppet/development-vm/.vagrant")
       end
     end
   end
