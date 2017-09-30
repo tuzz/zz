@@ -95,6 +95,14 @@ module ZZ
         execute("brew cask install virtualbox")
       end
 
+      def vagrant_installed?
+        execute("brew cask list | grep vagrant")
+      end
+
+      def install_vagrant
+        execute("brew cask install vagrant")
+      end
+
       def gpg_key_imported?
         !capture("gpg --list-secret-keys").empty?
       end
