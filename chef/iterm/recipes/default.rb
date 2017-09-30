@@ -1,6 +1,6 @@
 ruby_block "install iterm" do
-  not_if { ZZ::Exec.iterm_installed? }
-  block { ZZ::Exec.install_iterm }
+  not_if { ZZ::Exec.cask_installed?("iterm2") }
+  block { ZZ::Exec.install_cask("iterm2") }
 end
 
 directory "create iterm directory" do

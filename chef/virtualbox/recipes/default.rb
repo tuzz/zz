@@ -1,4 +1,4 @@
 ruby_block "install virtualbox" do
-  not_if { ZZ::Exec.virtualbox_installed? }
-  block { ZZ::Exec.install_virtualbox }
+  not_if { ZZ::Exec.cask_installed?("virtualbox") }
+  block { ZZ::Exec.install_cask("virtualbox") }
 end

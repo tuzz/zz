@@ -1,4 +1,4 @@
 ruby_block "install sequel pro" do
-  not_if { ZZ::Exec.sequel_pro_installed? }
-  block { ZZ::Exec.install_sequel_pro }
+  not_if { ZZ::Exec.cask_installed?("sequel-pro") }
+  block { ZZ::Exec.install_cask("sequel-pro") }
 end

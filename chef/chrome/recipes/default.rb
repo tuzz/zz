@@ -1,4 +1,4 @@
-ruby_block "install dropbox" do
-  not_if { ZZ::Exec.chrome_installed? }
-  block { ZZ::Exec.install_chrome }
+ruby_block "install chrome" do
+  not_if { ZZ::Exec.cask_installed?("google-chrome") }
+  block { ZZ::Exec.install_cask("google-chrome") }
 end

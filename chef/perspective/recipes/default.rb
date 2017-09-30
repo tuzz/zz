@@ -1,4 +1,4 @@
 ruby_block "install grand perspective" do
-  not_if { ZZ::Exec.grand_perspective_installed? }
-  block { ZZ::Exec.install_grand_perspective }
+  not_if { ZZ::Exec.cask_installed?("grandperspective") }
+  block { ZZ::Exec.install_cask("grandperspective") }
 end

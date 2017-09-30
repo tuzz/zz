@@ -43,14 +43,6 @@ module ZZ
         execute("brew tap caskroom/cask")
       end
 
-      def dropbox_installed?
-        execute("brew cask list | grep dropbox")
-      end
-
-      def install_dropbox
-        execute("brew cask install dropbox")
-      end
-
       def logged_into_dropbox?
         execute("ls #{Path.dropbox_config} 2> /dev/null")
       end
@@ -63,76 +55,12 @@ module ZZ
         execute("test -s #{Path.ssh_backup} && test -s #{Path.gpg_backup}")
       end
 
-      def chrome_installed?
-        execute("brew cask list | grep google-chrome")
+      def cask_installed?(name)
+        execute("brew cask list | grep #{name}")
       end
 
-      def install_chrome
-        execute("brew cask install google-chrome")
-      end
-
-      def slack_installed?
-        execute("brew cask list | grep slack")
-      end
-
-      def install_slack
-        execute("brew cask install slack")
-      end
-
-      def gitx_installed?
-        execute("brew cask list | grep rowanj-gitx")
-      end
-
-      def install_gitx
-        execute("brew cask install rowanj-gitx")
-      end
-
-      def virtualbox_installed?
-        execute("brew cask list | grep virtualbox")
-      end
-
-      def install_virtualbox
-        execute("brew cask install virtualbox")
-      end
-
-      def vagrant_installed?
-        execute("brew cask list | grep vagrant")
-      end
-
-      def install_vagrant
-        execute("brew cask install vagrant")
-      end
-
-      def grand_perspective_installed?
-        execute("brew cask list | grep grandperspective")
-      end
-
-      def install_grand_perspective
-        execute("brew cask install grandperspective")
-      end
-
-      def transmission_installed?
-        execute("brew cask list | grep transmission")
-      end
-
-      def install_transmission
-        execute("brew cask install transmission")
-      end
-
-      def vlc_installed?
-        execute("brew cask list | grep vlc")
-      end
-
-      def install_vlc
-        execute("brew cask install vlc")
-      end
-
-      def sequel_pro_installed?
-        execute("brew cask list | grep sequel-pro")
-      end
-
-      def install_sequel_pro
-        execute("brew cask install sequel-pro")
+      def install_cask(name)
+        execute("brew cask install #{name}")
       end
 
       def gpg_key_imported?
@@ -172,14 +100,6 @@ module ZZ
           git reset --hard origin/master
           popd
         SH
-      end
-
-      def iterm_installed?
-        execute("brew cask list | grep iterm2")
-      end
-
-      def install_iterm
-        execute("brew cask install iterm2")
       end
 
       def iterm_config_dir_set?
