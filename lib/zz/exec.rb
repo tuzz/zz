@@ -111,6 +111,14 @@ module ZZ
         execute("brew cask install grandperspective")
       end
 
+      def transmission_installed?
+        execute("brew cask list | grep transmission")
+      end
+
+      def install_transmission
+        execute("brew cask install transmission")
+      end
+
       def gpg_key_imported?
         !capture("gpg --list-secret-keys").empty?
       end
