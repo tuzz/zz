@@ -48,6 +48,14 @@ module ZZ
         execute("brew tap caskroom/cask")
       end
 
+      def tapped_drivers?
+        execute("brew tap | grep caskroom/drivers")
+      end
+
+      def tap_drivers
+        execute("brew tap caskroom/drivers")
+      end
+
       def logged_into_dropbox?
         execute("ls #{Path.dropbox_config} 2> /dev/null")
       end
