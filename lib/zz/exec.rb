@@ -241,6 +241,18 @@ module ZZ
         execute("vagrant plugin install vagrant-dns")
       end
 
+      def dns_resolver_registered?
+        execute("scutil --dns | grep dev.gov.uk")
+      end
+
+      def register_dns_resolver
+        execute <<-SH
+          pushd #{Path.dev_vm}
+          vagrant dns --install
+          popd
+        SH
+      end
+
       def add_ssh_key
         execute("ssh-add")
       end
