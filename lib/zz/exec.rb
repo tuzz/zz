@@ -97,15 +97,15 @@ module ZZ
         edit_key = "gpg --edit-key #{fingerprint} trust quit"
         user_input = '\"5\ry\r\"'
 
-        system(%{expect -c "spawn #{edit_key}; send #{user_input}; expect eof"})
+        execute(%{expect -c "spawn #{edit_key}; send #{user_input}; expect eof"})
       end
 
       def git_repo_initialized?
-        system("ls ~/.zz/.git")
+        execute("ls ~/.zz/.git")
       end
 
       def initialize_git_repo
-        system <<-SH
+        execute <<-SH
           pushd ~/.zz
           git init
           git remote add origin git@github.com:tuzz/zz
@@ -258,8 +258,8 @@ module ZZ
       end
 
       def provision_dev_vm
-        system <<-SH
-          pushd #{ZZ::Path.dev_vm}
+        execute <<-SH
+          pushd #{Path.dev_vm}
           vagrant up
           popd
         SH
@@ -270,9 +270,9 @@ module ZZ
       end
 
       def write_ssh_config
-        system <<-SH
-          pushd #{ZZ::Path.dev_vm}
-          vagrant ssh-config --host dev > #{ZZ::Path.ssh_config}
+        execute <<-SH
+          pushd #{Path.dev_vm}
+          vagrant ssh-config --host dev > #{Path.ssh_config}
           popd
         SH
       end
