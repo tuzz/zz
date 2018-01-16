@@ -53,6 +53,10 @@ module ZZ
         to("chef/screenflow/files/config.xml")
       end
 
+      def transcode
+        "/usr/local/bin/transcode"
+      end
+
       def ssh_backup
         File.expand_path("~/Dropbox/Reference/Keys/id_rsa")
       end

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+  echo "Usage: transcode <file>"
+  exit 1
+fi
+
+ffmpeg                            \
+  -i $1                           \
+  -c:a libfdk_aac                 \
+  -b:a 128k                       \
+  -c:v libx264                    \
+  -crf 22                         \
+  -profile:v high                 \
+  -level 4.0                      \
+  -tune animation                 \
+  -pix_fmt yuv420p                \
+  -map_metadata -1                \
+  -movflags +faststart            \
+  -preset veryslow                \
+  -loglevel error                 \
+  -stats                          \
+  $(date +%F--%H-%M-%S).mp4
