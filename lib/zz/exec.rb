@@ -185,6 +185,15 @@ module ZZ
         Pref.dock_autohide = true
       end
 
+      def screenflow_configured?
+        Pref.screenflow_helper_audio
+      end
+
+      def configure_screenflow
+        Pref.screenflow_helper_audio = 0
+        Pref.import_screenflow_config(Path.screenflow_config)
+      end
+
       def restart_dock
         execute("killall Dock")
       end

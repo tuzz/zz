@@ -11,6 +11,10 @@ module ZZ
         Exec.execute("defaults write '#{domain}' #{key} -#{type}#{value}")
       end
 
+      def import(domain, path)
+        Exec.execute("defaults import #{domain} #{path}")
+      end
+
       def iterm_config_enabled
         bool(Pref.read(iterm_domain, "LoadPrefsFromCustomFolder"))
       end
@@ -85,6 +89,20 @@ module ZZ
         Pref.write(dock_domain, "autohide", "bool", value)
       end
 
+      def screenflow_helper_audio
+        domain = screenflow_helper_domain
+        Pref.read(domain, "captureComputerAudioEnabled")
+      end
+
+      def screenflow_helper_audio=(value)
+        domain = screenflow_helper_domain
+        Pref.write(domain, "captureComputerAudioEnabled", "int", value)
+      end
+
+      def import_screenflow_config(path)
+        Pref.import(screenflow_domain, path)
+      end
+
       private
 
       def global_domain
@@ -97,6 +115,14 @@ module ZZ
 
       def dock_domain
         "com.apple.dock"
+      end
+
+      def screenflow_domain
+        "net.telestream.screenflow7"
+      end
+
+      def screenflow_helper_domain
+        "WSG985FR47.net.telestream.screenflowhelper"
       end
 
       def bool(value)
