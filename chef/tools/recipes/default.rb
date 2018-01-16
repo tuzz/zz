@@ -1,6 +1,5 @@
 package "ack"
 package "ctags"
-package "ffmpeg"
 package "htop"
 package "lftp"
 package "ncdu"
