@@ -102,11 +102,7 @@ module ZZ
       end
 
       def iterm_directory
-        File.expand_path("~/.iterm")
-      end
-
-      def iterm_config
-        File.expand_path("~/.iterm/com.googlecode.iterm2.plist")
+        to("chef/iterm/files")
       end
 
       def vim_bundle_directory
