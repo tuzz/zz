@@ -29,6 +29,7 @@ set encoding=utf-8                " Use UTF-8 by default
 set expandtab                     " Use spaces instead of tabs
 set hlsearch                      " Highlight search matches
 set ignorecase                    " Make searches case insensitive
+set list                          " List invisible characters
 set nobackup                      " Don't create backup files
 set noswapfile                    " Don't create swap files
 set nowrap                        " Don't wrap long lines
