@@ -44,6 +44,7 @@ set timeoutlen=300                " Leader key timeout is 300ms
 set undodir=~/.vim/undo           " Store undo files in ~/.vim
 set undofile                      " Persist undos between sessions
 set wildmode=list:longest,full    " Autocompletion favours longer string
+set pastetoggle=<leader>p
 
 " Set status line to: filename [encoding,endings][filetype] ... col,line/lines
 set statusline=%f\ [%{strlen(&fenc)?&fenc:'none'},%{&ff}]%y%h%m%r%=%c,%l/%L
