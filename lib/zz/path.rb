@@ -148,6 +148,18 @@ module ZZ
       def dev_vm_cache
         File.expand_path("~/code/govuk-puppet/development-vm/.vagrant")
       end
+
+      def minidlna_directory
+        File.expand_path("~/.config/minidlna")
+      end
+
+      def minidlna_config
+        File.expand_path("~/.config/minidlna/minidlna.conf")
+      end
+
+      def minidlna_media
+        "/Volumes/hdd"
+      end
     end
   end
 end

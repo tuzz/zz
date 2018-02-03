@@ -56,6 +56,14 @@ module ZZ
         execute("brew tap caskroom/drivers")
       end
 
+      def service_started?(name)
+        execute("brew services list | grep #{name} | grep started > /dev/null")
+      end
+
+      def start_service(name)
+        execute("brew services start #{name}")
+      end
+
       def logged_into_dropbox?
         execute("ls #{Path.dropbox_config} 2> /dev/null")
       end

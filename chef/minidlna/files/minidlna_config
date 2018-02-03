@@ -1,0 +1,4 @@
+friendly_name=tuzz
+media_dir=/Volumes/hdd
+db_dir=/Volumes/hdd/.minidlna
+log_dir=/Volumes/hdd/.minidlna
