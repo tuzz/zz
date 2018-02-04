@@ -20,3 +20,4 @@ verify-options show-uid-validity
 with-fingerprint
 use-agent
 require-cross-certification
+default-recipient-self
