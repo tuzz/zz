@@ -72,10 +72,6 @@ module ZZ
         execute("open #{Path.dropbox_app}")
       end
 
-      def dropbox_synced?
-        execute("test -s #{Path.ssh_backup} && test -s #{Path.gpg_backup}")
-      end
-
       def cask_installed?(name)
         execute("brew cask list | grep #{name}")
       end
