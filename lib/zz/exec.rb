@@ -268,10 +268,6 @@ module ZZ
         SH
       end
 
-      def add_ssh_key
-        execute("ssh-add")
-      end
-
       def provision_dev_vm
         execute <<-SH
           pushd #{Path.dev_vm}

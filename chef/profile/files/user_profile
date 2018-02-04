@@ -6,6 +6,7 @@ git_branch() {
 }
 
 export PS1="\w\[\033[33m\]\$(git_branch)\[\033[00m\] $ "
+export SSH_AUTH_SOCK="${HOME}/.gnupg/S.gpg-agent.ssh"
 
 # To be run on the host machine:
 alias start="cd ~/code/govuk-puppet/development-vm && vagrant up"

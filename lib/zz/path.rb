@@ -65,20 +65,24 @@ module ZZ
         File.expand_path("~/.gnupg")
       end
 
+      def gpg_config
+        File.expand_path("~/.gnupg/gpg.conf")
+      end
+
+      def gpg_agent_config
+        File.expand_path("~/.gnupg/gpg-agent.conf")
+      end
+
+      def public_gpg_key
+        to("chef/gpg/files/public_gpg_key")
+      end
+
       def ssh_directory
         File.expand_path("~/.ssh")
       end
 
       def ssh_config
         File.expand_path("~/.ssh/config")
-      end
-
-      def private_ssh_key
-        File.expand_path("~/.ssh/id_rsa")
-      end
-
-      def public_ssh_key
-        File.expand_path("~/.ssh/id_rsa.pub")
       end
 
       def authorized_keys
@@ -91,10 +95,6 @@ module ZZ
 
       def sshd_config
         "/etc/ssh/sshd_config"
-      end
-
-      def public_gpg_key
-        to("chef/gpg/files/public_gpg_key")
       end
 
       def git_config
