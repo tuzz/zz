@@ -1,6 +1,6 @@
 package "ack"
 package "ctags"
-#package "htop"
+package "htop"
 package "lftp"
 package "ncdu"
 package "nmap"
