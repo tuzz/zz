@@ -86,11 +86,17 @@ hi StatusLineNC ctermfg=gray ctermbg=black
 hi TabLineFill ctermbg=235
 hi TabLine ctermfg=gray ctermbg=235
 hi TabLineSel ctermfg=white ctermbg=black
-hi GitGutterAdd ctermfg=2 ctermbg=0
-hi GitGutterChange ctermfg=3 ctermbg=0
-hi GitGutterDelete ctermfg=1 ctermbg=0
-hi GitGutterChangeDelete ctermfg=3 ctermbg=0
-hi GitGutterChangeLine ctermfg=0 ctermbg=3
+
+" Set git gutter colours
+hi GitGutterAdd ctermfg=2
+hi GitGutterChange ctermfg=3
+hi GitGutterDelete ctermfg=1
+hi GitGutterChangeDelete ctermfg=3
+
+" Set git gutter line colours
+hi GitGutterAddLine ctermfg=white ctermbg=22
+hi GitGutterChangeLine ctermfg=white ctermbg=58
+hi GitGutterChangeDeleteLine ctermfg=white ctermbg=58
 
 " Show a larger number of matches in CtrlP
 let g:ctrlp_max_height = 30
