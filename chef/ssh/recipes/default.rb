@@ -1,3 +1,13 @@
+ruby_block "lock down ssh to key-based authentication" do
+  block { ZZ::Exec.write_sshd_config }
+  notifies :run, "ruby_block[restart sshd]", :immediately
+end
+
+ruby_block "restart sshd" do
+  block { ZZ::Exec.restart_sshd }
+  action :nothing
+end
+
 directory "create ssh directory" do
   path ZZ::Path.ssh_directory
   mode "700"

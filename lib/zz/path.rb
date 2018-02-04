@@ -85,6 +85,10 @@ module ZZ
         File.expand_path("~/.ssh/authorized_keys")
       end
 
+      def chef_sshd_config
+        to("chef/ssh/files/sshd_config")
+      end
+
       def sshd_config
         "/etc/ssh/sshd_config"
       end

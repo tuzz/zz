@@ -1,0 +1,6 @@
+Protocol 2
+
+PrintLastLog no
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+PermitRootLogin no

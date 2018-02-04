@@ -280,6 +280,14 @@ module ZZ
         SH
       end
 
+      def write_sshd_config
+        execute("sudo cp #{ZZ::Path.chef_sshd_config} #{ZZ::Path.sshd_config}")
+      end
+
+      def restart_sshd
+        execute("sudo launchctl stop com.openssh.sshd")
+      end
+
       def ssh_config_exists?
         execute("ls #{Path.ssh_config} 2> /dev/null")
       end
