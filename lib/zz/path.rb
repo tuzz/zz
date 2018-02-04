@@ -61,8 +61,8 @@ module ZZ
         File.expand_path("~/Dropbox/Reference/Keys/id_rsa")
       end
 
-      def gpg_backup
-        File.expand_path("~/Dropbox/Reference/Keys/private.key")
+      def gpg_directory
+        File.expand_path("~/.gnupg")
       end
 
       def ssh_directory

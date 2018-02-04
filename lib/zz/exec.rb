@@ -84,12 +84,8 @@ module ZZ
         execute("brew cask install #{name}")
       end
 
-      def gpg_key_imported?
-        !capture("gpg --list-secret-keys").empty?
-      end
-
-      def import_private_gpg_key
-        execute("gpg --import #{Path.gpg_backup}")
+      def public_gpg_key_imported?
+        !capture("gpg --list-keys").empty?
       end
 
       def import_public_gpg_key
@@ -101,7 +97,9 @@ module ZZ
       end
 
       def trust_gpg_key
-        fingerprint = capture("gpg --list-keys | awk 'NR==4'")
+        line = capture("gpg --list-keys | grep fingerprint")
+        fingerprint = line.split("=").last.gsub(/\s/, "")
+
         edit_key = "gpg --edit-key #{fingerprint} trust quit"
         user_input = '\"5\ry\r\"'
 
