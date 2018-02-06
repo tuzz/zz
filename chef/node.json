@@ -1,6 +1,7 @@
 {
   "run_list": [
     "homebrew",
+    "yubikey",
     "gpg",
     "ssh",
     "profile",
