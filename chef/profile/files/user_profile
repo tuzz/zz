@@ -13,7 +13,7 @@ alias start="cd ~/code/govuk-puppet/development-vm && vagrant up"
 alias dev="ssh dev -t tmux -CC"
 alias vpn="sudo openconnect -v --pfs --no-dtls https://vpn.digital.cabinet-office.gov.uk/ah"
 alias perm="ls -alR ~/code > /dev/null"
-alias gpg-reset="gpg-connect-agent updatestartuptty /bye > /dev/null"
+alias gpg-reset="gpg --card-status > /dev/null && gpg-connect-agent updatestartuptty /bye > /dev/null"
 
 # To be run in the developer vm:
 alias trust="sudo sed -i.backup 's/md5/trust/' /etc/postgresql/9.3/main/pg_hba.conf && sudo service postgresql restart"
