@@ -126,11 +126,11 @@ module ZZ
         execute(%{expect -c "spawn #{edit_key}; send #{user_input}; expect eof"})
       end
 
-      def git_repo_initialized?
+      def zz_repo_initialized?
         execute("ls ~/.zz/.git")
       end
 
-      def initialize_git_repo
+      def initialize_zz_repo
         execute <<-SH
           pushd ~/.zz
           git init

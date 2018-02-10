@@ -109,6 +109,10 @@ module ZZ
         File.expand_path("~/.gitignore")
       end
 
+      def git_branch
+        File.expand_path("/usr/local/bin/git_branch")
+      end
+
       def iterm_directory
         to("chef/iterm/files")
       end
