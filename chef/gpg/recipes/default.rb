@@ -10,6 +10,12 @@ cookbook_file "gpg config" do
   path ZZ::Path.gpg_config
 end
 
+cookbook_file "install gpg-reset script" do
+  source "gpg_reset"
+  path ZZ::Path.gpg_reset
+  mode "755"
+end
+
 ruby_block "import gpg key" do
   not_if { ZZ::Exec.public_gpg_key_imported? }
   block { ZZ::Exec.import_public_gpg_key }

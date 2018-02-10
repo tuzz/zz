@@ -1,7 +1,7 @@
 eval "$(rbenv  init - 2> /dev/null)"
 eval "$(nodenv init - 2> /dev/null)"
 
-export PS1="\w\[\033[33m\]\$(git_branch)\[\033[00m\] $ "
+export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK="${HOME}/.gnupg/S.gpg-agent.ssh"
 
-alias gpg-reset="gpg --card-status > /dev/null && gpg-connect-agent updatestartuptty /bye > /dev/null"
+export PS1="\w\[\033[33m\]\$(git_branch)\[\033[00m\] $ "

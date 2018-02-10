@@ -73,6 +73,10 @@ module ZZ
         File.expand_path("~/.gnupg/gpg.conf")
       end
 
+      def gpg_reset
+        File.expand_path("/usr/local/bin/gpg-reset")
+      end
+
       def gpg_agent_config
         File.expand_path("~/.gnupg/gpg-agent.conf")
       end

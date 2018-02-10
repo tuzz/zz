@@ -1,0 +1,5 @@
+#!/bin/bash
+
+killall -9 gpg-agent 2> /dev/null
+gpg --card-status > /dev/null
+gpg-connect-agent updatestartuptty /bye > /dev/null
