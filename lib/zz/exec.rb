@@ -280,56 +280,12 @@ module ZZ
         execute("nodenv global #{latest_node}")
       end
 
-      def dev_vm_provisioned?
-        execute("ls #{Path.dev_vm_cache} 2> /dev/null")
-      end
-
-      def vagrant_dns_installed?
-        capture("vagrant plugin list").include?("vagrant-dns")
-      end
-
-      def install_vagrant_dns
-        execute("vagrant plugin install vagrant-dns")
-      end
-
-      def dns_resolver_registered?
-        execute("scutil --dns | grep dev.gov.uk")
-      end
-
-      def register_dns_resolver
-        execute <<-SH
-          pushd #{Path.dev_vm}
-          vagrant dns --install
-          popd
-        SH
-      end
-
-      def provision_dev_vm
-        execute <<-SH
-          pushd #{Path.dev_vm}
-          vagrant up
-          popd
-        SH
-      end
-
       def write_sshd_config
         execute("sudo cp #{ZZ::Path.chef_sshd_config} #{ZZ::Path.sshd_config}")
       end
 
       def restart_sshd
         execute("sudo launchctl stop com.openssh.sshd")
-      end
-
-      def ssh_config_exists?
-        execute("ls #{Path.ssh_config} 2> /dev/null")
-      end
-
-      def write_ssh_config
-        execute <<-SH
-          pushd #{Path.dev_vm}
-          vagrant ssh-config --host dev > #{Path.ssh_config}
-          popd
-        SH
       end
     end
   end

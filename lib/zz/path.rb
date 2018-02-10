@@ -153,18 +153,6 @@ module ZZ
         File.expand_path("~/code")
       end
 
-      def govuk_puppet
-        File.expand_path("~/code/govuk-puppet")
-      end
-
-      def dev_vm
-        File.expand_path("~/code/govuk-puppet/development-vm")
-      end
-
-      def dev_vm_cache
-        File.expand_path("~/code/govuk-puppet/development-vm/.vagrant")
-      end
-
       def minidlna_directory
         File.expand_path("~/.config/minidlna")
       end

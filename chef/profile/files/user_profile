@@ -4,17 +4,4 @@ eval "$(nodenv init - 2> /dev/null)"
 export PS1="\w\[\033[33m\]\$(git_branch)\[\033[00m\] $ "
 export SSH_AUTH_SOCK="${HOME}/.gnupg/S.gpg-agent.ssh"
 
-# To be run on the host machine:
-alias start="cd ~/code/govuk-puppet/development-vm && vagrant up"
-alias dev="ssh dev -t tmux -CC"
-alias perm="ls -alR ~/code > /dev/null"
 alias gpg-reset="gpg --card-status > /dev/null && gpg-connect-agent updatestartuptty /bye > /dev/null"
-
-# To be run in the developer vm:
-alias trust="sudo sed -i.backup 's/md5/trust/' /etc/postgresql/9.3/main/pg_hba.conf && sudo service postgresql restart"
-alias pup="cd /var/govuk/govuk-puppet"
-alias vm="cd /var/govuk/govuk-puppet/development-vm"
-alias rep="cd /var/govuk/govuk-puppet/development-vm/replication"
-
-# When logging into the vm, start in /var/govuk:
-cd /var/govuk 2> /dev/null
