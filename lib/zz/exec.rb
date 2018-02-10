@@ -187,6 +187,14 @@ module ZZ
         Pref.dock_autohide = true
       end
 
+      def menubar_autohide?
+        Pref.menubar_autohide
+      end
+
+      def autohide_menubar
+        Pref.menubar_autohide = 1
+      end
+
       def screenflow_configured?
         Pref.screenflow_helper_audio
       end

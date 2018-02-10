@@ -47,6 +47,14 @@ module ZZ
         Pref.write(global_domain, "InitialKeyRepeat", "int", value)
       end
 
+      def menubar_autohide
+        bool(Pref.read(global_domain, "_HIHideMenuBar"))
+      end
+
+      def menubar_autohide=(value)
+        Pref.write(global_domain, "_HIHideMenuBar", "int", value)
+      end
+
       def dock_apps
         Pref.read(dock_domain, "persistent-apps").gsub(/\s/, "")
       end
