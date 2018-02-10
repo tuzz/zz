@@ -1,5 +1,3 @@
-package "openconnect"
-
 directory "code" do
   path ZZ::Path.code
 end

@@ -113,6 +113,10 @@ module ZZ
         File.expand_path("/usr/local/bin/git_branch")
       end
 
+      def vpn
+        File.expand_path("/usr/local/bin/vpn")
+      end
+
       def iterm_directory
         to("chef/iterm/files")
       end

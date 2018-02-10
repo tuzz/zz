@@ -7,7 +7,6 @@ export SSH_AUTH_SOCK="${HOME}/.gnupg/S.gpg-agent.ssh"
 # To be run on the host machine:
 alias start="cd ~/code/govuk-puppet/development-vm && vagrant up"
 alias dev="ssh dev -t tmux -CC"
-alias vpn="sudo openconnect -v --pfs --no-dtls https://vpn.digital.cabinet-office.gov.uk/ah"
 alias perm="ls -alR ~/code > /dev/null"
 alias gpg-reset="gpg --card-status > /dev/null && gpg-connect-agent updatestartuptty /bye > /dev/null"
 
