@@ -130,6 +130,26 @@ module ZZ
         execute("ls ~/.zz/.git")
       end
 
+      def zz_git_pull
+        zz_git_exec("git pull origin master --rebase 2> /dev/null")
+      end
+
+      def zz_git_status
+        zz_git_exec("git status --short")
+      end
+
+      def zz_git_checkout
+        zz_git_exec("git checkout . 2> /dev/null")
+      end
+
+      def zz_git_reset
+        zz_git_exec("git reset --hard head 2> /dev/null")
+      end
+
+      def zz_git_exec(command)
+        execute("GIT_DIR=~/.zz/.git GIT_WORK_TREE=~/.zz #{command}")
+      end
+
       def initialize_zz_repo
         execute <<-SH
           pushd ~/.zz

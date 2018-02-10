@@ -8,5 +8,6 @@ require "zz/pref"
 
 require "zz/commands/debug"
 require "zz/commands/provision"
+require "zz/commands/update"
 
 require "zz/base"

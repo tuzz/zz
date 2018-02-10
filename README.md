@@ -36,5 +36,7 @@ $ zz provision --list
 
 $ zz provision --edit dropbox
 
+$ zz update
+
 $ zz debug
 ```

@@ -1,5 +1,5 @@
 module ZZ
-  COMMANDS = [Debug, Provision]
+  COMMANDS = [Debug, Provision, Update]
 
   def self.execute(args)
     command_name = args.shift
