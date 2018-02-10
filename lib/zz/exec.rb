@@ -64,6 +64,30 @@ module ZZ
         execute("brew services start #{name}")
       end
 
+      def mysides_installed?
+        execute("which mysides 2> /dev/null")
+      end
+
+      def install_mysides
+        execute("sudo installer -pkg #{Path.mysides_local_package} -target /")
+      end
+
+      def sidebar_items
+        capture("mysides list | awk '{ print $1 }'").split
+      end
+
+      def add_sidebar_item(name, path)
+        system("mysides add #{name} #{path}")
+      end
+
+      def remove_sidebar_item(name)
+        system("mysides remove #{name}")
+      end
+
+      def whoami
+        capture("whoami").strip
+      end
+
       def logged_into_dropbox?
         execute("ls #{Path.dropbox_config} 2> /dev/null")
       end

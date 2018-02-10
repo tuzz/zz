@@ -41,6 +41,14 @@ module ZZ
         to("tmp/hombrew_installer")
       end
 
+      def mysides_remote_package
+        "https://github.com/mosen/mysides/releases/download/v1.0.1/mysides-1.0.1.pkg"
+      end
+
+      def mysides_local_package
+        to("tmp/mysides.pkg")
+      end
+
       def dropbox_config
         File.expand_path("~/.dropbox/info.json")
       end
