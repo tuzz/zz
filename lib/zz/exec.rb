@@ -204,6 +204,14 @@ module ZZ
         Pref.import_screenflow_config(Path.screenflow_config)
       end
 
+      def cryptomator_dock_icon_hidden?
+        Pref.cryptomator_hide_dock_icon
+      end
+
+      def hide_cryptomator_dock_icon
+        Pref.cryptomator_hide_dock_icon = 1
+      end
+
       def restart_dock
         execute("killall Dock")
       end

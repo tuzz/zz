@@ -57,10 +57,6 @@ module ZZ
         "/usr/local/bin/transcode"
       end
 
-      def ssh_backup
-        File.expand_path("~/Dropbox/Reference/Keys/id_rsa")
-      end
-
       def gpg_directory
         File.expand_path("~/.gnupg")
       end

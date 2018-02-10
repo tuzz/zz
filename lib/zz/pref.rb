@@ -111,6 +111,14 @@ module ZZ
         Pref.import(screenflow_domain, path)
       end
 
+      def cryptomator_hide_dock_icon
+        bool(Pref.read(cryptomator_plist, "LSUIElement"))
+      end
+
+      def cryptomator_hide_dock_icon=(value)
+        Pref.write(cryptomator_plist, "LSUIElement", "string", value)
+      end
+
       private
 
       def global_domain
@@ -131,6 +139,10 @@ module ZZ
 
       def screenflow_helper_domain
         "WSG985FR47.net.telestream.screenflowhelper"
+      end
+
+      def cryptomator_plist
+        "/Applications/Cryptomator.app/Contents/Info.plist"
       end
 
       def bool(value)
