@@ -1,5 +1,7 @@
 ## The tuzz automation tool
 
+![tuzz automation](image.png)
+
 For automating all aspects of the 'tuzz' life experience.
 
 ### Overview
