@@ -80,23 +80,22 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
 let g:jellybeans_background_color_256=0
 silent! color jellybeans
 hi Search ctermfg=black ctermbg=yellow cterm=NONE
-hi ColorColumn ctermbg=235
+hi ColorColumn ctermbg=234
 hi StatusLine ctermfg=white ctermbg=black
-hi StatusLineNC ctermfg=gray ctermbg=black
-hi TabLineFill ctermbg=235
-hi TabLine ctermfg=gray ctermbg=235
+hi StatusLineNC ctermfg=240 ctermbg=black
+hi TabLineFill ctermbg=234
+hi TabLine ctermfg=240 ctermbg=234
 hi TabLineSel ctermfg=white ctermbg=black
-
-" Set git gutter colours
-hi GitGutterAdd ctermfg=2
-hi GitGutterChange ctermfg=3
+hi QuickFixLine ctermfg=white ctermbg=234 cterm=NONE
+au FileType qf setlocal colorcolumn=
+hi GitGutterAdd ctermfg=green
+hi GitGutterChange ctermfg=yellow
 hi GitGutterDelete ctermfg=1
-hi GitGutterChangeDelete ctermfg=3
-
-" Set git gutter line colours
-hi GitGutterAddLine ctermfg=white ctermbg=22
-hi GitGutterChangeLine ctermfg=white ctermbg=58
-hi GitGutterChangeDeleteLine ctermfg=white ctermbg=58
+hi GitGutterChangeDelete ctermfg=yellow
+hi GitGutterAddLine ctermfg=green ctermbg=black cterm=bold
+hi GitGutterChangeLine ctermfg=yellow ctermbg=black cterm=bold
+hi GitGutterDeleteLine ctermfg=white ctermbg=NONE
+hi GitGutterChangeDeleteLine ctermfg=yellow ctermbg=black cterm=bold
 
 " Show a larger number of matches in CtrlP
 let g:ctrlp_max_height = 30
