@@ -1,6 +1,7 @@
 {
   "run_list": [
     "homebrew",
+    "dropbox",
     "yubikey",
     "gpg",
     "ssh",
@@ -10,13 +11,14 @@
     "iterm",
     "vim",
     "tools",
-    "dropbox",
     "chrome",
     "slack",
     "keyboard",
     "menubar",
+    "sidebar",
     "dock",
     "typora",
+    "cryptomator",
     "virtualbox",
     "vagrant",
     "sequelpro",
