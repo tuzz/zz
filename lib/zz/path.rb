@@ -168,6 +168,10 @@ module ZZ
       def minidlna_media
         "/Volumes/hdd"
       end
+
+      def templates
+        to("templates")
+      end
     end
   end
 end

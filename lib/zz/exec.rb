@@ -316,6 +316,10 @@ module ZZ
       def restart_sshd
         execute("sudo launchctl stop com.openssh.sshd")
       end
+
+      def setup_template(directory)
+        execute("pushd #{directory}; ./__setup.sh; popd")
+      end
     end
   end
 end
