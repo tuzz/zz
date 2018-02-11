@@ -4,7 +4,9 @@ cookbook_file "use gpg for ssh authentication" do
 end
 
 ruby_block "lock down ssh to key-based authentication" do
+  not_if { ZZ::Exec.sshd_config_written? }
   block { ZZ::Exec.write_sshd_config }
+
   notifies :run, "ruby_block[restart sshd]", :immediately
 end
 

@@ -305,6 +305,10 @@ module ZZ
         execute("nodenv global #{latest_node}")
       end
 
+      def sshd_config_written?
+        execute("sudo cat #{ZZ::Path.sshd_config} | grep 'Protocol 2'")
+      end
+
       def write_sshd_config
         execute("sudo cp #{ZZ::Path.chef_sshd_config} #{ZZ::Path.sshd_config}")
       end
