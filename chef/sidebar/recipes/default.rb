@@ -10,6 +10,10 @@ ruby_block "install mysides" do
   block { ZZ::Exec.install_mysides }
 end
 
+directory "code" do
+  path ZZ::Path.code
+end
+
 ruby_block "configure sidebar" do
   not_if { ZZ::Exec.sidebar_items.count == 6 }
 
