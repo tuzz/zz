@@ -12,6 +12,7 @@ module ZZ
         if prompt.strip.downcase == "y"
           Exec.zz_git_checkout
           Exec.zz_git_reset
+          Exec.zz_git_pull
         else
           puts "Exiting."
         end

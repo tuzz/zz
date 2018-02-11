@@ -127,7 +127,7 @@ module ZZ
       end
 
       def zz_repo_initialized?
-        execute("ls ~/.zz/.git")
+        zz_git_exec("git log > /dev/null 2> /dev/null")
       end
 
       def zz_git_pull
@@ -143,22 +143,27 @@ module ZZ
       end
 
       def zz_git_reset
-        zz_git_exec("git reset --hard head 2> /dev/null")
+        zz_git_exec("git reset --hard origin/master 2> /dev/null")
+      end
+
+      def zz_git_init
+        zz_git_exec("git init")
+      end
+
+      def zz_git_remote_add
+        zz_git_exec("git remote add origin git@github.com:tuzz/zz")
+      end
+
+      def zz_git_fetch
+        zz_git_exec("git fetch")
       end
 
       def zz_git_exec(command)
         execute("GIT_DIR=~/.zz/.git GIT_WORK_TREE=~/.zz #{command}")
       end
 
-      def initialize_zz_repo
-        execute <<-SH
-          pushd ~/.zz
-          git init
-          git remote add origin git@github.com:tuzz/zz
-          git fetch
-          git reset --hard origin/master
-          popd
-        SH
+      def gpg_reset
+        execute("gpg-reset")
       end
 
       def iterm_config_dir_set?
