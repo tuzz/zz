@@ -54,6 +54,17 @@ RSpec.describe ZZ::Template do
     expect(File.exist?("#{project_directory}/lib/my_project.rb")).to eq(true)
   end
 
+  it "sets the copyright owner" do
+    expect_prompt(responses: ["ruby", "my_project"])
+
+    expect { subject.execute([]) }.to output.to_stdout
+
+    project_directory = "#{tmp_dir}/my_project"
+    license = File.read("#{project_directory}/LICENSE")
+
+    expect(license).to match(/20.. Chris Patuzzo <chris@patuzzo.co.uk>/)
+  end
+
   it "runs the template's setup script" do
     expect_prompt(responses: ["ruby", "my_project"])
     project_directory = "#{tmp_dir}/my_project"
@@ -83,6 +94,39 @@ RSpec.describe ZZ::Template do
 
       expect { subject.execute([]) }.to output.to_stdout
         .and raise_error(/already exists by that name/i)
+    end
+  end
+
+  describe "options" do
+    it "can set the template type" do
+      expect_prompt(responses: ["my_project"])
+
+      expect { subject.execute(%w(--type ruby)) }
+        .not_to output(/Which type?/).to_stdout
+    end
+
+    it "can set the project name" do
+      expect_prompt(responses: ["ruby"])
+
+      expect { subject.execute(%w(--name my_project)) }
+        .not_to output(/Project name:/).to_stdout
+    end
+
+    it "can set the copyright owner" do
+      expect_prompt(responses: ["ruby", "my_project"])
+
+      expect { subject.execute(["--copyright", "Foo <foo@bar.com>"]) }
+        .to output.to_stdout
+
+      project_directory = "#{tmp_dir}/my_project"
+      license = File.read("#{project_directory}/LICENSE")
+
+      expect(license).to match(/20.. Foo <foo@bar.com>/)
+    end
+
+    it "can list available templates" do
+      expect { subject.execute(%w(--list)) }
+        .to output(/available template types/i).to_stdout
     end
   end
 end
