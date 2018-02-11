@@ -81,7 +81,7 @@ module ZZ
       end
 
       def remove_sidebar_item(name)
-        system("mysides remove #{name}")
+        loop { break unless system("mysides remove #{name}") }
       end
 
       def whoami
