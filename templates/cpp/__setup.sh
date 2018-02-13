@@ -2,8 +2,8 @@
 
 rm __setup.sh
 
-bundle
-bundle exec rake
+make
+./bin/release
 
 git init
 git add -A
