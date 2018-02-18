@@ -109,6 +109,9 @@ let g:ackprg = 'git grep -H --line-number --no-color'
 " Highlight matches after a global search
 let g:ackhighlight = 1
 
+" Make the file drawer a little narrower than default
+let g:NERDTreeWinSize=25
+
 " Bind nerdtree to leader-n
 nmap <leader>n :NERDTreeToggle<cr>
 
