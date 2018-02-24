@@ -12,4 +12,9 @@ RSpec.describe ZZ do
     expect(subject::Provision).to receive(:execute).with(%w(foo -a bar -b))
     subject.execute(%w(provision foo -a bar -b))
   end
+
+  it "matches prefixes of command names" do
+    expect(subject::Provision).to receive(:execute)
+    subject.execute(%w(prov))
+  end
 end

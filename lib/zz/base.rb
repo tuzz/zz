@@ -5,7 +5,7 @@ module ZZ
     command_name = args.shift
 
     command = COMMANDS.detect do |c|
-      c.name == command_name
+      c.name.start_with?(command_name || "_")
     end
 
     if command.nil?
