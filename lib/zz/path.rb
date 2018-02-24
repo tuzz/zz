@@ -172,6 +172,10 @@ module ZZ
       def templates
         to("templates")
       end
+
+      def edit
+        "/usr/local/bin/edit"
+      end
     end
   end
 end
