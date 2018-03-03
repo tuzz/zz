@@ -177,14 +177,14 @@ module ZZ
       end
 
       def vim_plugins_installed?
-        expected = capture("cat #{Path.vim_config} | grep Plugin | wc -l").to_i
+        expected = capture("cat #{Path.vim_config} | grep Plug | wc -l").to_i
         actual = capture("ls #{Path.vim_bundle_directory} | wc -l").to_i
 
         actual == expected
       end
 
       def install_vim_plugins
-        execute("vim +PluginInstall +qall")
+        execute("vim +PlugInstall +qall")
       end
 
       def fast_key_repeat?

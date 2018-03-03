@@ -1,18 +1,18 @@
 package "vim"
 
-directory "create vim bundle directory" do
-  path ZZ::Path.vim_bundle_directory
-  recursive true
-end
-
 cookbook_file "vim_config" do
   source "vim_config"
   path ZZ::Path.vim_config
 end
 
-git "clone Vundle" do
-  repository ZZ::Path.vundle_remote_repo
-  destination ZZ::Path.vundle_local_repo
+directory "create autoload directory" do
+  path ZZ::Path.vim_autoload_directory
+  recursive true
+end
+
+remote_file "download vim-plug" do
+  source ZZ::Path.vim_plug_remote
+  path   ZZ::Path.vim_plug_local
 end
 
 ruby_block "install vim plugins" do

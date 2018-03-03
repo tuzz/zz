@@ -129,16 +129,20 @@ module ZZ
         File.expand_path("~/.vim/bundle")
       end
 
+      def vim_autoload_directory
+        File.expand_path("~/.vim/autoload")
+      end
+
       def vim_config
         File.expand_path("~/.vimrc")
       end
 
-      def vundle_remote_repo
-        "https://github.com/VundleVim/Vundle.vim"
+      def vim_plug_remote
+        "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
       end
 
-      def vundle_local_repo
-        File.expand_path("~/.vim/bundle/Vundle.vim")
+      def vim_plug_local
+        File.expand_path("~/.vim/autoload/plug.vim")
       end
 
       def gem_config
