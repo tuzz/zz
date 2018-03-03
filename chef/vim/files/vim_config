@@ -39,6 +39,7 @@ set shortmess+=I                  " Hide the welcome message
 set smartcase                     " (Unless they contain a capital letter)
 set sts=2                         " Backspace deletes whole tabs at the end of a line
 set t_Co=256                      " Use all 256 colours
+set t_te=                         " Don't clear screen when suspending vim
 set tabstop=2                     " A tab is two spaces long
 set timeoutlen=300                " Leader key timeout is 300ms
 set undodir=~/.vim/undo           " Store undo files in ~/.vim
