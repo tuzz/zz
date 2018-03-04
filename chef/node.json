@@ -33,6 +33,7 @@
     "vlc",
     "libre",
     "node",
-    "ruby"
+    "ruby",
+    "rust"
   ]
 }

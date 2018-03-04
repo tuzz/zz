@@ -7,7 +7,9 @@ Plug 'kien/ctrlp.vim'
 Plug 'mileszs/ack.vim'
 Plug 'milkypostman/vim-togglelist'
 Plug 'nanotech/jellybeans.vim'
+Plug 'racer-rust/vim-racer'
 Plug 'rodjek/vim-puppet'
+Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'sentient-lang/vim-sentient'
 Plug 'skalnik/vim-vroom'
@@ -18,6 +20,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+Plug 'vim-syntastic/syntastic'
 
 call plug#end()
 
@@ -68,6 +71,12 @@ au BufRead,BufNewFile {*.json,.jshintrc,.eslintrc,*.pegjs} set ft=javascript
 " Use the full window width for the quickfix list
 au FileType qf wincmd J
 
+" Quit the quickfix list with q
+au FileType qf nmap <buffer> q :q<cr>
+
+" Hide the character column in the quickfix list
+au FileType qf setlocal colorcolumn=
+
 " Remember last location in a file, unless it's a git commit message
 au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
   \| exe "normal! g`\"" | endif
@@ -94,15 +103,11 @@ hi TabLineFill ctermbg=234
 hi TabLine ctermfg=240 ctermbg=234
 hi TabLineSel ctermfg=white ctermbg=black
 hi QuickFixLine ctermfg=white ctermbg=234 cterm=NONE
-au FileType qf setlocal colorcolumn=
+hi SignColumn ctermbg=black
 hi GitGutterAdd ctermfg=green
 hi GitGutterChange ctermfg=yellow
 hi GitGutterDelete ctermfg=1
 hi GitGutterChangeDelete ctermfg=yellow
-hi GitGutterAddLine ctermfg=green ctermbg=black cterm=bold
-hi GitGutterChangeLine ctermfg=yellow ctermbg=black cterm=bold
-hi GitGutterDeleteLine ctermfg=white ctermbg=NONE
-hi GitGutterChangeDeleteLine ctermfg=yellow ctermbg=black cterm=bold
 
 " Show a larger number of matches in CtrlP
 let g:ctrlp_max_height = 30
@@ -119,14 +124,38 @@ let g:ackhighlight = 1
 " Make the file drawer a little narrower than default
 let g:NERDTreeWinSize=25
 
+" Update the location list with syntastic errors
+let g:syntastic_always_populate_loc_list = 1
+
+" Don't syntax check when closing a file
+let g:syntastic_check_on_wq = 0
+
+" Enable syntastic rust support
+let g:syntastic_rust_checkers = ['cargo']
+
+" Set racer executable path for code completion
+let g:racer_cmd = "/usr/local/bin/racer"
+
+" Show function signatures in omni completion
+let g:racer_experimental_completer = 1
+
+" Bind <C-j> to move down the completion list
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+
+" Bind <C-k> to move up the completion list
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+
+" Bind rust definition to leader-d
+nmap <leader>d <Plug>(rust-def)
+
+" Bind rust documentation to leader-D
+nmap <leader>D <Plug>(rust-doc)
+
 " Bind nerdtree to leader-n
 nmap <leader>n :NERDTreeToggle<cr>
 
 " Bind 'reveal' to leader-N
 nmap <leader>N :NERDTreeFind<cr>
-
-" Bind diff highlighting to leader-d
-nmap <leader>d :GitGutterLineHighlightsToggle<cr>
 
 " Bind global search to leader-f
 nmap <leader>f :set hlsearch<cr>:Ack!<space>
