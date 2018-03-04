@@ -10,8 +10,11 @@ Plug 'rodjek/vim-puppet'
 Plug 'scrooloose/nerdtree'
 Plug 'sentient-lang/vim-sentient'
 Plug 'skalnik/vim-vroom'
+Plug 'tommcdo/vim-exchange'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
 
 call plug#end()
 
