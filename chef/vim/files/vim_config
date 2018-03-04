@@ -5,16 +5,19 @@ Plug 'airblade/vim-gitgutter'
 Plug 'darfink/vim-plist'
 Plug 'kien/ctrlp.vim'
 Plug 'mileszs/ack.vim'
+Plug 'milkypostman/vim-togglelist'
 Plug 'nanotech/jellybeans.vim'
 Plug 'rodjek/vim-puppet'
 Plug 'scrooloose/nerdtree'
 Plug 'sentient-lang/vim-sentient'
 Plug 'skalnik/vim-vroom'
 Plug 'tommcdo/vim-exchange'
+Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 
 call plug#end()
 
@@ -46,7 +49,6 @@ set timeoutlen=300                " Leader key timeout is 300ms
 set undodir=~/.vim/undo           " Store undo files in ~/.vim
 set undofile                      " Persist undos between sessions
 set wildmode=list:longest,full    " Autocompletion favours longer string
-set pastetoggle=<leader>p
 
 " Set status line to: filename [encoding,endings][filetype] ... col,line/lines
 set statusline=%f\ [%{strlen(&fenc)?&fenc:'none'},%{&ff}]%y%h%m%r%=%c,%l/%L
@@ -62,6 +64,9 @@ set wildignore+=*.swp,*~,._*
 au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Procfile,*.ru,*.rake} set ft=ruby
 au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} set ft=markdown | set wrap
 au BufRead,BufNewFile {*.json,.jshintrc,.eslintrc,*.pegjs} set ft=javascript
+
+" Use the full window width for the quickfix list
+au FileType qf wincmd J
 
 " Remember last location in a file, unless it's a git commit message
 au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
@@ -126,5 +131,26 @@ nmap <leader>d :GitGutterLineHighlightsToggle<cr>
 " Bind global search to leader-f
 nmap <leader>f :set hlsearch<cr>:Ack!<space>
 
-" Bind macro @a in visual mode to m
-vmap m :norm @a<cr>
+" Bind foreground execution to leader-x
+nmap <leader>x :Dispatch<space>
+
+" Bind background execution to leader-X
+nmap <leader>X :Dispatch!<space>
+
+" Bind 'zero-in' on a command to leader-z
+nmap <leader>z :Focus<space>
+
+" Bind 'zero-out' of a command to leader-Z
+nmap <leader>Z :Focus!<space>
+
+" Bind vim-dispatch quickfix output to leader-Q
+nmap <leader>Q :Copen<cr>
+
+" Bind starting an interactive command to leader-s
+nmap <leader>s :Start<space>
+
+" Bind starting an interactive command (new tab) to leader-S
+nmap <leader>S :Start!<space>
+
+" Disable ex mode
+map Q <Nop>
