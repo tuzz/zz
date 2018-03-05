@@ -70,6 +70,10 @@
 	<true/>
 	<key>NeverWarnAboutOverrides_selection</key>
 	<integer>0</integer>
+	<key>NeverWarnAboutShortLivedSessions_B0781B70-7E0C-494E-888D-A0DF037B0FDE</key>
+	<true/>
+	<key>NeverWarnAboutShortLivedSessions_B0781B70-7E0C-494E-888D-A0DF037B0FDE_selection</key>
+	<integer>0</integer>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
