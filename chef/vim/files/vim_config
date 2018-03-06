@@ -41,6 +41,7 @@ set nobackup                      " Don't create backup files
 set noswapfile                    " Don't create swap files
 set nowrap                        " Don't wrap long lines
 set number                        " Show line numbers
+set scrolloff=5                   " Scroll the buffer before reaching the end
 set shiftwidth=2                  " Auto-indent using 2 spaces
 set shortmess+=I                  " Hide the welcome message
 set smartcase                     " (Unless they contain a capital letter)
