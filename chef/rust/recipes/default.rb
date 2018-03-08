@@ -1,1 +1,3 @@
-package "rust --with-racer"
+package "rust" do
+  options "--with-racer"
+end
