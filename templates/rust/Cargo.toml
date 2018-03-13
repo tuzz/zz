@@ -1,0 +1,20 @@
+[package]
+name = "{name}"
+description = "TODO"
+version = "0.1.0"
+authors = ["{copyright}"]
+documentation = "https://github.com/tuzz/{name}"
+homepage = "https://github.com/tuzz/{name}"
+repository = "https://github.com/tuzz/{name}"
+readme = "README.md"
+license = "MIT"
+
+[dependencies]
+
+
+[dev-dependencies]
+bencher = "0.1.5"
+
+[[bench]]
+name = "{name}_bench"
+harness = false

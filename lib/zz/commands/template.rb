@@ -20,6 +20,7 @@ module ZZ
         copy_template
         recursively_replace("name", proj_name)
         recursively_replace("copyright", copyright)
+        recursively_replace("year", Time.new.year)
         recursively_rename
         setup_template
       end
@@ -72,9 +73,7 @@ module ZZ
 
       def fetch_copyright
         copyright = option_value(copyright_option)
-        copyright ||= "Chris Patuzzo <chris@patuzzo.co.uk>"
-
-        "#{Time.new.year} #{copyright}"
+        copyright || "Chris Patuzzo <chris@patuzzo.co.uk>"
       end
 
       def copy_template
@@ -88,6 +87,8 @@ module ZZ
       end
 
       def recursively_replace(key, value)
+        value = value.to_s
+
         project_paths.each do |path|
           next if File.directory?(path)
           content = File.read(path)
