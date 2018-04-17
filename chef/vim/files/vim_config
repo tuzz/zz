@@ -184,3 +184,22 @@ nmap <leader>S :Start!<space>
 
 " Disable ex mode
 map Q <Nop>
+
+" Bind gothic characters to leader-g in insert mode
+imap <leader>g <C-k>g
+
+" Define digraphs for upper-case gothic characters (Fraktur glyphs)
+dig gA 120172 | dig gB 120173 | dig gC 120174 | dig gD 120175 | dig gE 120176
+dig gF 120177 | dig gG 120178 | dig gH 120179 | dig gI 120180 | dig gJ 120181
+dig gK 120182 | dig gL 120183 | dig gM 120184 | dig gN 120185 | dig gO 120186
+dig gP 120187 | dig gQ 120188 | dig gR 120189 | dig gS 120190 | dig gT 120191
+dig gU 120192 | dig gV 120193 | dig gW 120194 | dig gX 120195 | dig gY 120196
+dig gZ 120197
+
+" Define digraphs for lower-case gothic characters (Fraktur glyphs)
+dig ga 120198 | dig gb 120199 | dig gc 120200 | dig gd 120201 | dig ge 120202
+dig gf 120203 | dig gg 120204 | dig gh 120205 | dig gi 120206 | dig gj 120207
+dig gk 120208 | dig gl 120209 | dig gm 120210 | dig gn 120211 | dig go 120212
+dig gp 120213 | dig gq 120214 | dig gr 120215 | dig gs 120216 | dig gt 120217
+dig gu 120218 | dig gv 120219 | dig gw 120220 | dig gx 120221 | dig gy 120222
+dig gz 120223
