@@ -203,3 +203,6 @@ dig gk 120208 | dig gl 120209 | dig gm 120210 | dig gn 120211 | dig go 120212
 dig gp 120213 | dig gq 120214 | dig gr 120215 | dig gs 120216 | dig gt 120217
 dig gu 120218 | dig gv 120219 | dig gw 120220 | dig gx 120221 | dig gy 120222
 dig gz 120223
+
+" Define digraph for the sentinel character ə (schwa) as g$
+dig g$ 601
