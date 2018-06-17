@@ -180,6 +180,14 @@ module ZZ
       def edit
         "/usr/local/bin/edit"
       end
+
+      def cargo
+        File.expand_path("~/.cargo")
+      end
+
+      def cargo_bin
+        File.expand_path("~/.cargo/bin")
+      end
     end
   end
 end

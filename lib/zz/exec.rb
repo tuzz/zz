@@ -265,6 +265,46 @@ module ZZ
         execute("killall Dock")
       end
 
+      def rustup_nightly
+        execute("echo '2\n\nnightly\nn\n1' | rustup-init")
+      end
+
+      def cargo_configured?
+        execute("ls #{Path.cargo} 2> /dev/null")
+      end
+
+      def target_wasm
+        execute("rustup target add wasm32-unknown-unknown")
+      end
+
+      def wasm_target?
+        capture("rustup target list | grep wasm32").include?("installed")
+      end
+
+      def install_clippy
+        execute("cargo install clippy")
+      end
+
+      def clippy_installed?
+        execute("ls #{Path.cargo_bin} | grep cargo-clippy")
+      end
+
+      def install_cargo_web
+        execute("cargo install cargo-web")
+      end
+
+      def cargo_web_installed?
+        execute("ls #{Path.cargo_bin} | grep cargo-web")
+      end
+
+      def install_cargo_watch
+        execute("cargo install cargo-watch")
+      end
+
+      def cargo_watch_installed?
+        execute("ls #{Path.cargo_bin} | grep cargo-watch")
+      end
+
       def latest_ruby_installed?
         capture("rbenv versions").include?(latest_ruby)
       end

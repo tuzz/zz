@@ -1,3 +1,26 @@
-package "rust" do
-  options "--with-racer"
+package "rustup-init"
+
+ruby_block "rustup" do
+  not_if { ZZ::Exec.cargo_configured? }
+  block { ZZ::Exec.rustup_nightly }
+end
+
+ruby_block "target wasm" do
+  not_if { ZZ::Exec.wasm_target? }
+  block { ZZ::Exec.target_wasm }
+end
+
+ruby_block "install clippy" do
+  not_if { ZZ::Exec.clippy_installed? }
+  block { ZZ::Exec.install_clippy }
+end
+
+ruby_block "install cargo-web" do
+  not_if { ZZ::Exec.cargo_web_installed? }
+  block { ZZ::Exec.install_cargo_web }
+end
+
+ruby_block "install cargo-watch" do
+  not_if { ZZ::Exec.cargo_watch_installed? }
+  block { ZZ::Exec.install_cargo_watch }
 end
