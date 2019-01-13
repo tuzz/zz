@@ -123,9 +123,11 @@ let g:syntastic_always_populate_loc_list = 1
 " Don't syntax check when closing a file
 let g:syntastic_check_on_wq = 0
 
-" Enable syntastic rust support
-let g:syntastic_rust_checkers = ['cargo']
+" Inherit RUSTFLAGS from ~/.profile for !cargo commands
+set shell=/bin/bash\ --login
 
+" Inherit RUSTFLAGS from ~/.profile for syntastic checks
+let g:syntastic_shell = "/bin/bash --login"
 
 " Bind <C-j> to move down the completion list
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
@@ -133,11 +135,8 @@ inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
 " Bind <C-k> to move up the completion list
 inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 
-" Bind rust definition to leader-d
-nmap <leader>d <Plug>(rust-def)
-
-" Bind rust documentation to leader-D
-nmap <leader>D <Plug>(rust-doc)
+" Disable ex mode
+map Q <Nop>
 
 " Bind nerdtree to leader-n
 nmap <leader>n :NERDTreeToggle<cr>
@@ -148,11 +147,24 @@ nmap <leader>N :NERDTreeFind<cr>
 " Bind global search to leader-f
 nmap <leader>f :set hlsearch<cr>:Ack!<space>
 
+" Bind running all Rust tests to leader-r
+nmap <leader>r :!cargo test<cr>
 
+" Bind running the test under cursor to leader-R
+nmap <leader>R :RustTest<cr>
 
+" Bind running the Rust executable to leader-x
+nmap <leader>x :!cargo run<cr>
 
+" Bind running the executable in release mode to leader-X
+nmap <leader>X :!cargo run --release<cr>
 
+" Bind building the Rust executable to leader-b
+nmap <leader>b :!cargo build<cr>
 
+" Bind building the executable in release mode to leader-B
+nmap <leader>B :!cargo build --release<cr>
 
-" Disable ex mode
-map Q <Nop>
+" Bind cargo check, followed by cargo build to leader-a
+" Run this after adding a crate to speed up syntastic and the next test run
+nmap <leader>a :!cargo check > /dev/null && cargo build<cr>
