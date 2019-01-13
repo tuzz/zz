@@ -7,3 +7,5 @@ export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK="${HOME}/.gnupg/S.gpg-agent.ssh"
 
 export PS1="\w\[\033[33m\]\$(git_branch)\[\033[00m\] $ "
+
+export RUSTFLAGS="$RUSTFLAGS -A dead_code"
