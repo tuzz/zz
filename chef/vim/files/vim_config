@@ -2,24 +2,15 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter'
-Plug 'darfink/vim-plist'
 Plug 'kien/ctrlp.vim'
 Plug 'mileszs/ack.vim'
 Plug 'milkypostman/vim-togglelist'
 Plug 'nanotech/jellybeans.vim'
-Plug 'racer-rust/vim-racer'
-Plug 'rodjek/vim-puppet'
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdtree'
-Plug 'sentient-lang/vim-sentient'
 Plug 'skalnik/vim-vroom'
-Plug 'tikhomirov/vim-glsl'
-Plug 'tommcdo/vim-exchange'
-Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'vim-syntastic/syntastic'
 
@@ -135,11 +126,6 @@ let g:syntastic_check_on_wq = 0
 " Enable syntastic rust support
 let g:syntastic_rust_checkers = ['cargo']
 
-" Set racer executable path for code completion
-let g:racer_cmd = "/usr/local/bin/racer"
-
-" Show function signatures in omni completion
-let g:racer_experimental_completer = 1
 
 " Bind <C-j> to move down the completion list
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
@@ -162,48 +148,11 @@ nmap <leader>N :NERDTreeFind<cr>
 " Bind global search to leader-f
 nmap <leader>f :set hlsearch<cr>:Ack!<space>
 
-" Bind foreground execution to leader-x
-nmap <leader>x :Dispatch<space>
 
-" Bind background execution to leader-X
-nmap <leader>X :Dispatch!<space>
 
-" Bind 'zero-in' on a command to leader-z
-nmap <leader>z :Focus<space>
 
-" Bind 'zero-out' of a command to leader-Z
-nmap <leader>Z :Focus!<space>
 
-" Bind vim-dispatch quickfix output to leader-Q
-nmap <leader>Q :Copen<cr>
 
-" Bind starting an interactive command to leader-s
-nmap <leader>s :Start<space>
-
-" Bind starting an interactive command (new tab) to leader-S
-nmap <leader>S :Start!<space>
 
 " Disable ex mode
 map Q <Nop>
-
-" Bind gothic characters to leader-g in insert mode
-imap <leader>g <C-k>g
-
-" Define digraphs for upper-case gothic characters (Fraktur glyphs)
-dig gA 120172 | dig gB 120173 | dig gC 120174 | dig gD 120175 | dig gE 120176
-dig gF 120177 | dig gG 120178 | dig gH 120179 | dig gI 120180 | dig gJ 120181
-dig gK 120182 | dig gL 120183 | dig gM 120184 | dig gN 120185 | dig gO 120186
-dig gP 120187 | dig gQ 120188 | dig gR 120189 | dig gS 120190 | dig gT 120191
-dig gU 120192 | dig gV 120193 | dig gW 120194 | dig gX 120195 | dig gY 120196
-dig gZ 120197
-
-" Define digraphs for lower-case gothic characters (Fraktur glyphs)
-dig ga 120198 | dig gb 120199 | dig gc 120200 | dig gd 120201 | dig ge 120202
-dig gf 120203 | dig gg 120204 | dig gh 120205 | dig gi 120206 | dig gj 120207
-dig gk 120208 | dig gl 120209 | dig gm 120210 | dig gn 120211 | dig go 120212
-dig gp 120213 | dig gq 120214 | dig gr 120215 | dig gs 120216 | dig gt 120217
-dig gu 120218 | dig gv 120219 | dig gw 120220 | dig gx 120221 | dig gy 120222
-dig gz 120223
-
-" Define digraph for the sentinel character ə (schwa) as g$
-dig g$ 601
