@@ -12,7 +12,7 @@ Plug 'skalnik/vim-vroom'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-unimpaired'
-Plug 'vim-syntastic/syntastic'
+Plug 'w0rp/ale'
 
 call plug#end()
 
@@ -33,6 +33,7 @@ set nobackup                      " Don't create backup files
 set noswapfile                    " Don't create swap files
 set nowrap                        " Don't wrap long lines
 set number                        " Show line numbers
+set numberwidth=3                 " Reduce the width of the line number column
 set scrolloff=5                   " Scroll the buffer before reaching the end
 set shiftwidth=2                  " Auto-indent using 2 spaces
 set shortmess+=I                  " Hide the welcome message
@@ -78,6 +79,7 @@ au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= l
 
 " Make the :terminal feature a bit more consistent with regular Vim
 tmap <C-n> <C-w>N
+set shell=/bin/bash\ --login
 au TerminalOpen * set nonumber
 au TerminalOpen * set nolist
 au TerminalOpen * set colorcolumn=
@@ -131,18 +133,6 @@ let g:ackhighlight = 1
 " Make the file drawer a little narrower than default
 let g:NERDTreeWinSize=25
 
-" Update the location list with syntastic errors
-let g:syntastic_always_populate_loc_list = 1
-
-" Don't syntax check when closing a file
-let g:syntastic_check_on_wq = 0
-
-" Inherit RUSTFLAGS from ~/.profile for !cargo commands
-set shell=/bin/bash\ --login
-
-" Inherit RUSTFLAGS from ~/.profile for syntastic checks
-let g:syntastic_shell = "/bin/bash --login"
-
 " Bind <C-j> to move down the completion list
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
 
@@ -169,7 +159,3 @@ nmap <leader>T :terminal<cr>
 
 " Bind <leader-w> to run cargo watch in a slightly smaller vertical split
 nmap <leader>w :vertical :terminal<cr>cargo watch --shell 'clear && cargo test -- --quiet'<cr><C-w>N:2winc <<cr>
-
-" Bind <leader-c> to cargo check, which is useful to run after adding a crate
-" to speed up the next syntastic check (rather than hanging for a few seconds)
-nmap <leader>c :!cargo check<cr>
