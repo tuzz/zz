@@ -37,6 +37,8 @@ set scrolloff=5                   " Scroll the buffer before reaching the end
 set shiftwidth=2                  " Auto-indent using 2 spaces
 set shortmess+=I                  " Hide the welcome message
 set smartcase                     " (Unless they contain a capital letter)
+set splitright                    " Open vertical splits on the right
+set splitbelow                    " Open horizontal splits below
 set sts=2                         " Backspace deletes whole tabs at the end of a line
 set t_Co=256                      " Use all 256 colours
 set t_te=                         " Don't clear screen when suspending vim
@@ -46,8 +48,8 @@ set undodir=~/.vim/undo           " Store undo files in ~/.vim
 set undofile                      " Persist undos between sessions
 set wildmode=list:longest,full    " Autocompletion favours longer string
 
-" Set status line to: filename [encoding,endings][filetype] ... col,line/lines
-set statusline=%f\ [%{strlen(&fenc)?&fenc:'none'},%{&ff}]%y%h%m%r%=%c,%l/%L
+" Set status line to: filename [encoding,endings] [filetype] [modified]
+set statusline=%f\ [%{strlen(&fenc)?&fenc:'none'},%{&ff}]\ %y\ %m
 
 " File types to ignore
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
@@ -74,6 +76,16 @@ au FileType qf setlocal colorcolumn=
 au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
   \| exe "normal! g`\"" | endif
 
+" Make the :terminal feature a bit more consistent with regular Vim
+tmap <C-n> <C-w>N
+au TerminalOpen * set nonumber
+au TerminalOpen * set nolist
+au TerminalOpen * set colorcolumn=
+au TerminalOpen * setlocal statusline=[terminal]
+au TerminalOpen * call feedkeys("\<c-w>N:echo\ni", 't')
+au BufEnter * if &buftype == 'terminal' | call feedkeys("\<C-w>N", 't') | endif
+au BufLeave * if &buftype == 'terminal' | silent! normal i | endif
+
 " Strip trailing whitespace on write
 function! <SID>StripTrailingWhitespace()
     let _s=@/
@@ -92,6 +104,8 @@ hi Search ctermfg=black ctermbg=yellow cterm=NONE
 hi ColorColumn ctermbg=234
 hi StatusLine ctermfg=white ctermbg=black
 hi StatusLineNC ctermfg=240 ctermbg=black
+hi StatusLineTerm ctermfg=white ctermbg=black
+hi StatusLineTermNC ctermfg=240 ctermbg=black
 hi TabLineFill ctermbg=234
 hi TabLine ctermfg=240 ctermbg=234
 hi TabLineSel ctermfg=white ctermbg=black
@@ -147,24 +161,15 @@ nmap <leader>N :NERDTreeFind<cr>
 " Bind global search to leader-f
 nmap <leader>f :set hlsearch<cr>:Ack!<space>
 
-" Bind running all Rust tests to leader-r
-nmap <leader>r :!cargo test<cr>
+" Bind <leader-t> to open a terminal in a vertical split
+nmap <leader>t :vertical :terminal<cr>
 
-" Bind running the test under cursor to leader-R
-nmap <leader>R :RustTest<cr>
+" Bind <leader-T> to open a terminal in a horizontal split
+nmap <leader>T :terminal<cr>
 
-" Bind running the Rust executable to leader-x
-nmap <leader>x :!cargo run<cr>
+" Bind <leader-w> to run cargo watch in a slightly smaller vertical split
+nmap <leader>w :vertical :terminal<cr>cargo watch --shell 'clear && cargo test -- --quiet'<cr><C-w>N:2winc <<cr>
 
-" Bind running the executable in release mode to leader-X
-nmap <leader>X :!cargo run --release<cr>
-
-" Bind building the Rust executable to leader-b
-nmap <leader>b :!cargo build<cr>
-
-" Bind building the executable in release mode to leader-B
-nmap <leader>B :!cargo build --release<cr>
-
-" Bind cargo check, followed by cargo build to leader-a
-" Run this after adding a crate to speed up syntastic and the next test run
-nmap <leader>a :!cargo check > /dev/null && cargo build<cr>
+" Bind <leader-c> to cargo check, which is useful to run after adding a crate
+" to speed up the next syntastic check (rather than hanging for a few seconds)
+nmap <leader>c :!cargo check<cr>

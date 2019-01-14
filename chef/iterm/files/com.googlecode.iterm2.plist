@@ -824,6 +824,8 @@
 	<integer>1</integer>
 	<key>TabViewType</key>
 	<integer>1</integer>
+	<key>TimeBetweenBlinks</key>
+	<real>1.0000000200408773e+20</real>
 	<key>UseBorder</key>
 	<false/>
 	<key>UseLionStyleFullscreen</key>
