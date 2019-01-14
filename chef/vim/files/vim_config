@@ -37,6 +37,7 @@ set numberwidth=3                 " Reduce the width of the line number column
 set scrolloff=5                   " Scroll the buffer before reaching the end
 set shiftwidth=2                  " Auto-indent using 2 spaces
 set shortmess+=I                  " Hide the welcome message
+set shortmess+=F                  " Hide file name from command line when opening
 set smartcase                     " (Unless they contain a capital letter)
 set splitright                    " Open vertical splits on the right
 set splitbelow                    " Open horizontal splits below
@@ -130,8 +131,20 @@ let g:ackprg = 'git grep -H --line-number --no-color'
 " Highlight matches after a global search
 let g:ackhighlight = 1
 
+" Use NERDTree's minimal user interface
+let g:NERDTreeMinimalUI=1
+
 " Make the file drawer a little narrower than default
-let g:NERDTreeWinSize=25
+let g:NERDTreeWinSize=22
+
+" Change file order so file2.txt is before file10.txt
+let g:NERDTreeNaturalSort=1
+
+" Automatically delete the buffer when the file is deleted
+let g:NERDTreeAutoDeleteBuffer=1
+
+" Set the status line to the name of the root directory
+let g:NERDTreeStatusline="%=%{split(getcwd(),'/')[-1]}/"
 
 " Bind <C-j> to move down the completion list
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
@@ -143,7 +156,7 @@ inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 map Q <Nop>
 
 " Bind nerdtree to leader-n
-nmap <leader>n :NERDTreeToggle<cr>
+nmap <leader>n :NERDTreeToggle<cr>:echo<cr>
 
 " Bind 'reveal' to leader-N
 nmap <leader>N :NERDTreeFind<cr>
@@ -157,5 +170,5 @@ nmap <leader>t :vertical :terminal<cr>
 " Bind <leader-T> to open a terminal in a horizontal split
 nmap <leader>T :terminal<cr>
 
-" Bind <leader-w> to run cargo watch in a slightly smaller vertical split
-nmap <leader>w :vertical :terminal<cr>cargo watch --shell 'clear && cargo test -- --quiet'<cr><C-w>N:2winc <<cr>
+" Bind <leader-w> to run cargo watch in a vertical split
+nmap <leader>w :vertical :terminal<cr>cargo watch --shell 'clear && cargo test -- --quiet'<cr>
