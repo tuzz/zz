@@ -155,6 +155,9 @@ inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 " Disable ex mode
 map Q <Nop>
 
+" Bind <leader-h> to open a vertical split for help docs
+nmap <leader>h :vertical :help<space>
+
 " Bind nerdtree to leader-n
 nmap <leader>n :NERDTreeToggle<cr>:echo<cr>
 
