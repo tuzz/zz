@@ -104,7 +104,7 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
 let g:jellybeans_background_color_256=0
 silent! color jellybeans
 hi Search ctermfg=black ctermbg=yellow cterm=NONE
-hi ColorColumn ctermbg=234
+hi ColorColumn ctermbg=233
 hi StatusLine ctermfg=white ctermbg=black
 hi StatusLineNC ctermfg=240 ctermbg=black
 hi StatusLineTerm ctermfg=white ctermbg=black
