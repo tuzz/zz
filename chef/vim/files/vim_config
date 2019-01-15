@@ -104,6 +104,7 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
 let g:jellybeans_background_color_256=0
 silent! color jellybeans
 hi Search ctermfg=black ctermbg=yellow cterm=NONE
+hi IncSearch ctermfg=black ctermbg=yellow cterm=NONE
 hi ColorColumn ctermbg=233
 hi StatusLine ctermfg=white ctermbg=black
 hi StatusLineNC ctermfg=240 ctermbg=black
@@ -114,10 +115,18 @@ hi TabLine ctermfg=240 ctermbg=234
 hi TabLineSel ctermfg=white ctermbg=black
 hi QuickFixLine ctermfg=white ctermbg=234 cterm=NONE
 hi SignColumn ctermbg=black
-hi GitGutterAdd ctermfg=green
+hi GitGutterAdd ctermfg=35
 hi GitGutterChange ctermfg=yellow
-hi GitGutterDelete ctermfg=1
+hi GitGutterDelete ctermfg=124
 hi GitGutterChangeDelete ctermfg=yellow
+hi ALEError ctermbg=52
+hi ALEErrorSign ctermbg=52
+hi ALEWarning ctermbg=17
+hi ALEWarningSign ctermbg=17
+
+" Set the signs that appear in the column when linting
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '>>'
 
 " Show a larger number of matches in CtrlP
 let g:ctrlp_max_height = 30
