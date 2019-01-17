@@ -100,6 +100,15 @@ function! <SID>StripTrailingWhitespace()
 endfunction
 autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
 
+" Hide NERDTree's action prompt menu
+function! HideNERDTreeMenu()
+  function! g:NERDTreeMenuController._echoPrompt()
+  endfunction
+  function! g:NERDTreeMenuController._setCmdheight()
+  endfunction
+endfunction
+autocmd VimEnter * call HideNERDTreeMenu()
+
 " Use the jellybeans colorscheme with some tweaks
 let g:jellybeans_background_color_256=0
 silent! color jellybeans
