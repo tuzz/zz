@@ -192,4 +192,4 @@ nmap <leader>t :vertical :terminal<cr>
 nmap <leader>T :terminal<cr>
 
 " Bind <leader-w> to run cargo watch in a vertical split
-nmap <leader>w :vertical :terminal<cr>cargo watch --shell 'clear && cargo test -- --quiet'<cr>
+nmap <leader>w :vertical :terminal<cr>cargo watch --shell 'clear && cargo test -- --quiet --test-threads=1'<cr>
