@@ -53,6 +53,10 @@ set wildmode=list:longest,full    " Autocompletion favours longer string
 " Set status line to: filename [encoding,endings] [filetype] [modified]
 set statusline=%f\ [%{strlen(&fenc)?&fenc:'none'},%{&ff}]\ %y\ %m
 
+" Set status line for :Gstatus and :Gcommit
+au FileType fugitive setlocal statusline=[staging\ changes]
+au FileType gitcommit setlocal statusline=[committing\ changes]
+
 " File types to ignore
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
@@ -198,3 +202,18 @@ nmap <leader>T :terminal<cr>
 
 " Bind <leader-w> to run cargo watch in a vertical split
 nmap <leader>w :vertical :terminal<cr>cargo watch --shell 'clear && cargo test -- --quiet --test-threads=1'<cr>
+
+" Bind <leader>g to mark the current position and switch to the Gstatus window
+au FileType * nmap <buffer> <leader>g mG:above Gstatus<cr><C-w>p:wq<cr>:echo<cr>jj
+
+" Bind <leader>g (in the Gstatus window) to switch to the Gcommit window
+au FileType fugitive nmap <buffer> <leader>g :above Gcommit<cr><C-w>p:q<cr>:echo<cr>
+
+" Bind <leader>g (in the Gcommit window) to commit and switch back to the mark
+au FileType gitcommit nmap <buffer> <leader>g :above new<cr>'G<C-w>p:wq<cr><cr>:echo 'Committed changes.'<cr>
+
+" Bind <leader>G (in the Gstatus window) to switch back to the mark
+au FileType fugitive nmap <buffer> <leader>G :enew<cr>'G:echo<cr>
+
+" Bind <leader>G (in the Gcommit window) to switch back to the mark
+au FileType gitcommit nmap <buffer> <leader>G :enew<cr>'G:echo 'Cancelled.'<cr>
