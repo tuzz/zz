@@ -204,7 +204,7 @@ nmap <leader>T :terminal<cr>
 nmap <leader>w :vertical :terminal<cr>cargo watch --shell 'clear && cargo test -- --quiet --test-threads=1'<cr>
 
 " Bind <leader>g to mark the current position and switch to the Gstatus window
-au FileType * nmap <buffer> <leader>g mG:above Gstatus<cr><C-w>p:wq<cr>:echo<cr>jj
+au FileType * nmap <buffer> <leader>g mG:above Gstatus<cr><C-w>p:wq<cr>:echo<cr>ggjj
 
 " Bind <leader>g (in the Gstatus window) to switch to the Gcommit window
 au FileType fugitive nmap <buffer> <leader>g :above Gcommit<cr><C-w>p:q<cr>:echo<cr>
