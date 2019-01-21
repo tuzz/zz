@@ -146,7 +146,7 @@ let g:NERDTreeMinimalUI=1
 let g:NERDTreeMinimalMenu=1
 
 " Make the file drawer a little narrower than default
-let g:NERDTreeWinSize=22
+let g:NERDTreeWinSize=20
 
 " Change file order so file2.txt is before file10.txt
 let g:NERDTreeNaturalSort=1
@@ -189,8 +189,8 @@ nmap <leader>t :vertical :terminal<cr>
 " Bind <leader-T> to open a terminal in a horizontal split
 nmap <leader>T :terminal<cr>
 
-" Bind <leader-w> to run cargo watch in a vertical split
-nmap <leader>w :vertical :terminal<cr>cargo watch --shell 'clear && cargo test -- --quiet --test-threads=1'<cr>
+" Bind <leader-w> to run cargo watch in a slightly smaller vertical split
+nmap <leader>w :vertical :terminal<cr><C-n>:vertical resize -5<cr>icargo watch --shell 'clear && cargo test -- --quiet --test-threads=1'<cr>
 
 " Bind <leader>g to mark the current position and switch to the Gstatus window
 au FileType * nmap <buffer> <leader>g mG:above Gstatus<cr><C-w>p:wq<cr>:echo<cr>ggjj
