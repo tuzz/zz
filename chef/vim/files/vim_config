@@ -7,7 +7,8 @@ Plug 'mileszs/ack.vim'
 Plug 'milkypostman/vim-togglelist'
 Plug 'nanotech/jellybeans.vim'
 Plug 'rust-lang/rust.vim'
-Plug 'scrooloose/nerdtree'
+"Plug 'scrooloose/nerdtree'
+Plug 'tuzz/nerdtree'
 Plug 'skalnik/vim-vroom'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
@@ -104,15 +105,6 @@ function! <SID>StripTrailingWhitespace()
 endfunction
 autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
 
-" Hide NERDTree's action prompt menu
-function! HideNERDTreeMenu()
-  function! g:NERDTreeMenuController._echoPrompt()
-  endfunction
-  function! g:NERDTreeMenuController._setCmdheight()
-  endfunction
-endfunction
-autocmd VimEnter * call HideNERDTreeMenu()
-
 " Use the jellybeans colorscheme with some tweaks
 let g:jellybeans_background_color_256=0
 silent! color jellybeans
@@ -155,6 +147,9 @@ let g:ackhighlight = 1
 
 " Use NERDTree's minimal user interface
 let g:NERDTreeMinimalUI=1
+
+" Use NERDTree's minimal menu
+let g:NERDTreeMinimalMenu=1
 
 " Make the file drawer a little narrower than default
 let g:NERDTreeWinSize=22
