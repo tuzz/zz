@@ -169,6 +169,10 @@ module ZZ
         File.expand_path("~/.config/minidlna/minidlna.conf")
       end
 
+      def minidlna_reindex
+        "/usr/local/bin/reindex"
+      end
+
       def minidlna_media
         "/Volumes/hdd"
       end

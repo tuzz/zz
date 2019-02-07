@@ -1,0 +1,8 @@
+#!/bin/bash
+
+brew services stop minidlna
+rm -rf /Volumes/hdd/.minidlna
+brew services restart minidlna
+/usr/local/Cellar/minidlna/*/sbin/minidlnad -r
+/usr/local/Cellar/minidlna/*/sbin/minidlnad -R
+watch ls -l /Volumes/hdd/.minidlna/
