@@ -282,7 +282,7 @@ module ZZ
       end
 
       def install_clippy
-        execute("cargo install clippy")
+        execute("rustup component add clippy --toolchain=nightly")
       end
 
       def clippy_installed?
