@@ -57,6 +57,10 @@ module ZZ
         "/Applications/Dropbox.app"
       end
 
+      def docker_app
+        "/Applications/Docker.app"
+      end
+
       def screenflow_config
         to("chef/screenflow/files/config.xml")
       end

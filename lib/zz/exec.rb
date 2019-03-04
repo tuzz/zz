@@ -96,6 +96,10 @@ module ZZ
         execute("open #{Path.dropbox_app}")
       end
 
+      def open_docker
+        execute("open #{Path.docker_app}")
+      end
+
       def cask_installed?(name)
         execute("brew cask list | grep #{name}")
       end
