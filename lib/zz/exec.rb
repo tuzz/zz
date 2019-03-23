@@ -170,6 +170,20 @@ module ZZ
         execute("gpg-reset")
       end
 
+      def ffmpeg_patched?
+        File.read(Path.ffmpeg_recipe).include?("libfdk-aac")
+      end
+
+      def patch_ffmpeg
+        lines = File.read(Path.ffmpeg_recipe).lines
+        index = lines.index { |l| l.include?("args =") } + 1
+
+        lines.insert(index, "--enable-nonfree\n")
+        lines.insert(index, "--enable-libfdk-aac\n")
+
+        File.write(Path.ffmpeg_recipe, lines.join)
+      end
+
       def iterm_config_dir_set?
         Pref.iterm_config_enabled &&
           Pref.iterm_config_directory == Path.iterm_directory

@@ -65,6 +65,10 @@ module ZZ
         to("chef/screenflow/files/config.xml")
       end
 
+      def ffmpeg_recipe
+        "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/ffmpeg.rb"
+      end
+
       def transcode
         "/usr/local/bin/transcode"
       end
