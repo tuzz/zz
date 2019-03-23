@@ -2,6 +2,7 @@ eval "$(rbenv  init - 2> /dev/null)"
 eval "$(nodenv init - 2> /dev/null)"
 
 export PATH="$HOME/.cargo/bin:$PATH"
+export EDITOR=vim
 
 export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK="${HOME}/.gnupg/S.gpg-agent.ssh"
