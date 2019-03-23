@@ -349,8 +349,20 @@ module ZZ
         execute("nodenv global #{latest_node}")
       end
 
+      def yarn_installed?
+        execute("npm list --global --depth 0 | grep yarn")
+      end
+
+      def install_yarn
+        execute("npm install --global yarn")
+      end
+
       def sshd_config_written?
         execute("sudo cat #{ZZ::Path.sshd_config} | grep 'Protocol 2'")
+      end
+
+      def rehash_nodenv
+        execute("nodenv rehash")
       end
 
       def write_sshd_config
