@@ -1,6 +1,8 @@
 package "ack"
 package "ctags"
+package "gs"
 package "htop"
+package "imagemagick"
 package "lftp"
 package "ncdu"
 package "nmap"
