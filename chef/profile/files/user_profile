@@ -2,6 +2,8 @@ eval "$(rbenv  init - 2> /dev/null)"
 eval "$(nodenv init - 2> /dev/null)"
 
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="/usr/local/opt/postgresql@9.5/bin:$PATH"
+
 export EDITOR=vim
 
 export GPG_TTY="$(tty)"
