@@ -21,3 +21,8 @@ ruby_block "tap drivers" do
   not_if { ZZ::Exec.tapped_drivers? }
   block { ZZ::Exec.tap_drivers }
 end
+
+ruby_block "tap versions" do
+  not_if { ZZ::Exec.tapped_versions? }
+  block { ZZ::Exec.tap_versions }
+end

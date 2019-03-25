@@ -56,6 +56,14 @@ module ZZ
         execute("brew tap caskroom/drivers")
       end
 
+      def tapped_versions?
+        execute("brew tap | grep homebrew/cask-versions")
+      end
+
+      def tap_versions
+        execute("brew tap homebrew/cask-versions")
+      end
+
       def service_started?(name)
         execute("brew services list | grep #{name} | grep started > /dev/null")
       end

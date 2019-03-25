@@ -27,6 +27,7 @@
     "psequel",
     "postgres",
     "redis",
+    "elasticsearch",
     "pdftk",
     "wireshark",
     "perspective",
