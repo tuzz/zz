@@ -49,6 +49,14 @@ module ZZ
         to("tmp/mysides.pkg")
       end
 
+      def pdftk_remote_package
+        "https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg"
+      end
+
+      def pdftk_local_package
+        to("tmp/pdftk.pkg")
+      end
+
       def dropbox_config
         File.expand_path("~/.dropbox/info.json")
       end

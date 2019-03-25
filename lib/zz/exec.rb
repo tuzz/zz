@@ -72,6 +72,14 @@ module ZZ
         execute("sudo installer -pkg #{Path.mysides_local_package} -target /")
       end
 
+      def pdftk_installed?
+        execute("which pdftk 2> /dev/null")
+      end
+
+      def install_pdftk
+        execute("sudo installer -pkg #{Path.pdftk_local_package} -target /")
+      end
+
       def sidebar_items
         capture("mysides list | awk '{ print $1 }'").split
       end
