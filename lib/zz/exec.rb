@@ -355,8 +355,16 @@ module ZZ
         capture("nodenv versions").include?(latest_node)
       end
 
+      def node_version_installed?(version)
+        capture("nodenv versions").include?(version)
+      end
+
       def install_latest_node
         execute("nodenv install #{latest_node}")
+      end
+
+      def install_node_version(version)
+        execute("nodenv install #{version}")
       end
 
       def latest_node

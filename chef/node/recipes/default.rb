@@ -5,6 +5,11 @@ ruby_block "install latest node" do
   block { ZZ::Exec.install_latest_node }
 end
 
+ruby_block "install node 10.15.2" do
+  not_if { ZZ::Exec.node_version_installed?("10.15.2") }
+  block { ZZ::Exec.install_node_version("10.15.2") }
+end
+
 ruby_block "set global node" do
   not_if { ZZ::Exec.global_node_set? }
   block { ZZ::Exec.set_global_node }
