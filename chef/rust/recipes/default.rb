@@ -10,14 +10,14 @@ ruby_block "target wasm" do
   block { ZZ::Exec.target_wasm }
 end
 
+ruby_block "install wasm-pack" do
+  not_if { ZZ::Exec.wasm_pack_installed? }
+  block { ZZ::Exec.install_wasm_pack }
+end
+
 ruby_block "install clippy" do
   not_if { ZZ::Exec.clippy_installed? }
   block { ZZ::Exec.install_clippy }
-end
-
-ruby_block "install cargo-web" do
-  not_if { ZZ::Exec.cargo_web_installed? }
-  block { ZZ::Exec.install_cargo_web }
 end
 
 ruby_block "install cargo-watch" do

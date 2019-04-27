@@ -323,12 +323,12 @@ module ZZ
         execute("ls #{Path.cargo_bin} | grep cargo-clippy")
       end
 
-      def install_cargo_web
-        execute("cargo install cargo-web")
+      def install_wasm_pack
+        execute("cargo install wasm-pack")
       end
 
-      def cargo_web_installed?
-        execute("ls #{Path.cargo_bin} | grep cargo-web")
+      def wasm_pack_installed?
+        execute("ls #{Path.cargo_bin} | grep wasm-pack")
       end
 
       def install_cargo_watch
