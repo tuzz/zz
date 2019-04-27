@@ -1,4 +1,5 @@
 package "ack"
+package "binaryen"
 package "ctags"
 package "gs"
 package "htop"
