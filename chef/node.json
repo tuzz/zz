@@ -5,6 +5,7 @@
     "yubikey",
     "gpg",
     "ssh",
+    "aws",
     "profile",
     "git",
     "gitx",
