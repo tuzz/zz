@@ -1,0 +1,7 @@
+#!/bin/bash
+
+function _zz () {
+  COMPREPLY=($(zz complete $COMP_LINE));
+};
+
+complete -F _zz zz

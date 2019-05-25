@@ -1,6 +1,8 @@
 eval "$(rbenv  init - 2> /dev/null)"
 eval "$(nodenv init - 2> /dev/null)"
 
+source /usr/local/bin/zz-completion.bash
+
 export ES_HOME="/usr/local/Cellar/elasticsearch/6.6.2/bin"
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 

@@ -208,6 +208,10 @@ module ZZ
       def cargo_bin
         File.expand_path("~/.cargo/bin")
       end
+
+      def zz_completion
+        "/usr/local/bin/zz-completion.bash"
+      end
     end
   end
 end
