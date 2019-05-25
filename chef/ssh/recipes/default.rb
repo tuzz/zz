@@ -1,3 +1,5 @@
+package "openssh"
+
 cookbook_file "use gpg for ssh authentication" do
   source "gpg_agent_config"
   path ZZ::Path.gpg_agent_config
@@ -23,5 +25,11 @@ end
 cookbook_file "authorized keys" do
   source "public_ssh_key"
   path ZZ::Path.authorized_keys
+  mode "644"
+end
+
+cookbook_file "ssh config" do
+  source "ssh_config"
+  path ZZ::Path.ssh_config
   mode "644"
 end

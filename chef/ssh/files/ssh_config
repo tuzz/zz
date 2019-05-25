@@ -1,0 +1,2 @@
+# Before ssh runs, tell gpg-agent which tty to use for auth.
+Match host * exec "gpg-connect-agent UPDATESTARTUPTTY /bye"
