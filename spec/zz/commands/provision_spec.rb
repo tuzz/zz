@@ -53,6 +53,32 @@ RSpec.describe ZZ::Provision do
       subject.execute(%w(--only foo,bar))
     end
 
+    it "auto-completes the 'only' option" do
+      complete = subject.options.detect { |o| o.long == "only" }.complete
+
+      expect(complete.call([""])).to include("git", "ruby", "vim")
+      expect(complete.call(["ru"])).to eq ["ruby", "rust"]
+      expect(complete.call(["VI"])).to eq ["vim", "virtualbox"]
+
+      expect(complete.call(["x"])).to eq []
+      expect(complete.call(["ruby"])).to include("git", "ruby", "vim")
+
+      # Although this exact-matches, there are other options:
+      expect(complete.call(["Chrome"])).to eq ["chrome", "chromedriver"]
+
+      expect(complete.call(["vim,ru"])).to eq ["vim,ruby", "vim,rust"]
+      expect(complete.call(["vim,ruby"])).to include("git", "ruby", "vim")
+      expect(complete.call(["vim,ruby,Chrome"])).to eq [
+        "vim,ruby,chrome",
+        "vim,ruby,chromedriver",
+      ]
+
+      expect(complete.call(["vim,ruby,x,y,Ch"])).to eq [
+        "vim,ruby,x,y,chrome",
+        "vim,ruby,x,y,chromedriver",
+      ]
+    end
+
     it "can print a recipe to stdout" do
       expect(ZZ::Exec).not_to receive(:run_chef)
 
@@ -74,6 +100,20 @@ RSpec.describe ZZ::Provision do
       it "raises an error" do
         expect { subject.execute(%w(--edit missing)) }
           .to raise_error(/No such file or directory/)
+      end
+    end
+
+    it "auto-completes the 'print' and 'edit' options" do
+      %w(print edit).each do |name|
+        complete = subject.options.detect { |o| o.long == name }.complete
+
+        expect(complete.call([""])).to include("git", "ruby", "vim")
+        expect(complete.call(["ru"])).to eq ["ruby", "rust"]
+        expect(complete.call(["VI"])).to eq ["vim", "virtualbox"]
+
+        expect(complete.call(["x"])).to eq []
+        expect(complete.call(["vim"])).to eq []
+        expect(complete.call(["vim,ru"])).to eq []
       end
     end
   end

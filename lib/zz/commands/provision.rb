@@ -83,7 +83,10 @@ module ZZ
 
       def only_option
         help = "run a subset of recipes (e.g. homebrew,vim)"
-        @only_option ||= Option.new("o", "only", 1, help)
+
+        @only_option ||= Option.new("o", "only", 1, help) do |args|
+          auto_complete_recipe_list(args)
+        end
       end
 
       def list_option
@@ -93,12 +96,32 @@ module ZZ
 
       def print_option
         help = "print a recipe to stdout"
-        @print_option ||= Option.new("p", "print", 1, help)
+
+        @print_option ||= Option.new("p", "print", 1, help) do |args|
+          auto_complete_single_recipe(args)
+        end
       end
 
       def edit_option
         help = "open a recipe in your editor"
-        @edit_option ||= Option.new("e", "edit", 1, help)
+
+        @edit_option ||= Option.new("e", "edit", 1, help) do |args|
+          auto_complete_single_recipe(args)
+        end
+      end
+
+      def auto_complete_single_recipe(args)
+        list = recipes.select { |t| t.start_with?(args.last.downcase) }
+        list == [args.last] ? [] : list
+      end
+
+      def auto_complete_recipe_list(args)
+        *head, prefix = args.last.downcase.split(",")
+        list = recipes.select { |r| r.start_with?(prefix || "") }
+
+        return recipes if list == [prefix]
+
+        list.map { |l| (head + [l]).join(",") }
       end
     end
   end
