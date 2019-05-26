@@ -41,26 +41,26 @@ RSpec.describe ZZ::Provision do
       allow(ZZ::Exec).to receive(:revoke_permissions)
     end
 
-    it "can list available provisioning scripts" do
+    it "can list available recipes" do
       expect(ZZ::Exec).not_to receive(:run_chef)
 
       expect { subject.execute(%w(--list)) }
         .to output(/slack\nssh\ntools/).to_stdout
     end
 
-    it "can run a subset of provisioning scripts" do
+    it "can run a subset of recipes" do
       expect(ZZ::Exec).to receive(:run_chef).with("foo,bar")
       subject.execute(%w(--only foo,bar))
     end
 
-    it "can print a script to stdout" do
+    it "can print a recipe to stdout" do
       expect(ZZ::Exec).not_to receive(:run_chef)
 
       expect { subject.execute(%w(--print vim)) }
         .to output(/package "vim"/).to_stdout
     end
 
-    it "can open a provisioning script for editing" do
+    it "can open a provisioning recipe for editing" do
       expect(ZZ::Exec).not_to receive(:run_chef)
 
       expect(ZZ::Exec).to receive(:edit) do |file|
@@ -70,7 +70,7 @@ RSpec.describe ZZ::Provision do
       subject.execute(%w(--edit vim))
     end
 
-    context "when the script to edit doesn't exist" do
+    context "when the recipe to edit doesn't exist" do
       it "raises an error" do
         expect { subject.execute(%w(--edit missing)) }
           .to raise_error(/No such file or directory/)

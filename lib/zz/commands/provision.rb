@@ -7,11 +7,11 @@ module ZZ
         @matches = Option.matches(options, args)
 
         if matches[print_option].any?
-          print_script
+          print_recipe
         elsif matches[edit_option].any?
-          edit_script
+          edit_recipe
         elsif matches[list_option].any?
-          list_scripts
+          list_recipes
         else
           run_chef
         end
@@ -40,22 +40,27 @@ module ZZ
 
       private
 
-      def print_script
-        script = matches[print_option].last.args
-        puts File.read(script_path(script))
+      def print_recipe
+        recipe = matches[print_option].last.args
+        puts File.read(recipe_path(recipe))
       end
 
-      def edit_script
-        script = matches[edit_option].last.args
+      def edit_recipe
+        recipe = matches[edit_option].last.args
 
-        File.read(script_path(script))
-        Exec.edit(script_path(script))
+        File.read(recipe_path(recipe))
+        Exec.edit(recipe_path(recipe))
       end
 
-      def list_scripts
+      def list_recipes
+        recipes.each { |r| puts r }
+      end
+
+      def recipes
         Dir["#{Path.chef_cookbooks}/*"]
-          .select { |path| File.directory?(path) }.sort
-          .each { |dir| puts File.basename(dir) }
+          .select { |path| File.directory?(path) }
+          .map { |dir| File.basename(dir) }
+          .sort
       end
 
       def run_chef
@@ -72,27 +77,27 @@ module ZZ
         match.args.first if match
       end
 
-      def script_path(script)
-        File.join(Path.chef_cookbooks, script, "recipes", "default.rb")
+      def recipe_path(recipe)
+        File.join(Path.chef_cookbooks, recipe, "recipes", "default.rb")
       end
 
       def only_option
-        help = "only run these scripts (e.g. homebrew,vim)"
+        help = "run a subset of recipes (e.g. homebrew,vim)"
         @only_option ||= Option.new("o", "only", 1, help)
       end
 
       def list_option
-        help = "list available provisioning scripts"
+        help = "list available recipes"
         @list_option ||= Option.new("l", "list", 0, help)
       end
 
       def print_option
-        help = "print this script to stdout"
+        help = "print a recipe to stdout"
         @print_option ||= Option.new("p", "print", 1, help)
       end
 
       def edit_option
-        help = "open this script in your editor"
+        help = "open a recipe in your editor"
         @edit_option ||= Option.new("e", "edit", 1, help)
       end
     end
