@@ -105,6 +105,14 @@ RSpec.describe ZZ::Template do
         .not_to output(/Which type?/).to_stdout
     end
 
+    it "auto-completes the template type" do
+      complete = subject.options.detect { |o| o.long == "type" }.complete
+
+      expect(complete.call(["ru"])).to eq ["rust", "ruby"]
+      expect(complete.call(["x"])).to eq []
+      expect(complete.call(["ruby"])).to eq []
+    end
+
     it "can set the project name" do
       expect_prompt(responses: ["ruby"])
 

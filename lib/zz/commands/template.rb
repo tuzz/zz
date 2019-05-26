@@ -2,6 +2,7 @@ module ZZ
   module Template
     class << self
       NAME_REGEX = /^[a-z][^\s]*$/i
+      COPYRIGHT = "Chris Patuzzo <chris@patuzzo.co.uk>"
 
       attr_accessor :matches, :proj_name, :proj_type, :copyright
 
@@ -72,8 +73,7 @@ module ZZ
       end
 
       def fetch_copyright
-        copyright = option_value(copyright_option)
-        copyright || "Chris Patuzzo <chris@patuzzo.co.uk>"
+        option_value(copyright_option) || COPYRIGHT
       end
 
       def copy_template
@@ -145,7 +145,8 @@ module ZZ
         help = "sets the type of template (e.g. ruby)"
 
         @type_option ||= Option.new("t", "type", 1, help) do |args|
-          types.select { |t| t.start_with?(args.last) }
+          list = types.select { |t| t.start_with?(args.last) }
+          list == [args.last] ? [] : list
         end
       end
 
