@@ -11,13 +11,14 @@ module ZZ
       end
     end
 
-    attr_accessor :short, :long, :arity, :summary
+    attr_accessor :short, :long, :arity, :summary, :complete
 
-    def initialize(short, long, arity, summary)
+    def initialize(short, long, arity, summary, &complete)
       self.short = short
       self.long = long
       self.arity = arity
       self.summary = summary
+      self.complete = complete
     end
 
     def match(args)

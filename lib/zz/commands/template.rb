@@ -143,7 +143,10 @@ module ZZ
 
       def type_option
         help = "sets the type of template (e.g. ruby)"
-        @type_option ||= Option.new("t", "type", 1, help)
+
+        @type_option ||= Option.new("t", "type", 1, help) do |args|
+          types.select { |t| t.start_with?(args.last) }
+        end
       end
 
       def name_option

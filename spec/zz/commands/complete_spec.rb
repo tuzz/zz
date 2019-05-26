@@ -37,15 +37,50 @@ RSpec.describe ZZ::Complete do
 
   context "when there is an exact match of an option" do
     it "prints all options if the option takes no arguments" do
-      expect { subject.execute(["zz", "provision", "--list"]) }
-        .to output("--only --print --edit --list").to_stdout
+      expect { subject.execute(["zz", "template", "--list"]) }
+        .to output("--type --name --copyright --list").to_stdout
     end
 
     it "prints nothing if the option takes arguments" do
-      expect { subject.execute(["zz", "provision", "--only"]) }
+      expect { subject.execute(["zz", "template", "--name"]) }
+        .to output("").to_stdout
+    end
+  end
+
+  context "when the option has a completion proc" do
+    it "prints the result of calling the proc" do
+      expect { subject.execute(["zz", "template", "--type"]) }
+        .to output("rust cpp ruby").to_stdout
+    end
+
+    it "passes args to the proc so it can filter the list of completions" do
+      expect { subject.execute(["zz", "template", "--type", "ru"]) }
+        .to output("rust ruby").to_stdout
+    end
+
+    it "prints nothing if the argument doesn't match" do
+      expect { subject.execute(["zz", "template", "--type", "x"]) }
         .to output("").to_stdout
     end
 
-    pending "hand over to option for autocompletion"
+    it "prints nothing if the option does not have a completion proc" do
+      expect { subject.execute(["zz", "template", "--name"]) }
+        .to output("").to_stdout
+    end
+
+    it "can handle the option in an earlier position" do
+      expect { subject.execute(["zz", "template", "--type", "x", "x", "ru"]) }
+        .to output("rust ruby").to_stdout
+    end
+
+    it "ignores arguments in earlier positions that look like options" do
+      expect { subject.execute(["zz", "template", "--type", "x", "--x", "ru"]) }
+        .to output("rust ruby").to_stdout
+    end
+
+    it "ignores earlier options when determining the auto-completion list" do
+      expect { subject.execute(["zz", "template", "--type", "ru", "--type"]) }
+        .to output("rust cpp ruby").to_stdout
+    end
   end
 end
