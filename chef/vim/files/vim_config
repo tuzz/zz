@@ -117,9 +117,9 @@ hi GitGutterAdd ctermfg=35
 hi GitGutterChange ctermfg=yellow
 hi GitGutterDelete ctermfg=124
 hi GitGutterChangeDelete ctermfg=yellow
-hi ALEError ctermbg=52
+hi ALEError ctermbg=235
 hi ALEErrorSign ctermbg=52
-hi ALEWarning ctermbg=17
+hi ALEWarning ctermbg=235
 hi ALEWarningSign ctermbg=17
 
 " Set the signs that appear in the column when linting
