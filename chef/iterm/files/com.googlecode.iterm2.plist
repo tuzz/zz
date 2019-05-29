@@ -828,6 +828,8 @@
 	<real>0.25</real>
 	<key>TabStyle</key>
 	<integer>1</integer>
+	<key>TabStyleWithAutomaticOption</key>
+	<integer>1</integer>
 	<key>TabViewType</key>
 	<integer>1</integer>
 	<key>TimeBetweenBlinks</key>
