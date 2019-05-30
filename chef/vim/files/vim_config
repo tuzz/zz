@@ -182,6 +182,9 @@ nmap <leader>N :NERDTreeFind<cr>
 " Bind global search to leader-f
 nmap <leader>f :set hlsearch<cr>:Ack!<space>
 
+" Bind showing/hiding lint errors to =ol (in the spirit of vim-unimpaired)
+nmap =ol :ALEToggle<cr>
+
 " Bind <leader-t> to open a terminal in a vertical split
 nmap <leader>t :vertical :terminal<cr>
 
