@@ -23,6 +23,7 @@ runtime! plugin/jellybeans.vim
 " Map comma as the leader key
 let mapleader=","
 
+set colorcolumn=81                " Draw a vertical bar after 80 characters
 set encoding=utf-8                " Use UTF-8 by default
 set expandtab                     " Use spaces instead of tabs
 set hlsearch                      " Highlight search matches
@@ -74,6 +75,9 @@ au FileType qf wincmd J
 " Quit the quickfix list with q
 au FileType qf nmap <buffer> q :q<cr>
 
+" Hide the character column in the quickfix list
+au FileType qf setlocal colorcolumn=
+
 " Remember last location in a file, unless it's a git commit message
 au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
   \| exe "normal! g`\"" | endif
@@ -83,6 +87,7 @@ tmap <C-n> <C-w>N
 set shell=/bin/bash\ --login
 au TerminalOpen * set nonumber
 au TerminalOpen * set nolist
+au TerminalOpen * set colorcolumn=
 au TerminalOpen * setlocal statusline=[terminal]
 au TerminalOpen * call feedkeys("\<c-w>N:echo\ni", 't')
 au BufEnter * if &buftype == 'terminal' | call feedkeys("\<C-w>N", 't') | endif
@@ -104,6 +109,7 @@ let g:jellybeans_background_color_256=0
 silent! color jellybeans
 hi Search ctermfg=black ctermbg=yellow cterm=NONE
 hi IncSearch ctermfg=black ctermbg=yellow cterm=NONE
+hi ColorColumn ctermbg=233
 hi StatusLine ctermfg=white ctermbg=black
 hi StatusLineNC ctermfg=240 ctermbg=black
 hi StatusLineTerm ctermfg=white ctermbg=black
