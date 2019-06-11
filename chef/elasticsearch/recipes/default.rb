@@ -3,7 +3,7 @@ ruby_block "install java 8" do
   block { ZZ::Exec.install_cask("java8") }
 end
 
-package "elasticsearch@6.6"
+package "elasticsearch@6.8"
 
 ruby_block "start elasticsearch" do
   not_if { ZZ::Exec.service_started?("elasticsearch") }
