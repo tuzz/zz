@@ -212,6 +212,10 @@ module ZZ
       def zz_completion
         "/usr/local/bin/zz-completion.bash"
       end
+
+      def secrets
+        File.expand_path("~/Dropbox/Secrets")
+      end
     end
   end
 end

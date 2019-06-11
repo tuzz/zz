@@ -6,6 +6,7 @@ require "zz/help"
 require "zz/option"
 require "zz/path"
 require "zz/pref"
+require "zz/secret"
 
 require "zz/commands/complete"
 require "zz/commands/debug"
