@@ -25,6 +25,33 @@ RSpec.describe ZZ::Exec do
     end
   end
 
+  describe ".interact" do
+    before do
+      allow(subject).to receive(:capture).and_call_original
+    end
+
+    it "provides input to an interactive program and returns the result" do
+      command = 'read -p "Name: " name; echo Hello $name'
+      output = subject.interact(command, name: "Chris")
+
+      expect(output).to eq("Hello Chris")
+    end
+
+    it 'captures all of the output' do
+      command = 'read -p "Name: " name; echo foo; echo bar; echo baz'
+      output = subject.interact(command, name: "Chris")
+
+      expect(output).to eq("foo\nbar\nbaz")
+    end
+
+    it "errors if the program does not provide the expected response" do
+      command = 'read -p "Name: " name; echo Hello $name'
+
+      expect { subject.interact(command, name: "Chris", expect: 'Hello Alice') }
+        .to raise_error("Expected 'Hello Alice' but got 'Hello Chris'")
+    end
+  end
+
   describe ".edit" do
     it "opens the path in the default editor, falling back to vi" do
       expect(subject).to receive(:execute).with("${EDITOR:-vi} foo")

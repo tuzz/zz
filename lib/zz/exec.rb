@@ -9,6 +9,10 @@ module ZZ
         `#{command}`.strip
       end
 
+      def interact(command, interactions)
+        Interactive.new(command, interactions).run
+      end
+
       def edit(path)
         execute("${EDITOR:-vi} #{path}")
       end
@@ -140,10 +144,14 @@ module ZZ
         line = capture("gpg --list-keys | grep fingerprint")
         fingerprint = line.split("=").last.gsub(/\s/, "")
 
-        edit_key = "gpg --edit-key #{fingerprint} trust quit"
-        user_input = '\"5\ry\r\"'
+        interact(
+          "gpg --edit-key #{fingerprint} trust quit",
 
-        execute(%{expect -c "spawn #{edit_key}; send #{user_input}; expect eof"})
+          "Your decision?" => 5,
+          "set this key to ultimate trust?" => "y",
+
+          expect: "trust: ultimate"
+        )
       end
 
       def zz_repo_initialized?
@@ -187,13 +195,14 @@ module ZZ
       end
 
       def add_aws_vault(name)
-        access_key = Secret.read("amazon", name, "access-key")
-        secret_key = Secret.read("amazon", name, "secret-key")
+        interact(
+          "aws-vault add #{name}",
 
-        command = "aws-vault add #{name}"
-        user_input = '\"' + access_key + '\r' + secret_key + '\r\"'
+          'Access Key ID:' => Secret.read("amazon", name, "access-key"),
+          'Secret Access Key:' => Secret.read("amazon", name, "secret-key"),
 
-        execute(%{expect -c "spawn #{command}; send #{user_input}; expect eof"})
+          expect: %{Added credentials to profile "#{name}"}
+        )
       end
 
       def aws_vault_added?(name)
