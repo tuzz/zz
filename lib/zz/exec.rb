@@ -186,6 +186,20 @@ module ZZ
         execute("gpg-reset")
       end
 
+      def add_aws_vault(name)
+        access_key = Secret.read("amazon", name, "access-key")
+        secret_key = Secret.read("amazon", name, "secret-key")
+
+        command = "aws-vault add #{name}"
+        user_input = '\"' + access_key + '\r' + secret_key + '\r\"'
+
+        execute(%{expect -c "spawn #{command}; send #{user_input}; expect eof"})
+      end
+
+      def aws_vault_added?(name)
+        execute("aws-vault list | grep #{name}")
+      end
+
       def ffmpeg_patched?
         File.read(Path.ffmpeg_recipe).include?("libfdk-aac")
       end
