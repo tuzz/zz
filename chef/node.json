@@ -2,6 +2,7 @@
   "run_list": [
     "homebrew",
     "dropbox",
+    "drive",
     "yubikey",
     "gpg",
     "ssh",
