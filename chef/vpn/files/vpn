@@ -1,4 +1,0 @@
-#!/bin/bash
-
-sudo openconnect -v --pfs --no-dtls \
- https://vpn.digital.cabinet-office.gov.uk/ah
