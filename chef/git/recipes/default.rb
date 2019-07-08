@@ -1,4 +1,5 @@
 package "git"
+package "diff-so-fancy"
 
 cookbook_file "set the global config file" do
   source "git_config"

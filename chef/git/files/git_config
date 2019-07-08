@@ -1,9 +1,26 @@
 [user]
-	name = Chris Patuzzo
-	email = chris@patuzzo.co.uk
+  name = Chris Patuzzo
+  email = chris@patuzzo.co.uk
 [push]
-	default = simple
-[core]
-	excludesfile = ~/.gitignore
+  default = simple
 [commit]
-	gpgsign = true
+  gpgsign = true
+[core]
+  excludesfile = ~/.gitignore
+  pager = diff-so-fancy | less --tabs=2 -+F -RXC
+[diff-so-fancy]
+  markEmptyLines = false
+  rulerWidth = 80
+[color "diff"]
+  commit = 11           # yellow
+  meta = 7              # light grey
+  frag = 8              # dark grey
+  old = 9               # light red
+  new = 48              # light green
+[color "diff-highlight"]
+  oldNormal = 7
+  oldHighlight = 7 52   # dark red bg
+  newNormal = 7
+  newHighlight = 7 22   # dark green bg
+[alias]
+  patch = !git --no-pager diff --no-color
