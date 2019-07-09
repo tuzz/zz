@@ -6,6 +6,6 @@ unzip -q zz.zip &&
 mv zz-master ~/.zz &&
 rm zz.zip &&
 sudo mkdir -p /usr/local/bin &&
-sudo chown tuzz /usr/local/bin &&
+sudo chown $(whoami) /usr/local/bin &&
 sudo ln -s ~/.zz/bin/zz /usr/local/bin/zz &&
 echo "Success. The 'zz' command is installed."
