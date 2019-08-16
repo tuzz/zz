@@ -1,4 +1,5 @@
 package "awscli"
+package "packer"
 package "terraform"
 package "terraform_landscape"
 
