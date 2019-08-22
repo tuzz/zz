@@ -824,6 +824,8 @@
 	<false/>
 	<key>SplitPaneDimmingAmount</key>
 	<real>0.10000000000000001</real>
+	<key>StretchTabsToFillBar</key>
+	<false/>
 	<key>TabFlashAnimationDuration</key>
 	<real>0.25</real>
 	<key>TabStyle</key>
@@ -832,6 +834,8 @@
 	<integer>1</integer>
 	<key>TabViewType</key>
 	<integer>1</integer>
+	<key>TabsHaveCloseButton</key>
+	<false/>
 	<key>TimeBetweenBlinks</key>
 	<real>1.0000000200408773e+20</real>
 	<key>UseBorder</key>
