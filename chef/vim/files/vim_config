@@ -162,6 +162,9 @@ let g:NERDTreeAutoDeleteBuffer=1
 " Set the status line to the name of the root directory
 let g:NERDTreeStatusline="%=%{split(getcwd(),'/')[-1]}/"
 
+" Move Rust's module/library file to the bottom of directory listings
+let g:NERDTreeSortOrder=['\/$', '*', '\.swp$', '\.bak$', '\~$', 'mod.rs', 'lib.rs', 'test.rs']
+
 " Bind <C-j> to move down the completion list
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
 
