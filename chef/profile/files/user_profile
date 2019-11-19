@@ -27,3 +27,5 @@ export PS1="\w\[\033[33m\]\$(git_branch)\[\033[00m\] $ "
 export RUSTFLAGS="-A dead_code"
 
 alias :q="exit"
+
+alias gca="git commit --amend --no-edit"
