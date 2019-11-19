@@ -6,9 +6,16 @@ source /usr/local/bin/zz-completion.bash
 export ES_HOME="/usr/local/Cellar/elasticsearch/6.6.2/bin"
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 
+export ANDROID_HOME="/Users/$USER/Library/Android/sdk"
+export ANDROID_SDK_HOME="/Users/$USER/Library/Android/sdk"
+export ANDROID_AVD_HOME="/Users/$USER/.android/avd"
+
 export PATH="$ES_HOME/bin:$JAVA_HOME/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/usr/local/opt/postgresql@9.5/bin:$PATH"
+export PATH="$ANDROID_HOME/tools:$PATH"
+export PATH="$ANDROID_HOME/platform-tools:$PATH"
+export PATH="$ANDROID_AVD_HOME:$PATH"
 
 export EDITOR=vim
 
