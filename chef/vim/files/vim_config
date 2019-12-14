@@ -15,6 +15,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-unimpaired'
 Plug 'w0rp/ale'
+Plug 'https://gitlab.com/dbeniamine/todo.txt-vim.git'
 
 call plug#end()
 
@@ -24,6 +25,7 @@ runtime! plugin/jellybeans.vim
 
 " Map comma as the leader key
 let mapleader=","
+let maplocalleader=","
 
 set colorcolumn=81                " Draw a vertical bar after 80 characters
 set encoding=utf-8                " Use UTF-8 by default
@@ -68,8 +70,14 @@ set wildignore+=*.swp,*~,._*
 
 " Set file types for various extensions
 au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Procfile,*.ru,*.rake} set ft=ruby
-au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} set ft=markdown | set wrap
+au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} set ft=markdown | set wrap
 au BufRead,BufNewFile {*.json,.jshintrc,.eslintrc,*.pegjs} set ft=javascript
+
+" Add auto-completion support for todo-txt files
+au filetype todo setlocal omnifunc=todo#Complete
+au filetype todo imap <buffer> + +<C-X><C-O>
+au filetype todo imap <buffer> @ @<C-X><C-O>
+au filetype todo normal zR
 
 " Use the full window width for the quickfix list
 au FileType qf wincmd J

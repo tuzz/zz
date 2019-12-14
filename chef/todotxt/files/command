@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source /usr/local/opt/todo-txt/etc/bash_completion.d/todo_completion
+
+complete -F _todo t
+
+/usr/local/bin/todo.sh $@
