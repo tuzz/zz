@@ -1,11 +1,5 @@
 package "todo-txt"
 
-directory "create todotxt add-ons directory" do
-  path ZZ::Path.todotxt_add_ons
-  mode "700"
-  recursive true
-end
-
 cookbook_file "todo-txt config" do
   source "config"
   path ZZ::Path.todotxt_config
@@ -16,3 +10,11 @@ cookbook_file "todo-txt command" do
   path ZZ::Path.todotxt_command
   mode "755"
 end
+
+# https://github.com/mgarrido/todo.txt-cli/tree/note/todo.actions.d
+remote_directory "copy todotxt add-ons" do
+  source "add_ons"
+  path ZZ::Path.todotxt_add_ons
+  files_mode "755"
+end
+

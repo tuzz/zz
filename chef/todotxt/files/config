@@ -11,6 +11,7 @@ export REPORT_FILE="$TODO_DIR/report.txt"
 
 # You can customize your actions directory location
 export TODO_ACTIONS_DIR="$HOME/.todo/add_ons"
+export TODO_NOTE_EXT=.md
 
 # == EDIT FILE LOCATIONS ABOVE ===
 
