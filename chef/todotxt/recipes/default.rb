@@ -11,10 +11,11 @@ cookbook_file "todo-txt command" do
   mode "755"
 end
 
-# https://github.com/mgarrido/todo.txt-cli/tree/note/todo.actions.d
 remote_directory "copy todotxt add-ons" do
   source "add_ons"
   path ZZ::Path.todotxt_add_ons
   files_mode "755"
-end
 
+  # https://github.com/mgarrido/todo.txt-cli/tree/note/todo.actions.d/note
+  # https://github.com/doegox/todo.txt-cli/blob/extras/todo.actions.d/nav
+end
