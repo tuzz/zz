@@ -52,21 +52,21 @@ export TODO_NOTE_EXT=.md
 # Priorities can be any upper-case letter.
 # A,B,C are highlighted; you can add coloring for more.
 #
-# export PRI_A=$YELLOW        # color for A priority
-# export PRI_B=$GREEN         # color for B priority
-# export PRI_C=$LIGHT_BLUE    # color for C priority
-# export PRI_D=...            # define your own
-# export PRI_X=$WHITE         # color unless explicitly defined
+export PRI_A=$LIGHT_RED       # color for A priority
+export PRI_B=$YELLOW          # color for B priority
+export PRI_C=$LIGHT_CYAN      # color for C priority
+export PRI_D=$DEFAULT         # define your own
+export PRI_X=$DEFAULT         # color unless explicitly defined
 
 # There is highlighting for tasks that have been done,
 # but haven't been archived yet.
 #
-# export COLOR_DONE=$LIGHT_GREY
+export COLOR_DONE=$BROWN
 
 # There is highlighting for projects and contexts.
 #
-# export COLOR_PROJECT=$RED
-# export COLOR_CONTEXT=$RED
+export COLOR_PROJECT=$WHITE
+export COLOR_CONTEXT=$WHITE
 
 # === BEHAVIOR ===
 
