@@ -15,7 +15,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-unimpaired'
 Plug 'w0rp/ale'
-Plug 'https://gitlab.com/dbeniamine/todo.txt-vim.git'
 
 call plug#end()
 
@@ -72,12 +71,6 @@ set wildignore+=*.swp,*~,._*
 au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Procfile,*.ru,*.rake} set ft=ruby
 au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} set ft=markdown | set wrap
 au BufRead,BufNewFile {*.json,.jshintrc,.eslintrc,*.pegjs} set ft=javascript
-
-" Add auto-completion support for todo-txt files
-au filetype todo setlocal omnifunc=todo#Complete
-au filetype todo imap <buffer> + +<C-X><C-O>
-au filetype todo imap <buffer> @ @<C-X><C-O>
-au filetype todo normal zR
 
 " Use the full window width for the quickfix list
 au FileType qf wincmd J

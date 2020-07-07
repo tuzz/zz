@@ -193,18 +193,6 @@ module ZZ
         "/Volumes/hdd"
       end
 
-      def todotxt_add_ons
-        File.expand_path("~/.todo/add_ons")
-      end
-
-      def todotxt_config
-        File.expand_path("~/.todo/config")
-      end
-
-      def todotxt_command
-        "/usr/local/bin/t"
-      end
-
       def templates
         to("templates")
       end
