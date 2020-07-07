@@ -166,7 +166,7 @@ module ZZ
       end
 
       def user_profile
-        File.expand_path("~/.profile")
+        File.expand_path("~/.zshrc")
       end
 
       def hushlogin

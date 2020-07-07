@@ -1,12 +1,13 @@
 eval "$(rbenv  init - 2> /dev/null)"
 eval "$(nodenv init - 2> /dev/null)"
 
-source /usr/local/bin/zz-completion.bash
-
 export PATH="$HOME/.cargo/bin:$PATH"
 export RUSTFLAGS="-A dead_code"
 
-export PS1="\w\[\033[33m\]\$(git_branch)\[\033[00m\] $ "
+setopt prompt_subst
+autoload -U colors && colors
+
+export PROMPT="%~%{$fg[yellow]%}\$(git_branch)%{$reset_color%} $ "
 export EDITOR=vim
 
 export GPG_TTY="$(tty)"
