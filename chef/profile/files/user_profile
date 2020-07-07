@@ -3,29 +3,13 @@ eval "$(nodenv init - 2> /dev/null)"
 
 source /usr/local/bin/zz-completion.bash
 
-export ES_HOME="/usr/local/Cellar/elasticsearch/6.6.2/bin"
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home"
-
-export ANDROID_HOME="/Users/$USER/Library/Android/sdk"
-export ANDROID_SDK_HOME="/Users/$USER/Library/Android/sdk"
-export ANDROID_AVD_HOME="/Users/$USER/.android/avd"
-
-export PATH="$ES_HOME/bin:$JAVA_HOME/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="/usr/local/opt/postgresql@9.5/bin:$PATH"
-export PATH="$ANDROID_HOME/tools:$PATH"
-export PATH="$ANDROID_HOME/platform-tools:$PATH"
-export PATH="$ANDROID_AVD_HOME:$PATH"
+export RUSTFLAGS="-A dead_code"
 
+export PS1="\w\[\033[33m\]\$(git_branch)\[\033[00m\] $ "
 export EDITOR=vim
 
 export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK="${HOME}/.gnupg/S.gpg-agent.ssh"
-
-export PS1="\w\[\033[33m\]\$(git_branch)\[\033[00m\] $ "
-
-export RUSTFLAGS="-A dead_code"
-
-alias :q="exit"
 
 alias gca="git commit --amend --no-edit"

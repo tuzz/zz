@@ -34,7 +34,6 @@
     "node",
     "ruby",
     "rust",
-    "android",
     "aws"
   ]
 }
