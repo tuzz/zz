@@ -1,4 +1,5 @@
 package "rustup-init"
+package "sccache"
 
 ruby_block "rustup" do
   not_if { ZZ::Exec.cargo_configured? }

@@ -3,6 +3,7 @@ eval "$(nodenv init - 2> /dev/null)"
 
 export PATH="$HOME/.cargo/bin:$PATH"
 export RUSTFLAGS="-A dead_code"
+export RUSTC_WRAPPER=/usr/local/bin/sccache cargo build
 
 setopt prompt_subst
 autoload -U colors && colors
