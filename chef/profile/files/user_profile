@@ -15,3 +15,5 @@ export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK="${HOME}/.gnupg/S.gpg-agent.ssh"
 
 alias gca="git commit --amend --no-edit"
+
+bindkey '\CI' expand-or-complete-prefix
