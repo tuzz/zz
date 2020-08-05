@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby
+
+require "net/http"
+require "fileutils"
+
+DOTS_PER_INCH = 300
+JPEG_QUALITY = 75
+TMP_DIRECTORY = "/tmp/scans"
+OUT_DIRECTORY = "/Users/tuzz/Dropbox/Paperwork/_ToBeSorted"
+SCAN_COOLDOWN = 5
+
+ip = nil
+
+1.upto(255) do |i|
+  ip = "192.168.0.#{i}"
+  uri = URI.parse("http://#{ip}/eSCL/ScannerCapabilities")
+  break if Net::HTTP.get(uri).include?("ScannerCapabilities")
+rescue Errno::ECONNREFUSED
+end
+
+if ip.nil?
+  puts "Failed to discover scanner on the network."
+  exit(1)
+end
+
+puts "Found scanner at #{ip}..."
+
+# TODO: Install escl-scan-cli with zz once my PR is merged.
+# https://github.com/ElXreno/escl-scan/pull/16
+
+FileUtils.rm_rf(TMP_DIRECTORY)
+FileUtils.mkdir_p(OUT_DIRECTORY)
+
+(1..).each do |doc|
+  dir = "#{TMP_DIRECTORY}/#{doc}"
+  FileUtils.mkdir_p(dir)
+
+  time = nil
+  (1..).each do |page|
+    system("escl-scan-cli #{ip} #{dir}/#{page}.jpg --dpi #{DOTS_PER_INCH}")
+    time = Time.now.to_f
+
+    print "Add page to existing document? [Y/n] "
+    input = gets.strip.downcase
+
+    break if input.start_with?("n")
+
+    # Wait for the scanner to reset.
+    elapsed = Time.now.to_f - time
+    duration = SCAN_COOLDOWN - elapsed
+    sleep duration if duration > 0
+  end
+
+  puts "Converting to PDF with quality #{JPEG_QUALITY}..."
+  out_path = "#{OUT_DIRECTORY}/#{Time.now.to_i}.pdf"
+
+  system("convert #{dir}/*.jpg -quality #{JPEG_QUALITY} -sampling-factor 4:2:0 -strip #{out_path}")
+  puts "Written to #{out_path}"
+
+  print "Start a new document? [Y/n] "
+  input = gets.strip.downcase
+
+  break if input.start_with?("n")
+
+  elapsed = Time.now.to_f - time
+  duration = SCAN_COOLDOWN - elapsed
+  sleep duration if duration > 0
+end
+
+puts "Done. Scans are in #{OUT_DIRECTORY}"
+
+print "Open directory in Finder? [Y/n] "
+input = gets.strip.downcase
+
+exit if input.start_with?("n")
+system("open #{OUT_DIRECTORY}")

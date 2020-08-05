@@ -101,6 +101,10 @@ module ZZ
         to("chef/gpg/files/public_gpg_key")
       end
 
+      def scan
+        File.expand_path("/usr/local/bin/scan")
+      end
+
       def ssh_directory
         File.expand_path("~/.ssh")
       end
