@@ -81,6 +81,9 @@ au FileType qf nmap <buffer> q :q<cr>
 " Hide the character column in the quickfix list
 au FileType qf setlocal colorcolumn=
 
+" Make the quickfix statusline display the number of lines
+au FileType qf setlocal statusline=[quickfix]\ [%L\ %{line('$')==1?'line':'lines'}]
+
 " Remember last location in a file, unless it's a git commit message
 au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
   \| exe "normal! g`\"" | endif
