@@ -362,6 +362,14 @@ module ZZ
         execute("ls #{Path.cargo_bin} | grep cargo-watch")
       end
 
+      def install_renamer
+        execute("cargo install pipe-rename")
+      end
+
+      def renamer_installed?
+        execute("ls #{Path.cargo_bin} | grep renamer")
+      end
+
       def latest_ruby_installed?
         capture("rbenv versions").include?(latest_ruby)
       end

@@ -25,3 +25,8 @@ ruby_block "install cargo-watch" do
   not_if { ZZ::Exec.cargo_watch_installed? }
   block { ZZ::Exec.install_cargo_watch }
 end
+
+ruby_block "install renamer" do
+  not_if { ZZ::Exec.renamer_installed? }
+  block { ZZ::Exec.install_renamer }
+end
