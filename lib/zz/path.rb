@@ -153,6 +153,10 @@ module ZZ
         File.expand_path("~/.vim/autoload")
       end
 
+      def vim_syntax_directory
+        File.expand_path("~/.vim/after/syntax")
+      end
+
       def vim_config
         File.expand_path("~/.vimrc")
       end

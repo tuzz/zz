@@ -5,6 +5,16 @@ cookbook_file "vim_config" do
   path ZZ::Path.vim_config
 end
 
+directory "create syntax directory" do
+  path ZZ::Path.vim_syntax_directory
+  recursive true
+end
+
+cookbook_file "indent_1_space" do
+  source "indent_1_space"
+  path "#{ZZ::Path.vim_syntax_directory}/nerdtree.vim"
+end
+
 directory "create autoload directory" do
   path ZZ::Path.vim_autoload_directory
   recursive true
