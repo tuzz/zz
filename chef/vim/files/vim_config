@@ -125,10 +125,10 @@ hi TabLine ctermfg=240 ctermbg=234
 hi TabLineSel ctermfg=white ctermbg=black
 hi QuickFixLine ctermfg=white ctermbg=234 cterm=NONE
 hi SignColumn ctermbg=black
-hi GitGutterAdd ctermfg=35
-hi GitGutterChange ctermfg=yellow
-hi GitGutterDelete ctermfg=124
-hi GitGutterChangeDelete ctermfg=yellow
+hi GitGutterAdd ctermfg=35 ctermbg=black
+hi GitGutterChange ctermfg=yellow ctermbg=black
+hi GitGutterDelete ctermfg=124 ctermbg=black
+hi GitGutterChangeDelete ctermfg=yellow ctermbg=black
 hi ALEError ctermbg=235
 hi ALEErrorSign ctermbg=52
 hi ALEWarning ctermbg=235
