@@ -219,6 +219,8 @@ nmap <leader>T :terminal<cr>
 " Bind <leader-w> to run cargo watch in a slightly smaller vertical split
 nmap <leader>w :vertical :terminal<cr><C-n>:vertical resize -5<cr>icargo watch --shell 'clear && cargo test -- --quiet --test-threads=1'<cr>
 
+nmap <leader>. :w<cr>:!touch ~/code/game/bin/dev_watch<cr><cr>
+
 " Bind <leader>g to mark the current position and switch to the Gstatus window
 au FileType * nmap <buffer> <leader>g mG:above Gstatus<cr><C-w>p:wq<cr>:echo<cr>ggjj
 
