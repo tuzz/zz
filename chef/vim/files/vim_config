@@ -189,6 +189,9 @@ nmap q: <Nop>
 nmap q/ <Nop>
 nmap q? <Nop>
 
+" Disable showing the man page for word under the cursor.
+map <S-k> <Nop>
+
 " Bind <leader-h> to open a vertical split for help docs
 nmap <leader>h :vertical :help<space>
 
