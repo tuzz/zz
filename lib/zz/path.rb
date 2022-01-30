@@ -34,7 +34,7 @@ module ZZ
       end
 
       def homebrew_remote_installer
-        "https://raw.githubusercontent.com/Homebrew/install/master/install"
+        "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
       end
 
       def homebrew_local_installer
@@ -74,7 +74,7 @@ module ZZ
       end
 
       def ffmpeg_recipe
-        "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/ffmpeg.rb"
+        "/opt/homebrew/Library/Taps/homebrew/homebrew-core/Formula/ffmpeg.rb"
       end
 
       def transcode

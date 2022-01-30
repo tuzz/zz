@@ -45,19 +45,19 @@ module ZZ
       end
 
       def tapped_cask?
-        execute("brew tap | grep caskroom/cask")
+        execute("brew tap | grep homebrew/cask")
       end
 
       def tap_cask
-        execute("brew tap caskroom/cask")
+        execute("brew tap homebrew/cask")
       end
 
       def tapped_drivers?
-        execute("brew tap | grep caskroom/drivers")
+        execute("brew tap | grep homebrew/cask-drivers")
       end
 
       def tap_drivers
-        execute("brew tap caskroom/drivers")
+        execute("brew tap homebrew/cask-drivers")
       end
 
       def tapped_versions?
@@ -121,11 +121,11 @@ module ZZ
       end
 
       def cask_installed?(name)
-        execute("brew cask list | grep #{name}")
+        execute("brew list --cask | grep #{name}")
       end
 
       def install_cask(name)
-        execute("brew cask install #{name}")
+        execute("brew install --cask #{name}")
       end
 
       def public_gpg_key_imported?
