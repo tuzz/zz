@@ -30,7 +30,7 @@ module ZZ
       end
 
       def chef_installer
-        "https://www.opscode.com/chef/install.sh"
+        "https://opscode.com/chef/install.sh"
       end
 
       def homebrew_remote_installer
