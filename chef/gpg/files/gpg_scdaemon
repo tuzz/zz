@@ -1,0 +1,2 @@
+pcsc-driver /System/Library/Frameworks/PCSC.framework/PCSC
+disable-ccid

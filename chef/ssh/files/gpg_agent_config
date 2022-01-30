@@ -1,5 +1,5 @@
 enable-ssh-support
-pinentry-program /usr/local/bin/pinentry
+pinentry-program /opt/homebrew/bin/pinentry
 default-cache-ttl 60
 max-cache-ttl 120
 write-env-file

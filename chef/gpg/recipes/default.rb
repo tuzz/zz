@@ -10,6 +10,11 @@ cookbook_file "gpg config" do
   path ZZ::Path.gpg_config
 end
 
+cookbook_file "gpg scdaemon" do
+  source "gpg_scdaemon"
+  path ZZ::Path.gpg_scdaemon
+end
+
 cookbook_file "install gpg-reset script" do
   source "gpg_reset"
   path ZZ::Path.gpg_reset

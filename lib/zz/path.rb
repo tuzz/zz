@@ -89,6 +89,10 @@ module ZZ
         File.expand_path("~/.gnupg/gpg.conf")
       end
 
+      def gpg_scdaemon
+        File.expand_path("~/.gnupg/scdaemon.conf")
+      end
+
       def gpg_reset
         File.expand_path("/usr/local/bin/gpg-reset")
       end
