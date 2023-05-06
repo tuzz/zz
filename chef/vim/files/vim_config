@@ -44,6 +44,7 @@ set shortmess+=F                  " Hide file name from command line when openin
 set smartcase                     " (Unless they contain a capital letter)
 set splitright                    " Open vertical splits on the right
 set splitbelow                    " Open horizontal splits below
+set splitkeep=screen              " Keep the same buffer position, e.g. when using Ctrl-P
 set sts=2                         " Backspace deletes whole tabs at the end of a line
 set t_Co=256                      " Use all 256 colours
 set t_te=                         " Don't clear screen when suspending vim
