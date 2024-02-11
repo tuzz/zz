@@ -205,6 +205,9 @@ nmap <leader>N :NERDTreeFind<cr>
 " Bind global search to leader-f
 nmap <leader>f :set hlsearch<cr>:Ack!<space>
 
+" Bind copying the filename to leader-c
+nmap <leader>c :!echo -n % \| pbcopy<cr><cr>
+
 " Bind showing/hiding line numbers to what it used to be
 nmap =on yon<cr>
 
