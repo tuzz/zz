@@ -90,17 +90,6 @@ au FileType qf setlocal statusline=[quickfix]\ [%L\ %{line('$')==1?'line':'lines
 au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
   \| exe "normal! g`\"" | endif
 
-" Make the :terminal feature a bit more consistent with regular Vim
-tmap <C-n> <C-w>N
-set shell=/bin/bash\ --login
-au TerminalOpen * set nonumber
-au TerminalOpen * set nolist
-au TerminalOpen * set colorcolumn=
-au TerminalOpen * setlocal statusline=[terminal]
-au TerminalOpen * call feedkeys("\<c-w>N:echo\ni", 't')
-au BufEnter * if &buftype == 'terminal' | call feedkeys("\<C-w>N", 't') | endif
-au BufLeave * if &buftype == 'terminal' | silent! normal i | endif
-
 " Strip trailing whitespace on write
 function! <SID>StripTrailingWhitespace()
     let _s=@/
