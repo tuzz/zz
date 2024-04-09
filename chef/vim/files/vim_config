@@ -2,6 +2,7 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter'
+Plug 'github/copilot.vim'
 Plug 'jxnblk/vim-mdx-js'
 Plug 'kien/ctrlp.vim'
 Plug 'mileszs/ack.vim'
@@ -228,6 +229,22 @@ nmap <leader>w :vertical :terminal<cr><C-n>:vertical resize -5<cr>icargo watch -
 
 nmap <leader>. :w<cr>:!touch ~/code/game/bin/dev_watch<cr><cr>
 nmap <leader>p :e `./bin/edit_save --path`<cr>
+
+" Bind <C-h> to dismiss the copilot suggestion
+imap <C-h> <Plug>(copilot-dismiss)
+
+" Bind <C-j> to cycle to the next copilot suggestion
+imap <C-j> <Plug>(copilot-next)
+
+" Bind <C-k> to cycle to the previous copilot suggestion
+imap <C-k> <Plug>(copilot-previous)
+
+" Bind <C-l> to accept the next word of the copilot suggestion
+imap <C-l> <Plug>(copilot-accept-word)
+
+" Bind <leader>p to open the copilot pane of multi-line suggestions
+imap <leader>p <esc>:Copilot<cr>
+nmap <leader>p :Copilot<cr>
 
 " Bind <leader>g to mark the current position and switch to the Gstatus window
 au FileType * nmap <buffer> <leader>g mG:above Gstatus<cr><C-w>p:wq<cr>:echo<cr>ggjj
