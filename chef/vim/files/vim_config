@@ -107,6 +107,7 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
 
 " Use the jellybeans colorscheme with some tweaks
 let g:jellybeans_background_color_256=0
+set notermguicolors
 silent! color jellybeans
 hi Search ctermfg=black ctermbg=yellow cterm=NONE
 hi IncSearch ctermfg=black ctermbg=yellow cterm=NONE
@@ -128,6 +129,7 @@ hi ALEError ctermbg=235
 hi ALEErrorSign ctermbg=52
 hi ALEWarning ctermbg=235
 hi ALEWarningSign ctermbg=17
+hi WinSeparator ctermfg=8
 
 " Set the signs that appear in the column when linting
 let g:ale_sign_error = '>>'
