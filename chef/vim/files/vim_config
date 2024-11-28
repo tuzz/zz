@@ -167,8 +167,14 @@ let g:NERDTreeAutoDeleteBuffer=1
 " Set the status line to the name of the root directory
 let g:NERDTreeStatusline="%=%{split(getcwd(),'/')[-1]}/"
 
+" Use a more sensible ordering for GTD directories, rather than alphabetical.
 " Move Rust's module/library file to the bottom of directory listings
-let g:NERDTreeSortOrder=['\/$', '*', '\.swp$', '\.bak$', '\~$', 'mod.rs', 'lib.rs', 'test.rs']
+let g:NERDTreeSortOrder=[
+  \ 'Inbox', 'Next actions', 'Projects', 'Waiting for', 'Someday', 'Calendar', 'Reference',
+  \ '\/$', '*', '\.swp$', '\.bak$', '\~$', 'mod.rs', 'lib.rs', 'test.rs']
+
+" Ignore Dropbox's icon file that keeps being re-added
+let NERDTreeIgnore=['Icon\?']
 
 " Reclaim two character spaces by hiding the arrows next to directories
 let g:NERDTreeDirArrowExpandable = ''
