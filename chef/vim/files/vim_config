@@ -2,14 +2,14 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'airblade/vim-gitgutter'
-Plug 'github/copilot.vim'
 Plug 'jxnblk/vim-mdx-js'
 Plug 'kien/ctrlp.vim'
 Plug 'mileszs/ack.vim'
 Plug 'milkypostman/vim-togglelist'
 Plug 'nanotech/jellybeans.vim'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-neorg/neorg'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'skalnik/vim-vroom'
@@ -17,7 +17,12 @@ Plug 'tikhomirov/vim-glsl'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-unimpaired'
-"Plug 'w0rp/ale'
+Plug 'evanleck/vim-svelte', {'branch': 'main'}
+Plug 'hashivim/vim-terraform'
+Plug 'mfussenegger/nvim-dap'
+Plug 'nvim-neotest/nvim-nio'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'theHamsta/nvim-dap-virtual-text'
 
 call plug#end()
 
@@ -107,6 +112,10 @@ function! <SID>StripTrailingWhitespace()
 endfunction
 autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
 
+let g:gitgutter_signs = 0
+let g:gitgutter_highlight_linenrs = 1
+set signcolumn=no
+
 " Use the jellybeans colorscheme with some tweaks
 let g:jellybeans_background_color_256=0
 set notermguicolors
@@ -123,10 +132,10 @@ hi TabLine ctermfg=240 ctermbg=234
 hi TabLineSel ctermfg=white ctermbg=black
 hi QuickFixLine ctermfg=white ctermbg=234 cterm=NONE
 hi SignColumn ctermbg=black
-hi GitGutterAdd ctermfg=35 ctermbg=black
-hi GitGutterChange ctermfg=yellow ctermbg=black
-hi GitGutterDelete ctermfg=124 ctermbg=black
-hi GitGutterChangeDelete ctermfg=yellow ctermbg=black
+hi GitGutterAddLineNr ctermfg=22 ctermbg=black
+hi GitGutterChangeLineNr ctermfg=100 ctermbg=black
+hi GitGutterChangeDeleteLineNr ctermfg=100 ctermbg=black
+hi GitGutterDeleteLineNr ctermfg=52 ctermbg=black
 hi ALEError ctermbg=235
 hi ALEErrorSign ctermbg=52
 hi ALEWarning ctermbg=235
@@ -218,17 +227,8 @@ nmap =ol :ALEToggle<cr>
 " Bind showing/hiding git gutter to =og
 nmap =og :GitGutterToggle<cr>
 
-" Bind <leader-t> to open a terminal in a vertical split
-nmap <leader>t :vertical :terminal<cr>
-
-" Bind <leader-T> to open a terminal in a horizontal split
-nmap <leader>T :terminal<cr>
-
 " Bind <leader-w> to run cargo watch in a slightly smaller vertical split
 nmap <leader>w :vertical :terminal<cr><C-n>:vertical resize -5<cr>icargo watch --shell 'clear && cargo test -- --quiet --test-threads=1'<cr>
-
-nmap <leader>. :w<cr>:!touch ~/code/game/bin/dev_watch<cr><cr>
-nmap <leader>p :e `./bin/edit_save --path`<cr>
 
 " Bind <C-h> to dismiss the copilot suggestion
 imap <C-h> <Plug>(copilot-dismiss)
@@ -241,10 +241,6 @@ imap <C-k> <Plug>(copilot-previous)
 
 " Bind <C-l> to accept the next word of the copilot suggestion
 imap <C-l> <Plug>(copilot-accept-word)
-
-" Bind <leader>p to open the copilot pane of multi-line suggestions
-imap <leader>p <esc>:Copilot<cr>
-nmap <leader>p :Copilot<cr>
 
 " Bind <leader>g to mark the current position and switch to the Gstatus window
 au FileType * nmap <buffer> <leader>g mG:above Gstatus<cr><C-w>p:wq<cr>:echo<cr>ggjj
@@ -260,3 +256,112 @@ au FileType fugitive nmap <buffer> <leader>G :enew<cr>'G:echo<cr>
 
 " Bind <leader>G (in the Gcommit window) to switch back to the mark
 au FileType gitcommit nmap <buffer> <leader>G :enew<cr>'G:echo 'Cancelled.'<cr>
+
+nmap <leader>w :w<cr>:!clang % -std=c99 -g -Weverything -Werror -Wno-poison-system-directories -Wno-unused-variable -Wno-unused-parameter -Wno-unused-function -Wno-unused-macros -Wno-unused-but-set-variable -Wno-declaration-after-statement<cr>
+nmap <leader>B :DapClearBreakpoints<cr>
+nmap <leader>b :DapToggleBreakpoint<cr>
+nmap <leader>d :DapContinue<cr>
+nmap <leader>D :DapTerminate<cr>
+nmap <leader>p :DapPause<cr>
+nmap =ov :DapVirtualTextToggle<cr>
+
+lua << EOF
+  local dap = require('dap')
+
+  dap.adapters.lldb = {
+    type = 'executable',
+    command = '/Applications/Xcode.app/Contents/Developer/usr/bin/lldb-dap',
+    name = 'lldb'
+  }
+
+  dap.configurations.c = {
+    {
+      name = 'lldb',
+      type = 'lldb',
+      request = 'launch',
+      program = function() return vim.fn.getcwd() .. '/a.out' end,
+      cwd = '${workspaceFolder}',
+      stopOnEntry = false,
+      args = {},
+    }
+  }
+
+  local previous_keys = {}
+  local dap_keys = {
+    ['<Up>'] = require('dap').restart_frame,
+    ['<Right>'] = require('dap').step_into,
+    ['<Down>'] = require('dap').step_over,
+    ['<Left>'] = require('dap').step_out,
+    ['<Space>'] = require('dap').continue,
+  }
+
+  local function set_dap_keys()
+    for k, fn in pairs(dap_keys) do
+      previous_keys[k] = vim.api.nvim_get_keymap('n')[k] or nil
+      vim.keymap.set('n', k, fn, {silent = true})
+    end
+  end
+
+  local function restore_keys()
+    for k, _ in pairs(dap_keys) do
+      pcall(vim.keymap.del, 'n', k)
+    end
+  end
+
+  local dap = require('dap')
+  local dapui = require("dapui")
+  local virtual = require("nvim-dap-virtual-text");
+
+  dapui.setup({
+    expand_lines = false,
+    controls = { element = "repl", enabled = false },
+    layouts = {
+      {
+        elements = {
+          { id = "scopes", size = 1, expanded = true },
+        },
+        position = "right",
+        size = 60
+      },
+      {
+        elements = {
+          { id = "watches", size = 0.4 },
+          { id = "stacks", size = 0.3 },
+          { id = "breakpoints", size = 0.2 },
+          { id = "repl", size = 0.1 },
+        },
+        position = "right",
+        size = 60
+      },
+    },
+  })
+
+  virtual.setup({ all_frames = true })
+
+  dap.listeners.after.event_initialized['custom_keymaps'] = set_dap_keys
+  dap.listeners.before.event_terminated['custom_keymaps'] = restore_keys
+  dap.listeners.before.event_exited['custom_keymaps'] = restore_keys
+
+  dap.listeners.before.attach.dapui_config = function() dapui.open() end
+  dap.listeners.before.launch.dapui_config = function() dapui.open() end
+  dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
+  dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
+
+  vim.api.nvim_set_hl(0, "DapLightBlue", { ctermfg = 12 })
+  vim.api.nvim_set_hl(0, "DapDarkBlue", { ctermbg = 17 })
+
+  vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "", linehl = "", numhl = "DapLightBlue" })
+  vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "", linehl = "", numhl = "DapLightBlue" })
+  vim.fn.sign_define("DapStopped", { text = "", texthl = "", linehl = "DapDarkBlue", numhl = "" })
+  vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "", linehl = "", numhl = "DapLightBlue" })
+
+  vim.notify = (function()
+    local notify = vim.notify
+    return function(msg, ...)
+      if type(msg) == "string" and msg:match("Cursor position outside buffer") then
+        return
+      end
+      notify(msg, ...)
+    end
+  end)()
+EOF
