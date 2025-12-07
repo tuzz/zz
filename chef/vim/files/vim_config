@@ -23,6 +23,7 @@ Plug 'mfussenegger/nvim-dap'
 Plug 'nvim-neotest/nvim-nio'
 Plug 'rcarriga/nvim-dap-ui'
 Plug 'theHamsta/nvim-dap-virtual-text'
+Plug 'Jorenar/nvim-dap-disasm'
 
 call plug#end()
 
@@ -132,7 +133,7 @@ hi TabLine ctermfg=240 ctermbg=234
 hi TabLineSel ctermfg=white ctermbg=black
 hi QuickFixLine ctermfg=white ctermbg=234 cterm=NONE
 hi SignColumn ctermbg=black
-hi GitGutterAddLineNr ctermfg=22 ctermbg=black
+hi GitGutterAddLineNr ctermfg=28 ctermbg=black
 hi GitGutterChangeLineNr ctermfg=100 ctermbg=black
 hi GitGutterChangeDeleteLineNr ctermfg=100 ctermbg=black
 hi GitGutterDeleteLineNr ctermfg=52 ctermbg=black
@@ -267,6 +268,9 @@ nmap =ov :DapVirtualTextToggle<cr>
 
 lua << EOF
   local dap = require('dap')
+  local dapui = require("dapui")
+  local virtual = require("nvim-dap-virtual-text")
+  local disasm = require("dap-disasm")
 
   dap.adapters.lldb = {
     type = 'executable',
@@ -288,11 +292,15 @@ lua << EOF
 
   local previous_keys = {}
   local dap_keys = {
-    ['<Up>'] = require('dap').restart_frame,
-    ['<Right>'] = require('dap').step_into,
-    ['<Down>'] = require('dap').step_over,
-    ['<Left>'] = require('dap').step_out,
-    ['<Space>'] = require('dap').continue,
+    ['<Up>'] = dap.restart_frame,
+    ['<Right>'] = dap.step_into,
+    ['<Down>'] = dap.step_over,
+    ['<Left>'] = dap.step_out,
+    ['<Space>'] = dap.continue,
+    ['<S-Down>'] = disasm.step_over,
+    ['<S-Right>'] = disasm.step_into,
+    ['<S-Up>'] = disasm.step_back,
+    ['<S-Left>'] = dap.step_out, -- There's no disasm equivalent for step out.
   }
 
   local function set_dap_keys()
@@ -308,9 +316,18 @@ lua << EOF
     end
   end
 
-  local dap = require('dap')
-  local dapui = require("dapui")
-  local virtual = require("nvim-dap-virtual-text");
+  if not disasm._registered then
+    disasm.setup({
+      dapui_register = true,
+      repl_commands = true,
+      winbar = false,
+      sign = "DapStopped",
+      ins_before_memref = 1000,
+      ins_after_memref = 1000,
+      columns = { "address", "instruction" },
+    })
+    disasm._registered = true
+  end
 
   dapui.setup({
     expand_lines = false,
@@ -318,20 +335,21 @@ lua << EOF
     layouts = {
       {
         elements = {
-          { id = "scopes", size = 1, expanded = true },
-        },
-        position = "right",
-        size = 60
-      },
-      {
-        elements = {
-          { id = "watches", size = 0.4 },
-          { id = "stacks", size = 0.3 },
-          { id = "breakpoints", size = 0.2 },
+          { id = "scopes", size = 0.3 },
+          { id = "watches", size = 0.16 },
+          { id = "stacks", size = 0.31 },
+          { id = "breakpoints", size = 0.13 },
           { id = "repl", size = 0.1 },
         },
         position = "right",
-        size = 60
+        size = 50
+      },
+      {
+        elements = {
+          { id = "disassembly", size = 1 },
+        },
+        position = "right",
+        size = 74
       },
     },
   })
