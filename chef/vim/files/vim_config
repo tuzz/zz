@@ -297,7 +297,7 @@ lua << EOF
 
   local previous_keys = {}
   local dap_keys = {
-    ['<Up>'] = dap.restart_frame,
+    ['<Up>'] = dap.continue,
     ['<Right>'] = dap.step_into,
     ['<Down>'] = dap.step_over,
     ['<Left>'] = dap.step_out,
