@@ -1,5 +1,5 @@
 " Use vim-plug to manage plugins
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 Plug 'airblade/vim-gitgutter'
 Plug 'jxnblk/vim-mdx-js'
@@ -59,7 +59,7 @@ set t_Co=256                      " Use all 256 colours
 set t_te=                         " Don't clear screen when suspending vim
 set tabstop=2                     " A tab is two spaces long
 set timeoutlen=300                " Leader key timeout is 300ms
-set undodir=~/.vim/undo           " Store undo files in ~/.vim
+set undodir=~/.config/nvim/undo   " Store undo files
 set undofile                      " Persist undos between sessions
 set wildmode=list:longest,full    " Autocompletion favours longer string
 set guicursor=n-v-c-i:block       " Always use a block cursor
@@ -142,6 +142,7 @@ hi ALEErrorSign ctermbg=52
 hi ALEWarning ctermbg=235
 hi ALEWarningSign ctermbg=17
 hi WinSeparator ctermfg=8
+
 
 " Set the signs that appear in the column when linting
 let g:ale_sign_error = '>>'
@@ -228,9 +229,6 @@ nmap =ol :ALEToggle<cr>
 " Bind showing/hiding git gutter to =og
 nmap =og :GitGutterToggle<cr>
 
-" Bind <leader-w> to run cargo watch in a slightly smaller vertical split
-nmap <leader>w :vertical :terminal<cr><C-n>:vertical resize -5<cr>icargo watch --shell 'clear && cargo test -- --quiet --test-threads=1'<cr>
-
 " Bind <C-h> to dismiss the copilot suggestion
 imap <C-h> <Plug>(copilot-dismiss)
 
@@ -258,12 +256,19 @@ au FileType fugitive nmap <buffer> <leader>G :enew<cr>'G:echo<cr>
 " Bind <leader>G (in the Gcommit window) to switch back to the mark
 au FileType gitcommit nmap <buffer> <leader>G :enew<cr>'G:echo 'Cancelled.'<cr>
 
-nmap <leader>w :w<cr>:!clang % -std=c99 -g -Weverything -Werror -Wno-poison-system-directories -Wno-unused-variable -Wno-unused-parameter -Wno-unused-function -Wno-unused-macros -Wno-unused-but-set-variable -Wno-declaration-after-statement<cr>
+autocmd BufRead,BufNewFile *.hlsl set ft=c
+autocmd BufRead,BufNewFile *.metal set ft=c
+autocmd BufRead,BufNewFile *.h set ft=c
+
+nmap <leader>w :w<cr>:!./scripts/build_debug<cr>
+nmap <leader>p :7split \| terminal bash -c './scripts/flamegraph; exit'<cr>
+nmap <leader>P :7split \| terminal bash -c './scripts/instruments; exit'<cr>
+au TermClose * if !v:event.status | close | endif
+
 nmap <leader>B :DapClearBreakpoints<cr>
 nmap <leader>b :DapToggleBreakpoint<cr>
 nmap <leader>d :DapContinue<cr>
 nmap <leader>D :DapTerminate<cr>
-nmap <leader>p :DapPause<cr>
 nmap =ov :DapVirtualTextToggle<cr>
 
 lua << EOF
@@ -274,7 +279,7 @@ lua << EOF
 
   dap.adapters.lldb = {
     type = 'executable',
-    command = '/Applications/Xcode.app/Contents/Developer/usr/bin/lldb-dap',
+    command = '/opt/homebrew/opt/llvm/bin/lldb-dap',
     name = 'lldb'
   }
 
@@ -283,7 +288,7 @@ lua << EOF
       name = 'lldb',
       type = 'lldb',
       request = 'launch',
-      program = function() return vim.fn.getcwd() .. '/a.out' end,
+      program = function() return vim.fn.getcwd() .. '/build/debug/main' end,
       cwd = '${workspaceFolder}',
       stopOnEntry = false,
       args = {},
@@ -335,21 +340,17 @@ lua << EOF
     layouts = {
       {
         elements = {
-          { id = "scopes", size = 0.3 },
-          { id = "watches", size = 0.16 },
-          { id = "stacks", size = 0.31 },
-          { id = "breakpoints", size = 0.13 },
-          { id = "repl", size = 0.1 },
+          { id = "scopes", size = 1 },
         },
+--        elements = {
+--          { id = "scopes", size = 0.3 },
+--          { id = "watches", size = 0.16 },
+--          { id = "stacks", size = 0.31 },
+--          { id = "breakpoints", size = 0.13 },
+--          { id = "repl", size = 0.1 },
+--        },
         position = "right",
-        size = 50
-      },
-      {
-        elements = {
-          { id = "disassembly", size = 1 },
-        },
-        position = "right",
-        size = 74
+        size = 80
       },
     },
   })
@@ -360,13 +361,14 @@ lua << EOF
   dap.listeners.before.event_terminated['custom_keymaps'] = restore_keys
   dap.listeners.before.event_exited['custom_keymaps'] = restore_keys
 
-  dap.listeners.before.attach.dapui_config = function() dapui.open() end
-  dap.listeners.before.launch.dapui_config = function() dapui.open() end
+  dap.listeners.after.event_stopped.dapui_config = function() dapui.open() end
   dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
   dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
 
   vim.api.nvim_set_hl(0, "DapLightBlue", { ctermfg = 12 })
   vim.api.nvim_set_hl(0, "DapDarkBlue", { ctermbg = 17 })
+
+  vim.keymap.set('n', '<leader>s', require('dapui').toggle, { noremap = true, silent = true })
 
   vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "", linehl = "", numhl = "DapLightBlue" })
   vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "", linehl = "", numhl = "DapLightBlue" })
@@ -383,3 +385,6 @@ lua << EOF
     end
   end)()
 EOF
+
+hi Normal ctermbg=0 guibg=#000000
+hi NormalNC ctermbg=0 guibg=#000000
