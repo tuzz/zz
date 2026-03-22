@@ -12,7 +12,6 @@ Plug 'nvim-neorg/neorg'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdtree'
-Plug 'skalnik/vim-vroom'
 Plug 'tikhomirov/vim-glsl'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
@@ -143,7 +142,6 @@ hi ALEWarning ctermbg=235
 hi ALEWarningSign ctermbg=17
 hi WinSeparator ctermfg=8
 
-
 " Set the signs that appear in the column when linting
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '>>'
@@ -265,126 +263,7 @@ nmap <leader>p :7split \| terminal bash -c './scripts/flamegraph; exit'<cr>
 nmap <leader>P :7split \| terminal bash -c './scripts/instruments; exit'<cr>
 au TermClose * if !v:event.status | close | endif
 
-nmap <leader>B :DapClearBreakpoints<cr>
-nmap <leader>b :DapToggleBreakpoint<cr>
-nmap <leader>d :DapContinue<cr>
-nmap <leader>D :DapTerminate<cr>
-nmap =ov :DapVirtualTextToggle<cr>
-
-lua << EOF
-  local dap = require('dap')
-  local dapui = require("dapui")
-  local virtual = require("nvim-dap-virtual-text")
-  local disasm = require("dap-disasm")
-
-  dap.adapters.lldb = {
-    type = 'executable',
-    command = '/opt/homebrew/opt/llvm/bin/lldb-dap',
-    name = 'lldb'
-  }
-
-  dap.configurations.c = {
-    {
-      name = 'lldb',
-      type = 'lldb',
-      request = 'launch',
-      program = function() return vim.fn.getcwd() .. '/build/debug/main' end,
-      cwd = '${workspaceFolder}',
-      stopOnEntry = false,
-      args = {},
-    }
-  }
-
-  local previous_keys = {}
-  local dap_keys = {
-    ['<Up>'] = dap.continue,
-    ['<Right>'] = dap.step_into,
-    ['<Down>'] = dap.step_over,
-    ['<Left>'] = dap.step_out,
-    ['<Space>'] = dap.continue,
-    ['<S-Down>'] = disasm.step_over,
-    ['<S-Right>'] = disasm.step_into,
-    ['<S-Up>'] = disasm.step_back,
-    ['<S-Left>'] = dap.step_out, -- There's no disasm equivalent for step out.
-  }
-
-  local function set_dap_keys()
-    for k, fn in pairs(dap_keys) do
-      previous_keys[k] = vim.api.nvim_get_keymap('n')[k] or nil
-      vim.keymap.set('n', k, fn, {silent = true})
-    end
-  end
-
-  local function restore_keys()
-    for k, _ in pairs(dap_keys) do
-      pcall(vim.keymap.del, 'n', k)
-    end
-  end
-
-  if not disasm._registered then
-    disasm.setup({
-      dapui_register = true,
-      repl_commands = true,
-      winbar = false,
-      sign = "DapStopped",
-      ins_before_memref = 1000,
-      ins_after_memref = 1000,
-      columns = { "address", "instruction" },
-    })
-    disasm._registered = true
-  end
-
-  dapui.setup({
-    expand_lines = false,
-    controls = { element = "repl", enabled = false },
-    layouts = {
-      {
-        elements = {
-          { id = "scopes", size = 1 },
-        },
---        elements = {
---          { id = "scopes", size = 0.3 },
---          { id = "watches", size = 0.16 },
---          { id = "stacks", size = 0.31 },
---          { id = "breakpoints", size = 0.13 },
---          { id = "repl", size = 0.1 },
---        },
-        position = "right",
-        size = 80
-      },
-    },
-  })
-
-  virtual.setup({ all_frames = true })
-
-  dap.listeners.after.event_initialized['custom_keymaps'] = set_dap_keys
-  dap.listeners.before.event_terminated['custom_keymaps'] = restore_keys
-  dap.listeners.before.event_exited['custom_keymaps'] = restore_keys
-
-  dap.listeners.after.event_stopped.dapui_config = function() dapui.open() end
-  dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
-  dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
-
-  vim.api.nvim_set_hl(0, "DapLightBlue", { ctermfg = 12 })
-  vim.api.nvim_set_hl(0, "DapDarkBlue", { ctermbg = 17 })
-
-  vim.keymap.set('n', '<leader>s', require('dapui').toggle, { noremap = true, silent = true })
-
-  vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "", linehl = "", numhl = "DapLightBlue" })
-  vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "", linehl = "", numhl = "DapLightBlue" })
-  vim.fn.sign_define("DapStopped", { text = "", texthl = "", linehl = "DapDarkBlue", numhl = "" })
-  vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "", linehl = "", numhl = "DapLightBlue" })
-
-  vim.notify = (function()
-    local notify = vim.notify
-    return function(msg, ...)
-      if type(msg) == "string" and msg:match("Cursor position outside buffer") then
-        return
-      end
-      notify(msg, ...)
-    end
-  end)()
-EOF
-
 hi Normal ctermbg=0 guibg=#000000
 hi NormalNC ctermbg=0 guibg=#000000
+
+source ~/.config/nvim/dap.vim
