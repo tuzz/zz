@@ -165,7 +165,7 @@ let g:NERDTreeMinimalUI=1
 let g:NERDTreeMinimalMenu=1
 
 " Make the file drawer a little narrower than default
-let g:NERDTreeWinSize=18
+let g:NERDTreeWinSize=20
 
 " Change file order so file2.txt is before file10.txt
 let g:NERDTreeNaturalSort=1
@@ -258,12 +258,8 @@ autocmd BufRead,BufNewFile *.hlsl set ft=c
 autocmd BufRead,BufNewFile *.metal set ft=c
 autocmd BufRead,BufNewFile *.h set ft=c
 
-nmap <leader>w :w<cr>:!./scripts/build_debug<cr>
-nmap <leader>p :7split \| terminal bash -c './scripts/flamegraph; exit'<cr>
-nmap <leader>P :7split \| terminal bash -c './scripts/instruments; exit'<cr>
-au TermClose * if !v:event.status | close | endif
-
 hi Normal ctermbg=0 guibg=#000000
 hi NormalNC ctermbg=0 guibg=#000000
 
 source ~/.config/nvim/dap.vim
+source ~/.config/nvim/build.vim
