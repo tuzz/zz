@@ -5,7 +5,7 @@ local function build(flag)
   vim.cmd("write")
   local output = vim.fn.system("./scripts/build_debug " .. flag .. " 2>&1")
   if vim.v.shell_error == 0 then
-    vim.api.nvim_echo({{"  Build OK", "DiagnosticOk"}}, false, {})
+    vim.api.nvim_echo({{"  Built ", "Normal"}, {flag, "Normal"}}, false, {})
     if build_qf_open then
       vim.cmd("cclose")
       build_qf_open = false
@@ -34,7 +34,8 @@ vim.api.nvim_create_autocmd("QuitPre", {
 })
 
 vim.keymap.set("n", "<leader>w", function() build("--minimal") end)
-vim.keymap.set("n", "<leader>W", function() build("--full") end)
+vim.keymap.set("n", "<leader>W", function() build("--default") end)
+vim.keymap.set("n", "<leader>F", function() build("--full") end)
 EOF
 
 nmap <leader>p :7split \| terminal bash -c './scripts/flamegraph; exit'<cr>
