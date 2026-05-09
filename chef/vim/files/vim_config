@@ -13,6 +13,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tikhomirov/vim-glsl'
+Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-unimpaired'
@@ -263,3 +264,5 @@ hi NormalNC ctermbg=0 guibg=#000000
 
 source ~/.config/nvim/dap.vim
 source ~/.config/nvim/build.vim
+
+highlight link cErrInParen NONE
