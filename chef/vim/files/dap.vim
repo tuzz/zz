@@ -29,6 +29,23 @@ lua << EOF
       cwd = '${workspaceFolder}',
       stopOnEntry = false,
       args = {},
+      initCommands = {
+        "settings set target.inline-breakpoint-strategy always",
+      },
+    }
+  }
+  dap.configurations.sh = {
+    {
+      name = 'lldb',
+      type = 'lldb',
+      request = 'launch',
+      program = function() return vim.fn.getcwd() .. '/build/debug/main' end,
+      cwd = '${workspaceFolder}',
+      stopOnEntry = false,
+      args = {},
+      initCommands = {
+        "settings set target.inline-breakpoint-strategy always",
+      },
     }
   }
 
@@ -98,7 +115,7 @@ lua << EOF
     },
   })
 
-  dap.listeners.after.event_stopped.dapui_config = function()
+  dap.listeners.after.event_stopped.dapui_config = function(session, body)
     if not dapui_is_open then
       dapui.open({ layout = 1 })
       dapui_is_open = true
@@ -121,7 +138,7 @@ lua << EOF
   dap.listeners.before.event_exited['custom_keymaps'] = restore_keys
 
   -- Toggle watches in the bottom of the scopes panel
-  vim.keymap.set('n', '<leader>W', function()
+  vim.keymap.set('n', '<leader>S', function()
     if right_layout == 1 then
       dapui.close({ layout = 1 })
       dapui.open({ layout = 2 })
