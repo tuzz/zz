@@ -29,8 +29,10 @@ lua << EOF
       cwd = '${workspaceFolder}',
       stopOnEntry = false,
       args = {},
+      stdio = { vim.NIL, vim.NIL, '/tmp/game.log' },
       initCommands = {
         "settings set target.inline-breakpoint-strategy always",
+        "settings set stop-disassembly-display never",
       },
     }
   }
@@ -43,8 +45,10 @@ lua << EOF
       cwd = '${workspaceFolder}',
       stopOnEntry = false,
       args = {},
+      stdio = { vim.NIL, vim.NIL, '/tmp/game.log' },
       initCommands = {
         "settings set target.inline-breakpoint-strategy always",
+        "settings set stop-disassembly-display never",
       },
     }
   }
@@ -131,6 +135,33 @@ lua << EOF
     dapui.close()
     dapui_is_open = false
     right_layout = 1
+  end
+
+  -- Jump to the line in src/ that actually failed, not the libc, SDL and assert_fail
+  -- frames that sit above it — nvim-dap stops on the topmost frame that has source.
+  local project_src = vim.fn.getcwd() .. '/src/'
+  local stop_reason = nil
+  local assert_plumbing = { assert_fail = true }
+  dap.listeners.before.event_stopped['skip_library_frames'] = function(_, stopped)
+    stop_reason = stopped.reason
+  end
+  dap.listeners.before.stackTrace['skip_library_frames'] = function(_, err, response)
+    if err or stop_reason ~= 'exception' then return end
+
+    local frames = response and response.stackFrames or {}
+    local ours = nil
+    for i, frame in ipairs(frames) do
+      local path = frame.source and frame.source.path
+      local name = frame.name and frame.name:match('^[%w_]+') or ''
+      if path and vim.startswith(path, project_src) and not assert_plumbing[name] then
+        ours = i
+        break
+      end
+    end
+
+    for i = 1, (ours or 1) - 1 do
+      frames[i].source = nil
+    end
   end
 
   dap.listeners.after.event_initialized['custom_keymaps'] = set_dap_keys
