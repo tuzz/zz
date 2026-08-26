@@ -33,9 +33,9 @@ vim.api.nvim_create_autocmd("QuitPre", {
   end,
 })
 
-vim.keymap.set("n", "<leader>w", function() build("--minimal") end)
-vim.keymap.set("n", "<leader>W", function() build("--default") end)
-vim.keymap.set("n", "<leader>F", function() build("--full") end)
+vim.keymap.set("n", "<leader>w", function() build("") end)
+vim.keymap.set("n", "<leader>W", function() vim.fn.delete("build/debug/main") build("") end)
+vim.keymap.set("n", "<leader>F", function() vim.fn.delete("build/debug/main") vim.fn.delete("assets/shaders", "rf") build("") end)
 EOF
 
 nmap <leader>p :7split \| terminal bash -c './scripts/flamegraph; exit'<cr>
