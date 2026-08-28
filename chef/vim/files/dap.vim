@@ -1,8 +1,6 @@
 " DAP keybindings
 nmap <leader>B :DapClearBreakpoints<cr>
 nmap <leader>b :DapToggleBreakpoint<cr>
-nmap <leader>d :DapContinue<cr>
-nmap <leader>D :DapTerminate<cr>
 nmap =ov :DapVirtualTextToggle<cr>
 
 hi NvimDapVirtualText ctermfg=97
@@ -13,6 +11,43 @@ lua << EOF
   local dapui = require("dapui")
   local virtual = require("nvim-dap-virtual-text")
   local disasm = require("dap-disasm")
+
+  -- lldb-dap implements DAP restart but doesn't advertise support.
+  dap.listeners.after["initialize"]["fastrestart"] = function(session)
+    session.capabilities.supportsRestartRequest = true
+  end
+
+  -- <leader>d restarts an existing DAP session rather than starting fresh.
+  vim.keymap.set("n", "<leader>d", function()
+    local session = dap.session()
+    if session and session.initialized and not session.stopped_thread_id then
+      dap.restart()
+    else
+      dap.continue()
+    end
+  end)
+
+  -- <leader>D intercept lldb-dap termination so that the session stays loaded.
+  local Session = require("dap.session")
+  local keep_target_warm = false
+  local event_terminated = Session.event_terminated
+  Session.event_terminated = function(self, body)
+    if keep_target_warm then
+      keep_target_warm = false
+      return
+    end
+    return event_terminated(self, body)
+  end
+
+  vim.keymap.set("n", "<leader>D", function()
+    local session = dap.session()
+    if not session then return end
+    keep_target_warm = true
+    vim.defer_fn(function() keep_target_warm = false end, 3000) -- Don't swallow an unrelated exit later.
+    session:request("evaluate", { expression = "`process kill", context = "repl" }, function(err)
+      if err then keep_target_warm = false end
+    end)
+  end)
 
   dap.adapters.lldb = {
     type = 'executable',
@@ -53,6 +88,7 @@ lua << EOF
     }
   }
 
+  -- use up/down/left/right for controlling the debugger/disassembler.
   local dap_keys = {
     ['<Up>'] = dap.continue,
     ['<Right>'] = dap.step_into,
@@ -64,16 +100,38 @@ lua << EOF
     ['<S-Left>'] = dap.step_out,
   }
 
-  local function set_dap_keys()
-    for k, fn in pairs(dap_keys) do
-      vim.keymap.set('n', k, fn, {silent = true})
+  -- use up/down/left/right for entities.vim keys when the debugger isn't running.
+  local page_up = vim.api.nvim_replace_termcodes('<C-b>', true, false, true)
+  local page_down = vim.api.nvim_replace_termcodes('<C-f>', true, false, true)
+  local function entity_key(name, fallback)
+    return function()
+      if vim.api.nvim_buf_get_name(0):find('/src/entities/', 1, true) then return _G[name]() end
+      return fallback()
     end
   end
 
-  local function restore_keys()
-    for k, _ in pairs(dap_keys) do
-      pcall(vim.keymap.del, 'n', k)
-    end
+  local idle_keys = {
+    ['<Up>'] = entity_key('entity_bump_up', function() vim.cmd('normal! ' .. vim.v.count1 .. 'k') end),
+    ['<Down>'] = entity_key('entity_bump_down', function() vim.cmd('normal! ' .. vim.v.count1 .. 'j') end),
+    ['<S-Up>'] = entity_key('entity_grow', function() vim.api.nvim_feedkeys(page_up, 'n', false) end),
+    ['<S-Down>'] = entity_key('entity_shrink', function() vim.api.nvim_feedkeys(page_down, 'n', false) end),
+    ['<Left>'] = function() vim.cmd('normal! ' .. vim.v.count1 .. 'h') end,
+    ['<Right>'] = function() vim.cmd('normal! ' .. vim.v.count1 .. 'l') end,
+    ['<S-Left>'] = function() vim.cmd('normal! ' .. vim.v.count1 .. 'b') end,   -- move cursor left as normal.
+    ['<S-Right>'] = function() vim.cmd('normal! ' .. vim.v.count1 .. 'w') end,  -- move cursor right tas normal.
+  }
+
+  local function debugger_is_stopped()
+    local session = dap.session()
+    return session ~= nil and session.stopped_thread_id ~= nil
+  end
+
+  for key, idle_fn in pairs(idle_keys) do
+    local debug_fn = dap_keys[key]
+    vim.keymap.set('n', key, function()
+      if debug_fn and debugger_is_stopped() then return debug_fn() end
+      return idle_fn()
+    end, {silent = true})
   end
 
   if not disasm._registered then
@@ -164,11 +222,7 @@ lua << EOF
     end
   end
 
-  dap.listeners.after.event_initialized['custom_keymaps'] = set_dap_keys
-  dap.listeners.before.event_terminated['custom_keymaps'] = restore_keys
-  dap.listeners.before.event_exited['custom_keymaps'] = restore_keys
-
-  -- Toggle watches in the bottom of the scopes panel
+  -- Toggle watches in the bottom of the scopes panel.
   vim.keymap.set('n', '<leader>S', function()
     if right_layout == 1 then
       dapui.close({ layout = 1 })
