@@ -11,23 +11,93 @@ lua << EOF
   local dapui = require("dapui")
   local virtual = require("nvim-dap-virtual-text")
   local disasm = require("dap-disasm")
+  local game_job, game_pid
 
   -- lldb-dap implements DAP restart but doesn't advertise support.
   dap.listeners.after["initialize"]["fastrestart"] = function(session)
     session.capabilities.supportsRestartRequest = true
   end
 
-  -- <leader>d restarts an existing DAP session rather than starting fresh.
+  -- <leader>r runs the game without the debugger, detaches the debugger if already running
+  -- <leader>d runs the game with the debugger, attaches the debugger if it's not running
+  -- <leader>R or <Leader>D kills the game, whether or not it's running under the debugger
+  -- <leader>b toggle a breakpoint on the line under the cursor
+  -- <leader>B remove all breakpoints
+  -- <leader>s toggles the scopes window which shows variables in scope
+  -- <leader>S toggles the watch window which allows adding custom expressions
+  -- up/down/left/right to step through the debugger: up continues until the next breakpoint
+  -- shift-up/down/left/right can be used to step through the disassembly
+
+  local function game_is_running()
+    if not game_pid then return false end
+    local comm = vim.fn.system({ "ps", "-o", "comm=", "-p", tostring(game_pid) })
+    return vim.v.shell_error == 0 and comm:find("build/debug/main", 1, true) ~= nil
+  end
+
+  local function start_game()
+    game_job = vim.fn.jobstart({ "sh", "-c", "exec ./build/debug/main > /tmp/game.log 2>&1" }, {
+      cwd = vim.fn.getcwd(),
+      on_exit = function(id) if id == game_job then game_job, game_pid = nil, nil end end,
+    })
+    game_pid = game_job > 0 and vim.fn.jobpid(game_job) or nil
+  end
+
+  local function stop_game()
+    if dap.session() then dap.terminate({}, { terminateDebuggee = true }) end
+    if game_job and vim.fn.jobwait({ game_job }, 0)[1] == -1 then vim.fn.jobstop(game_job) end
+
+    vim.defer_fn(function()
+      if game_is_running() then vim.fn.system({ "kill", tostring(game_pid) }) end
+      game_pid = nil
+    end, 300)
+  end
+
+  dap.listeners.after.event_process["game"] = function(_, body)
+    if body and body.systemProcessId then game_pid = body.systemProcessId end
+  end
+
+  local function attach_config()
+    return {
+      name = "lldb attach",
+      type = "lldb",
+      request = "attach",
+      pid = game_pid,
+      program = vim.fn.getcwd() .. "/build/debug/main",
+      cwd = vim.fn.getcwd(),
+      stopOnEntry = false,
+      initCommands = { "settings set stop-disassembly-display never" },
+    }
+  end
+
   vim.keymap.set("n", "<leader>d", function()
     local session = dap.session()
-    if session and session.initialized and not session.stopped_thread_id then
-      dap.restart()
+
+    if session then
+      if session.stopped_thread_id then
+        dap.continue()
+      elseif session.config.request ~= "attach" and not game_is_running() then
+        dap.restart()
+      end
+      return
+    end
+
+    if game_is_running() then
+      dap.run(attach_config())
     else
       dap.continue()
     end
   end)
 
-  -- <leader>D intercept lldb-dap termination so that the session stays loaded.
+  vim.keymap.set("n", "<leader>r", function()
+    if dap.session() then
+      dap.disconnect({ terminateDebuggee = false })
+    elseif not game_is_running() then
+      start_game()
+    end
+  end)
+
+  vim.keymap.set("n", "<leader>R", stop_game)
+
   local Session = require("dap.session")
   local keep_target_warm = false
   local event_terminated = Session.event_terminated
@@ -41,7 +111,10 @@ lua << EOF
 
   vim.keymap.set("n", "<leader>D", function()
     local session = dap.session()
-    if not session then return end
+    if not session or session.config.request == "attach" then
+      stop_game()
+      return
+    end
     keep_target_warm = true
     vim.defer_fn(function() keep_target_warm = false end, 3000) -- Don't swallow an unrelated exit later.
     session:request("evaluate", { expression = "`process kill", context = "repl" }, function(err)
@@ -66,7 +139,6 @@ lua << EOF
       args = {},
       stdio = { vim.NIL, vim.NIL, '/tmp/game.log' },
       initCommands = {
-        "settings set target.inline-breakpoint-strategy always",
         "settings set stop-disassembly-display never",
       },
     }
@@ -82,7 +154,6 @@ lua << EOF
       args = {},
       stdio = { vim.NIL, vim.NIL, '/tmp/game.log' },
       initCommands = {
-        "settings set target.inline-breakpoint-strategy always",
         "settings set stop-disassembly-display never",
       },
     }
@@ -258,6 +329,14 @@ lua << EOF
       end
     end,
   })
+
+  local vt_stack_trace = dap.listeners.after.stackTrace["nvim-dap-virtual-text"]
+  if vt_stack_trace then
+    dap.listeners.after.stackTrace["nvim-dap-virtual-text"] = function(session, err, ...)
+      if err then return end
+      return vt_stack_trace(session, err, ...)
+    end
+  end
 
   vim.api.nvim_set_hl(0, "DapLightBlue", { ctermfg = 12 })
   vim.api.nvim_set_hl(0, "DapDarkBlue",  { ctermbg = 17 })
