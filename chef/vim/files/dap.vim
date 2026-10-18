@@ -75,8 +75,8 @@ lua << EOF
     if session then
       if session.stopped_thread_id then
         dap.continue()
-      elseif session.config.request ~= "attach" and not game_is_running() then
-        dap.restart()
+      elseif session.config.request ~= "attach" then
+        dap.restart() -- Restarting keeps lldb-dap and its target warm so the game re-stops in ~1s.
       end
       return
     end
@@ -98,29 +98,7 @@ lua << EOF
 
   vim.keymap.set("n", "<leader>R", stop_game)
 
-  local Session = require("dap.session")
-  local keep_target_warm = false
-  local event_terminated = Session.event_terminated
-  Session.event_terminated = function(self, body)
-    if keep_target_warm then
-      keep_target_warm = false
-      return
-    end
-    return event_terminated(self, body)
-  end
-
-  vim.keymap.set("n", "<leader>D", function()
-    local session = dap.session()
-    if not session or session.config.request == "attach" then
-      stop_game()
-      return
-    end
-    keep_target_warm = true
-    vim.defer_fn(function() keep_target_warm = false end, 3000) -- Don't swallow an unrelated exit later.
-    session:request("evaluate", { expression = "`process kill", context = "repl" }, function(err)
-      if err then keep_target_warm = false end
-    end)
-  end)
+  vim.keymap.set("n", "<leader>D", stop_game)
 
   dap.adapters.lldb = {
     type = 'executable',
@@ -137,6 +115,7 @@ lua << EOF
       cwd = '${workspaceFolder}',
       stopOnEntry = false,
       args = {},
+      env = { NVIM = vim.v.servername }, -- So the game can load clicked entities into the quickfix list.
       stdio = { vim.NIL, vim.NIL, '/tmp/game.log' },
       initCommands = {
         "settings set stop-disassembly-display never",
@@ -152,6 +131,7 @@ lua << EOF
       cwd = '${workspaceFolder}',
       stopOnEntry = false,
       args = {},
+      env = { NVIM = vim.v.servername }, -- So the game can load clicked entities into the quickfix list.
       stdio = { vim.NIL, vim.NIL, '/tmp/game.log' },
       initCommands = {
         "settings set stop-disassembly-display never",
@@ -250,11 +230,18 @@ lua << EOF
 
   dap.listeners.after.event_stopped.dapui_config = function(session, body)
     if not dapui_is_open then
-      dapui.open({ layout = 1 })
+      dapui.open({ layout = right_layout })
       dapui_is_open = true
-      right_layout = 1
     end
   end
+
+  dap.listeners.after["continue"]["dapui_config"] = function()
+    if dapui_is_open then
+      dapui.close({ layout = right_layout })
+      dapui_is_open = false
+    end
+  end
+
   dap.listeners.before.event_terminated.dapui_config = function()
     dapui.close()
     dapui_is_open = false
