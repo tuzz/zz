@@ -327,11 +327,12 @@ lua << EOF
 
   vim.api.nvim_set_hl(0, "DapLightBlue", { ctermfg = 12 })
   vim.api.nvim_set_hl(0, "DapDarkBlue",  { ctermbg = 17 })
+  vim.api.nvim_set_hl(0, "DapLightRed",  { ctermbg = 9  })
 
-  vim.fn.sign_define("DapBreakpoint",         { text = "", texthl = "", linehl = "",          numhl = "DapLightBlue" })
-  vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "", linehl = "",          numhl = "DapLightBlue" })
-  vim.fn.sign_define("DapStopped",             { text = "", texthl = "", linehl = "DapDarkBlue", numhl = ""           })
-  vim.fn.sign_define("DapBreakpointRejected",  { text = "", texthl = "", linehl = "",          numhl = "DapLightBlue" })
+  vim.fn.sign_define("DapBreakpoint",          { text = "", texthl = "", linehl = "",            numhl = "DapLightBlue" })
+  vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "", linehl = "",            numhl = "DapLightBlue" })
+  vim.fn.sign_define("DapStopped",             { text = "", texthl = "", linehl = "DapDarkBlue", numhl = ""             })
+  vim.fn.sign_define("DapBreakpointRejected",  { text = "", texthl = "", linehl = "",            numhl = "DapLightRed"  })
 
   vim.notify = (function()
     local notify = vim.notify
