@@ -162,8 +162,8 @@ lua << EOF
   end
 
   local idle_keys = {
-    ['<Up>'] = entity_key('entity_bump_up', function() vim.cmd('normal! ' .. vim.v.count1 .. 'k') end),
-    ['<Down>'] = entity_key('entity_bump_down', function() vim.cmd('normal! ' .. vim.v.count1 .. 'j') end),
+    ['<Up>'] = entity_key('entity_increment_number', function() vim.cmd('normal! ' .. vim.v.count1 .. 'k') end),
+    ['<Down>'] = entity_key('entity_decrement_number', function() vim.cmd('normal! ' .. vim.v.count1 .. 'j') end),
     ['<S-Up>'] = entity_key('entity_grow', function() vim.api.nvim_feedkeys(page_up, 'n', false) end),
     ['<S-Down>'] = entity_key('entity_shrink', function() vim.api.nvim_feedkeys(page_down, 'n', false) end),
     ['<Left>'] = function() vim.cmd('normal! ' .. vim.v.count1 .. 'h') end,
