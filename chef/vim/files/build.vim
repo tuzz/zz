@@ -1,5 +1,4 @@
 lua << EOF
-local build_qf_open = false
 local build_job, build_pending
 
 -- Show build errors in the quickfix list or close it again once a build succeeds.
@@ -7,19 +6,12 @@ local function finish(flag, code, output)
   build_job = nil
   if code == 0 then
     vim.api.nvim_echo({{"  Built ", "Normal"}, {flag, "Normal"}}, false, {})
-    if build_qf_open then
-      vim.cmd("cclose")
-      build_qf_open = false
-    end
+    if vim.fn.getqflist({ title = 0 }).title == "Build errors" then vim.cmd("cclose") end -- Leave other lists open, e.g. clicked entities.
   else
-    vim.fn.setqflist({}, "r", { title = "Build errors", lines = vim.split(output, "\n") })
-    local items = vim.fn.getqflist()
-    local valid = vim.tbl_filter(function(e) return e.valid == 1 end, items)
-    vim.fn.setqflist({}, "r", { title = "Build errors", items = valid })
-
+    local items = vim.fn.getqflist({ lines = vim.split(output, "\n") }).items -- Parse with 'errorformat' without replacing the list yet.
+    vim.fn.setqflist({}, "r", { title = "Build errors", items = vim.tbl_filter(function(e) return e.valid == 1 end, items) })
     vim.cmd("copen")
     vim.cmd("wincmd p")
-    build_qf_open = true
   end
 end
 
@@ -31,6 +23,7 @@ local function build_now(flag)
 
   local output = vim.fn.system("./scripts/build_debug " .. vim.fn.shellescape(flag) .. " 2>&1") -- Compiler errors go to stderr.
   finish(flag, vim.v.shell_error, output)
+  return vim.v.shell_error == 0
 end
 
 local function build(flag)
@@ -51,15 +44,8 @@ local function build(flag)
   })
 end
 
-vim.api.nvim_create_autocmd("QuitPre", {
-  callback = function()
-    if vim.bo.filetype == "qf" then
-      build_qf_open = false
-    end
-  end,
-})
-
 _G.build_project = build -- entities.vim rebuilds after each edit.
+_G.build_now = build_now -- dap.vim rebuilds without sanitizers before <leader>r launches the game.
 
 vim.keymap.set("n", "<leader>w", function() build_now("minimal.") end)
 vim.keymap.set("n", "<leader>W", function() vim.fn.delete("build/debug/main") build_now("default.") end)

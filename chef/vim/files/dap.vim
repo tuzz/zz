@@ -18,19 +18,22 @@ lua << EOF
     session.capabilities.supportsRestartRequest = true
   end
 
-  -- <leader>r runs the game without the debugger, detaches the debugger if already running
-  -- <leader>d runs the game with the debugger, attaches the debugger if it's not running
+  -- <leader>r runs the game without the debugger, restarts it if it's running, with or without the debugger
+  -- <leader>d runs the game with the debugger, restarts it if it's running, with or without the debugger, continues if stopped
   -- <leader>R or <Leader>D kills the game, whether or not it's running under the debugger
   -- <leader>b toggle a breakpoint on the line under the cursor
   -- <leader>B remove all breakpoints
   -- <leader>s toggles the scopes window which shows variables in scope
   -- <leader>S toggles the watch window which allows adding custom expressions
+  -- <leader>x toggles the stacks window which also shows breakpoints and the repl
+  -- <leader>a toggles the disassembly window
   -- up/down/left/right to step through the debugger: up continues until the next breakpoint
   -- shift-up/down/left/right can be used to step through the disassembly
 
-  local function game_is_running()
-    if not game_pid then return false end
-    local comm = vim.fn.system({ "ps", "-o", "comm=", "-p", tostring(game_pid) })
+  local function game_is_running(pid)
+    pid = pid or game_pid
+    if not pid then return false end
+    local comm = vim.fn.system({ "ps", "-o", "comm=", "-p", tostring(pid) })
     return vim.v.shell_error == 0 and comm:find("build/debug/main", 1, true) ~= nil
   end
 
@@ -56,17 +59,26 @@ lua << EOF
     if body and body.systemProcessId then game_pid = body.systemProcessId end
   end
 
-  local function attach_config()
-    return {
-      name = "lldb attach",
-      type = "lldb",
-      request = "attach",
-      pid = game_pid,
-      program = vim.fn.getcwd() .. "/build/debug/main",
-      cwd = vim.fn.getcwd(),
-      stopOnEntry = false,
-      initCommands = { "settings set stop-disassembly-display never" },
-    }
+  -- Stop the game, with or without the debugger, then call start once it has exited so that two games never run at the same time.
+  local function restart_game(start)
+    local old_pid = game_pid
+    stop_game()
+
+    local function start_when_exited(attempts_left)
+      if not game_is_running(old_pid) then return start() end
+      if attempts_left > 0 then vim.defer_fn(function() start_when_exited(attempts_left - 1) end, 50) end -- Give up after ~5s, e.g. if it hung.
+    end
+    vim.defer_fn(function() start_when_exited(100) end, 350) -- After stop_game's deferred kill, which would otherwise kill the new game.
+  end
+
+  -- Rebuild game.o without sanitizers if the last full build added them for better performance.
+  local function start_fast_game()
+    vim.fn.system("nm -u build/debug/game.dylib | grep -q ___asan_")
+    if vim.v.shell_error == 0 then
+      vim.fn.delete("build/debug/game.o")
+      if not _G.build_now("fast.") then return end -- Leave the errors in the quickfix list rather than launching the old build.
+    end
+    start_game()
   end
 
   vim.keymap.set("n", "<leader>d", function()
@@ -75,24 +87,21 @@ lua << EOF
     if session then
       if session.stopped_thread_id then
         dap.continue()
-      elseif session.config.request ~= "attach" then
+      else
         dap.restart() -- Restarting keeps lldb-dap and its target warm so the game re-stops in ~1s.
       end
-      return
-    end
-
-    if game_is_running() then
-      dap.run(attach_config())
+    elseif game_is_running() then
+      restart_game(function() dap.continue() end) -- Swap the fast game for one under the debugger.
     else
       dap.continue()
     end
   end)
 
   vim.keymap.set("n", "<leader>r", function()
-    if dap.session() then
-      dap.disconnect({ terminateDebuggee = false })
-    elseif not game_is_running() then
-      start_game()
+    if dap.session() or game_is_running() then
+      restart_game(start_fast_game) -- Swap a game under the debugger for a fast one, or restart the fast one.
+    else
+      start_fast_game()
     end
   end)
 
@@ -122,22 +131,7 @@ lua << EOF
       },
     }
   }
-  dap.configurations.sh = {
-    {
-      name = 'lldb',
-      type = 'lldb',
-      request = 'launch',
-      program = function() return vim.fn.getcwd() .. '/build/debug/main' end,
-      cwd = '${workspaceFolder}',
-      stopOnEntry = false,
-      args = {},
-      env = { NVIM = vim.v.servername }, -- So the game can load clicked entities into the quickfix list.
-      stdio = { vim.NIL, vim.NIL, '/tmp/game.log' },
-      initCommands = {
-        "settings set stop-disassembly-display never",
-      },
-    }
-  }
+  dap.configurations.sh = dap.configurations.c
 
   -- use up/down/left/right for controlling the debugger/disassembler.
   local dap_keys = {
@@ -169,7 +163,7 @@ lua << EOF
     ['<Left>'] = function() vim.cmd('normal! ' .. vim.v.count1 .. 'h') end,
     ['<Right>'] = function() vim.cmd('normal! ' .. vim.v.count1 .. 'l') end,
     ['<S-Left>'] = function() vim.cmd('normal! ' .. vim.v.count1 .. 'b') end,   -- move cursor left as normal.
-    ['<S-Right>'] = function() vim.cmd('normal! ' .. vim.v.count1 .. 'w') end,  -- move cursor right tas normal.
+    ['<S-Right>'] = function() vim.cmd('normal! ' .. vim.v.count1 .. 'w') end,  -- move cursor right as normal.
   }
 
   local function debugger_is_stopped()
@@ -242,16 +236,13 @@ lua << EOF
     end
   end
 
-  dap.listeners.before.event_terminated.dapui_config = function()
+  local function close_dapui()
     dapui.close()
     dapui_is_open = false
     right_layout = 1
   end
-  dap.listeners.before.event_exited.dapui_config = function()
-    dapui.close()
-    dapui_is_open = false
-    right_layout = 1
-  end
+  dap.listeners.before.event_terminated.dapui_config = close_dapui
+  dap.listeners.before.event_exited.dapui_config = close_dapui
 
   -- Jump to the line in src/ that actually failed, not the libc, SDL and assert_fail
   -- frames that sit above it — nvim-dap stops on the topmost frame that has source.
@@ -292,14 +283,14 @@ lua << EOF
       right_layout = 1
     end
     dapui_is_open = true
-  end, { noremap = true, silent = true })
+  end, { silent = true })
 
-  vim.keymap.set('n', '<leader>x', function() dapui.toggle({ layout = 3 }) end, { noremap = true, silent = true })
-  vim.keymap.set('n', '<leader>a', function() dapui.toggle({ layout = 4 }) end, { noremap = true, silent = true })
+  vim.keymap.set('n', '<leader>x', function() dapui.toggle({ layout = 3 }) end, { silent = true })
+  vim.keymap.set('n', '<leader>a', function() dapui.toggle({ layout = 4 }) end, { silent = true })
   vim.keymap.set('n', '<leader>s', function()
     dapui.toggle({ layout = right_layout })
     dapui_is_open = not dapui_is_open
-  end, { noremap = true, silent = true })
+  end, { silent = true })
 
   virtual.setup({
     all_frames = true,
