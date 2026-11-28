@@ -33,6 +33,8 @@ lua << EOF
   local function game_is_running(pid)
     pid = pid or game_pid
     if not pid then return false end
+    if pid == game_pid and game_job and vim.fn.jobwait({ game_job }, 0)[1] == -1 then return true end
+
     local comm = vim.fn.system({ "ps", "-o", "comm=", "-p", tostring(pid) })
     return vim.v.shell_error == 0 and comm:find("build/debug/main", 1, true) ~= nil
   end
@@ -46,12 +48,13 @@ lua << EOF
   end
 
   local function stop_game()
+    local pid = game_pid
     if dap.session() then dap.terminate({}, { terminateDebuggee = true }) end
     if game_job and vim.fn.jobwait({ game_job }, 0)[1] == -1 then vim.fn.jobstop(game_job) end
 
     vim.defer_fn(function()
-      if game_is_running() then vim.fn.system({ "kill", tostring(game_pid) }) end
-      game_pid = nil
+      if pid and game_is_running(pid) then vim.fn.system({ "kill", tostring(pid) }) end
+      if game_pid == pid then game_pid = nil end
     end, 300)
   end
 
